@@ -24,6 +24,6 @@ class WelcomeView extends View
       fontStyle : "bold",
       fontFamily: "Courier",
       text      : "PRESS ENTER",
-      fill      : "#fff"
+      fill      : "#000"
     }))
 

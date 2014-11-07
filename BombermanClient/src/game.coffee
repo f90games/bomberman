@@ -22,14 +22,20 @@ class Game
 
   init_statuses: () ->
     {
-      
+
     }
+
+
+  kick_off: ()  -> @switch_scene('welcome')
 
   mod_stage: (current_stage, adjustment) ->
 
   reset: () ->
 
   switch_scene: (type) ->
+    target_scene = @scenes[type]
+    @current_scene.stop() unless _.isEmpty(@current_scene)
+    target_scene.start()
+    @current_scene = target_scene
 
-  kick_off: ()  -> @switch_scene('welcome')
 
