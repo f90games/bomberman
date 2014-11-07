@@ -4,10 +4,8 @@ class Game
     @configs  = @init_default_config()
     @statuses = @init_statuses()
     @scenes   = {
-      # 'welcome'     : new WelcomeScene(this, new WelcomeView(@canvas)),
-      # 'stage'       : new StageScene(this, new StageView(@canvas)),
-      # 'battle_field': new BattleFieldScene(this, new BattleFieldView(@canvas)),
-      # 'report'      : new ReportScene(this, new ReportView(@canvas))
+      'welcome'     : new WelcomeScene(this, new WelcomeView(@canvas)),
+      'battle_field': new BattleFieldScene(this, new BattleFieldView(@canvas))
     }
     @current_scene = null
 
@@ -24,7 +22,7 @@ class Game
 
   init_statuses: () ->
     {
-
+      
     }
 
   mod_stage: (current_stage, adjustment) ->
@@ -33,5 +31,5 @@ class Game
 
   switch_scene: (type) ->
 
-  kick_off: () ->
+  kick_off: ()  -> @switch_scene('welcome')
 
