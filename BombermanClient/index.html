@@ -6,14 +6,14 @@
   <title>Bomberman implecation</title>
   <link rel="stylesheet" href="./css/main.css">
 
-  <script type="text/javascript" src="js/coffee-script.js"></script>
+  <script type="text/javascript" src='js/coffee-script.js'></script>
 
   <script type='text/javascript' src='js/jquery-2.1.1.min.js'></script>
-  <script type='text/javascript' src='js/lodash-underscore.min.js'></script>
-  <script type='text/javascript' src="js/howler.min.js"></script>
-  <script type="text/javascript" src="js/kinetic-v5.1.0.min.js"></script>
+  <script type='text/javascript' src='js/lodash.underscore.min.js'></script>
+  <script type='text/javascript' src='js/howler.min.js'></script>
+  <script type="text/javascript" src='js/kinetic-v5.1.0.min.js'></script>
 
-  <script type="text/javascript" src="js/main.js"></script>
+  <script type="text/javascript" src='js/main.js'></script>
 
   <script type="text/coffeescript">
     loadCoffee = (files) ->
@@ -30,9 +30,28 @@
         }
       load file for file in files
     loadCoffee [
-      "js/src/constant.coffee",
-      "js/src/game.coffee"
-      "js/src/bootstrap.coffee"
+      "src/constant.coffee",
+      "src/engine/data_structures.coffee",
+      "src/engine/sound.coffee",
+      "src/engine/keyboard.coffee",
+      "src/engine/scene.coffee",
+      "src/engine/view.coffee",
+      "src/map/point.coffee",
+      "src/map/map_area_2d.coffee",
+      "src/map/map_area_2d_vertex.coffee",
+      "src/map/map_2d.coffee",
+      "src/map/map_unit_2d.coffee",
+      "src/map/movable_map_unit_2d.coffee",
+      "src/map/terrains.coffee",
+      "src/map/tiled_map_builder.coffee",
+      "src/objects/units.coffee",
+      "src/objects/bombs.coffee",
+      "src/scenes/welcome_scene.coffee",
+      "src/scenes/battle_field_scene.coffee",
+      "src/views/welcome_view.coffee",
+      "src/views/battle_field_view.coffee",
+      "src/game.coffee"
+      "src/bootstrap.coffee"
     ]
   </script>
 

@@ -33,3 +33,5 @@ class Game
 
   switch_scene: (type) ->
 
+  kick_off: () ->
+
