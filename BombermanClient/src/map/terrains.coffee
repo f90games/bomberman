@@ -3,10 +3,11 @@ class Terrain extends MapUnit2D
   new_display: () ->
     animations = _.cloneDeep(Animations.terrain(@type()))
     for animation in animations
-      animation.x += (@area.x1 % 40)
-      animation.y += (@area.y1 % 40)
+      animation.x += (@area.x1 % 32)
+      animation.y += (@area.y1 % 32)
       animation.width = @area.width()
       animation.height = @area.height()
+
     @display_object = new Kinetic.Sprite({
       x: @area.x1,
       y: @area.y1,
@@ -16,20 +17,19 @@ class Terrain extends MapUnit2D
       animations: {static: animations},
       map_unit: this
     })
+    # debugger;
+
+class FloorTerrain extends Terrain
+  accept: (map_unit) -> true
+  type: -> "floor"
+  group: "front"
+  weight: (tank) -> 0
 
 class BrickTerrain extends Terrain
+  accept: (map_unit) -> true
   type: -> "brick"
-  weight: (tank) ->
-    40 / tank.power
-  defend: (missile, destroy_area) ->
-    # cut self into pieces
-    pieces = @area.sub(destroy_area)
-    _.each(pieces, (piece) =>
-      @map.add_terrain(BrickTerrain, piece)
-    )
-    @destroy()
-    # return cost of destroy
-    1
+  group: "front"
+  weight: (tank) -> 0
 
 class IronTerrain extends Terrain
   type: -> "iron"

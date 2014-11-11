@@ -47,7 +47,7 @@
              "11":
                 {
                  "height":"32",
-                 "type":"floor",
+                 "type":"FloorTerrain",
                  "width":"32",
                  "x_offset":"0",
                  "y_offset":"0"
@@ -55,7 +55,7 @@
              "86":
                 {
                  "height":"32",
-                 "type":"brick",
+                 "type":"BrickTerrain",
                  "width":"32",
                  "x_offset":"0",
                  "y_offset":"0"                 

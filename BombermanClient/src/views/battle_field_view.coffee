@@ -1,8 +1,11 @@
 class BattleFieldView extends View
   init_view: () ->
+    @status_panel = new Kinetic.Group()
+    @layer.add(@status_panel)
+    # @init_bg()
 
   new_symbol: (parent, type, tx, ty) ->
-    image = document.getElementById('tank_sprite')
+    image = document.getElementById('tiles_image')
     animations = switch type
       when 'enemy'
         [{x: 320, y: 340, width: 20, height: 20}]
@@ -24,3 +27,12 @@ class BattleFieldView extends View
     parent.add(symbol)
     symbol.start()
     symbol
+
+  init_bg: () ->
+    @status_panel.add(new Kinetic.Rect({
+      x     : 0,
+      y     : 0,
+      fill  : "#999",
+      width : 640,
+      height: 480
+    }))

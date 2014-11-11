@@ -41,8 +41,10 @@ class BattleFieldScene extends Scene
     @map.bind('map_ready', (() -> @sound.play('start_stage')), this)
 
     #more binds!
-    @builder.setup_stage(1)
-    
+    @builder.setup_stage(1) #дефолтный первый и единственный уровень
+
+    console.log(game.scenes.battle_field.map.map_units) #выводим в консоль всё что распарсили
+
     @map.trigger('map_ready')
 
   enable_user_control: () ->
@@ -77,6 +79,7 @@ class BattleFieldScene extends Scene
     last_time = new Date()
     @timeline = setInterval(() =>
       current_time = new Date()
+      # console.log('Tick ' + current_time);      
       delta_time = current_time.getMilliseconds() - last_time.getMilliseconds()
       # assume a frame will never last more than 1 second
       delta_time += 1000 if delta_time < 0
@@ -97,7 +100,6 @@ class BattleFieldScene extends Scene
   born_users_units: (unit) ->
 
   born_user_unit: () ->
-
 
   check_user_win: () ->
     if @remain_enemy_counts == 0 and _.size(@map.enemy_tanks()) == 0

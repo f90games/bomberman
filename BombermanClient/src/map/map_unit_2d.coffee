@@ -13,7 +13,7 @@ class MapUnit2D
 
   after_new_display: () ->
     @map.groups[@group].add(@display_object)
-    @display_object.start()
+    @display_object.start() #здесь после старта должно начать показываться на экране. Но видимо я что-то накосячил с анимацией
 
   destroy_display: () ->
     # if @bom_on_destroy

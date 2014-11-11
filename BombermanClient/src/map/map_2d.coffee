@@ -1,6 +1,6 @@
 class Map2D
-  max_x: 520
-  max_y: 520
+  max_x: 640
+  max_y: 480
   default_width: 32
   default_height: 32
   infinity: 65535
@@ -23,7 +23,7 @@ class Map2D
     @canvas.add(@groups['front'])
     # @canvas.add(@groups['gift'])
 
-    @image = document.getElementById("tank_sprite")
+    @image = document.getElementById("tiles_image")
 
     @vertexes_columns = 4 * @max_x / @default_width - 3
     @vertexes_rows = 4 * @max_y / @default_height - 3

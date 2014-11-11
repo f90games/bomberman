@@ -24,10 +24,10 @@ class Animations
 
   }
 
+  # здесь записаны константы главных "анимаций" 
   @terrains: {
-    brick         : [{x: 0, y: 240, width: 32, height: 32}],
-    floor         : [{x: 0, y: 240, width: 32, height: 32}]
+    brick         : [{x: 352, y: 0, width: 32, height: 32}],
+    floor         : [{x: 192, y: 160, width: 32, height: 32}]
   }
-
   @terrain: (type) -> @terrains[type]
 
