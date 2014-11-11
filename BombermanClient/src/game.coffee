@@ -1,6 +1,6 @@
 class Game
   constructor: () ->
-    @canvas   = new Kinetic.Stage({container: 'game-canvas', width: 600, height: 520})
+    @canvas   = new Kinetic.Stage({container: 'game-canvas', width: 640, height: 480})
     @configs  = @init_default_config()
     @statuses = @init_statuses()
     @scenes   = {

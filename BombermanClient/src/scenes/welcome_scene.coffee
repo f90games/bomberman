@@ -16,5 +16,5 @@ class WelcomeScene extends Scene
 
   enable_selection_control: () ->
     @keyboard.on_key_down 'ENTER', () =>
-      @game.switch_scene('stage')
+      @game.switch_scene('battle_field')
 

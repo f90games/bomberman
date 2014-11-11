@@ -16,18 +16,18 @@ class MapUnit2D
     @display_object.start()
 
   destroy_display: () ->
-    if @bom_on_destroy
-      @display_object.setOffset(20, 20)
-      @display_object.setAnimations(Animations.movables)
-      @display_object.setAnimation('bom')
-      @display_object.setFrameRate(Animations.rate('bom'))
-      @display_object.start()
-      @display_object.afterFrame 3, () =>
-        @display_object.stop()
-        @display_object.destroy()
-    else
-      @display_object.stop()
-      @display_object.destroy()
+    # if @bom_on_destroy
+    #   @display_object.setOffset(20, 20)
+    #   @display_object.setAnimations(Animations.movables)
+    #   @display_object.setAnimation('bom')
+    #   @display_object.setFrameRate(Animations.rate('bom'))
+    #   @display_object.start()
+    #   @display_object.afterFrame 3, () =>
+    #     @display_object.stop()
+    #     @display_object.destroy()
+    # else
+    @display_object.stop()
+    @display_object.destroy()
 
   width: () -> @area.x2 - @area.x1
   height: () -> @area.y2 - @area.y1
@@ -35,7 +35,7 @@ class MapUnit2D
   destroy: () ->
     unless @destroyed
       @destroyed = true
-    @destroy_display()
+    # @destroy_display()
     @detach_timeout_events()
     @map.delete_map_unit(this)
 

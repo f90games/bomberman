@@ -9,9 +9,9 @@ class TiledMapBuilder
       for gid, props of tileset.tileproperties
         @tile_properties[tileset.firstgid + parseInt(gid)] = props
   setup_stage: (stage) ->
-    home_layer = _.detect(@json.layers, (layer) -> layer.name is "Home")
+    home_layer = _.detect(@json.layers, (layer) -> layer.name is "background")
     stage_layer = _.detect(@json.layers, (layer) ->
-      layer.name is "Stage #{stage}"
+      layer.name is "level#{stage}"
     )
     _.each [home_layer, stage_layer], (layer) =>
       h = 0

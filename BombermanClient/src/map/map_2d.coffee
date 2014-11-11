@@ -1,8 +1,8 @@
 class Map2D
   max_x: 520
   max_y: 520
-  default_width: 40
-  default_height: 40
+  default_width: 32
+  default_height: 32
   infinity: 65535
 
   map_units: [] # has_many map_units
@@ -21,7 +21,7 @@ class Map2D
     @canvas.add(@groups['back'])
     @canvas.add(@groups['middle'])
     @canvas.add(@groups['front'])
-    @canvas.add(@groups['gift'])
+    # @canvas.add(@groups['gift'])
 
     @image = document.getElementById("tank_sprite")
 
