@@ -51,6 +51,10 @@ function setupCurrentLevel() {
 		left: false,
 		right: false
 	};
+
+	BM.baseBomb = {
+		sprite: 0
+	};
 }
 
 
@@ -143,7 +147,12 @@ function setupMap() {
 			BM.ctx.drawImage(BM.tiles, column * 32 + column + 1, row * 32 + row + 1,  32, 32, i*32, j*32, 32, 32);
 
 			if (BM.bombs[i + j * 20]){
-				BM.ctx.drawImage(BM.fx, 0, 0,  32, 32, i*32, j*32, 32, 32);				
+				if (BM.baseBomb.sprite == 0)
+					BM.baseBomb.sprite = 1;
+				else 
+					BM.baseBomb.sprite = 0;	
+
+				BM.ctx.drawImage(BM.fx, BM.baseBomb.sprite * 32, 0, 32, 32, i*32, j*32, 32, 32);				
 			}
 		}
 	}
