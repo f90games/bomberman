@@ -41,7 +41,7 @@ function runGameFrame(){
 	} else if (hero.place_bomb) {
 		var bomb_idx = new Date().getTime();
 		
-		if (checkBombPos(hero.pos))
+		if (checkBombPos(hero.pos-1))
 			BM.bombs[hero.pos-1] = bomb_idx;
 
 	}
