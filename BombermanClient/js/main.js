@@ -1,7 +1,10 @@
 "use strict";
 
 var BM = {
-	currentLevel: 0
+	currentLevel: 0,
+	bombs: {
+
+	}
 };
 
 BM.levels = 
@@ -10,6 +13,7 @@ BM.levels =
 		"level" : 0,
 		"maptiles" : "tmw_desert_spacing.png",
 		"herotiles": "vx_chara00.png",
+		"bombtiles": "bomb.png",
 		"heroTileIndex": 1, //hero idx 1..8  
 		"map" : [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 38, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 38, 0, 38, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 38, 0, 10, 10, 0, 0, 0, 0, 0, 38, 0, 0, 0, 38, 38, 38, 38, 38, 0, 0, 0, 0, 10, 10, 0, 10, 0, 10, 38, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 38, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 0, 38, 0, 38, 0, 0, 0, 0, 10, 10, 0, 10, 38, 10, 0, 10, 38, 10, 0, 10, 0, 10, 0, 10, 0, 10, 38, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 38, 0, 38, 0, 38, 0, 0, 10, 10, 0, 10, 38, 10, 38, 10, 0, 10, 38, 10, 0, 10, 0, 10, 0, 10, 38, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 38, 0, 0, 38, 0, 10, 10, 0, 10, 0, 10, 0, 10, 0, 10, 38, 10, 38, 10, 0, 10, 38, 10, 38, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
 					  
@@ -28,11 +32,11 @@ function setupCurrentLevel() {
 	BM.ctx = canvas.getContext("2d"); 
 
 	BM.tiles = new Image();
-	BM.tiles.onload = function(){
-
-	};
-	
 	BM.tiles.src = "img/sprites/" + level.maptiles;
+
+	BM.fx = new Image();
+	BM.fx.src = "img/sprites/" + level.bombtiles;
+
 	BM.map = level.map;
 	
 	BM.herotiles = new Image();
@@ -56,6 +60,7 @@ window.addEventListener("load", function(){
 	
 		document.addEventListener("keydown",
 			function(e){
+
 				if (e.which == 38) { //up
 					
 					if (BM.hero.up) BM.hero.step_up = true;
@@ -96,7 +101,11 @@ window.addEventListener("load", function(){
 					BM.hero.right = false;
 					
 				}
-				
+				else if (e.which == 32) { //space
+					
+					BM.hero.place_bomb = true;
+					
+				}
 				BM.hero.sprite++;
 				BM.hero.sprite %= 3;
 			}
@@ -132,6 +141,10 @@ function setupMap() {
 			column = idx % 8 - 1;
 		
 			BM.ctx.drawImage(BM.tiles, column * 32 + column + 1, row * 32 + row + 1,  32, 32, i*32, j*32, 32, 32);
+
+			if (BM.bombs[i + j * 20]){
+				BM.ctx.drawImage(BM.fx, 0, 0,  32, 32, i*32, j*32, 32, 32);				
+			}
 		}
 	}
 	

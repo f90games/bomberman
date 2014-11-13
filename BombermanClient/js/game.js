@@ -2,6 +2,10 @@ function checkHeroPos(newPos){
 	return BM.map[newPos - 1] === 0
 }
 
+function checkBombPos(pos){
+	return BM.bombs[pos] == null
+}
+
 function runGameFrame(){
 	
 	var hero = BM.hero;
@@ -34,9 +38,15 @@ function runGameFrame(){
 		{
 			hero.pos++;
 		}
+	} else if (hero.place_bomb) {
+		var bomb_idx = new Date().getTime();
+		
+		if (checkBombPos(hero.pos))
+			BM.bombs[hero.pos-1] = bomb_idx;
+
 	}
 	
-	hero.step_left = hero.step_right = hero.step_up = hero.step_down = false;
+	hero.place_bomb = hero.step_left = hero.step_right = hero.step_up = hero.step_down = false;
 	
 }
 
