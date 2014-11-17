@@ -6,7 +6,7 @@ window.addEventListener("load", function(){
 	
 	BM = getNewGameSpace();
 	setupCurrentLevel(BM);
-	console.log(BM);
+
 	Connect();
 	
 		document.addEventListener("keydown",

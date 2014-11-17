@@ -16,9 +16,22 @@ function Connect(){
 				return false;
 			}
 		}
-		catch (E) { Socket = null; return false; }
+		catch (E) { 
+			Socket = null;
+		}
 
-		Socket.onerror = function(E) { alert("WebSocket error: " + JSON.stringify(E)); };
+		Socket.onerror = function(E) { 
+		
+			// alert("WebSocket error: " + JSON.stringify(E)); 
+			if (!BM.Timer)
+			{
+				setInterval(function(){
+							gameloop(BM)
+						},
+						BM.GameFrameTime);
+			}
+		
+		};
 
 		Socket.onclose = function (E)
 			{
@@ -29,6 +42,7 @@ function Connect(){
 
 		Socket.onopen = function()
 			{
+			
 				// Send a handshake message.
 				Socket.send(JSON.stringify({ Type: "HI", Data: Name.substring(0, 10) }));
 				
