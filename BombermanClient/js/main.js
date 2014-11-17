@@ -100,7 +100,12 @@ function setupMap() {
 			BM.ctx.drawImage(BM.tiles, column * 32 + column + 1, row * 32 + row + 1,  32, 32, i*32, j*32, 32, 32);
 
 			if (BM.bombs[i + j * 20]){
-				BM.ctx.drawImage(BM.fx, 0, 0,  32, 32, i*32, j*32, 32, 32);				
+				if (BM.bombs[i + j * 20].status == 1)
+					BM.ctx.drawImage(BM.fx, 0, 0,  32, 32, i*32, j*32, 32, 32);
+				else if (BM.bombs[i + j * 20].status == 2)
+					BM.ctx.drawImage(BM.fx, 32 * 2, 0,  32, 32, i*32, j*32, 32, 32);
+				else if (BM.bombs[i + j * 20].status == 0)
+					delete BM.bombs[i + j * 20];
 			}
 		}
 	}

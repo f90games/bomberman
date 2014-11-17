@@ -7,7 +7,7 @@ function getNewGameSpace(){
 		currentLevel: 0,
 		GameFrameTime: 30,
 		bombs: {
-
+			0: []
 		},
 		hero: {},
 		heros: []
@@ -141,9 +141,20 @@ function runGameFrame(BM){
 		}
 	} else if (hero.place_bomb) {
 		var bomb_idx = new Date().getTime();
+
+		var bomb = new Bomb({
+			pos: hero.pos,
+			map: BM.map,
+			// timeLeft: 3000,
+			status: 1
+		});
+
+		bomb.start();
+
+		console.log(bomb);
 		
 		if (checkBombPos(BM, hero.pos-1))
-			BM.bombs[hero.pos-1] = bomb_idx;
+			BM.bombs[hero.pos-1] = bomb;
 
 	}
 	
