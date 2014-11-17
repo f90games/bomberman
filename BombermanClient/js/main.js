@@ -6,67 +6,74 @@ window.addEventListener("load", function(){
 	
 	BM = getNewGameSpace();
 	setupCurrentLevel(BM);
-
+	
 	Connect();
 	
-		document.addEventListener("keydown",
-			function(e){
+	kd.run(function () {
+	  kd.tick();
+	});
 
-				if (e.which == 38) { //up
-					
-					if (BM.hero.up) BM.hero.step_up = true;
-					
-					BM.hero.up = true;
-					BM.hero.down = false;
-					BM.hero.left = false;
-					BM.hero.right = false;
-					
-				}
-				else if (e.which == 37) { //left
+	kd.LEFT.down = function(){
+		
+		if (BM.hero.left) BM.hero.step_left = true;
 				
-					if (BM.hero.left) BM.hero.step_left = true;
-				
-					BM.hero.up = false;
-					BM.hero.down = false;
-					BM.hero.left = true;
-					BM.hero.right = false;
-									
-				}
-				else if (e.which == 39) { //right
-				
-					if (BM.hero.right) BM.hero.step_right = true;
-				
-					BM.hero.up = false;
-					BM.hero.down = false;
-					BM.hero.left = false;
-					BM.hero.right = true;
+		BM.hero.up = false;
+		BM.hero.down = false;
+		BM.hero.left = true;
+		BM.hero.right = false;
+	}
+	
+	kd.UP.down = function(){
+		
+		if (BM.hero.up) BM.hero.step_up = true;
 					
-				}
-				else if (e.which == 40) { //down
-					
-					if (BM.hero.down) BM.hero.step_down = true;
+		BM.hero.up = true;
+		BM.hero.down = false;
+		BM.hero.left = false;
+		BM.hero.right = false;
+		
+	}
+	
+	kd.DOWN.down = function(){
+		
+		if (BM.hero.down) BM.hero.step_down = true;
 				
-					BM.hero.up = false;
-					BM.hero.down = true;
-					BM.hero.left = false;
-					BM.hero.right = false;
-					
-				}
-				else if (e.which == 32) { //space
-					
-					BM.hero.place_bomb = true;
-					
-				}
-				BM.hero.sprite++;
-				BM.hero.sprite %= 3;
+		BM.hero.up = false;
+		BM.hero.down = true;
+		BM.hero.left = false;
+		BM.hero.right = false;
+		
+	}
+	
+	kd.RIGHT.down = function(){
 				
-				// if (Transmit && Socket && Socket.readyState == 1)
-				if (Socket && Socket.readyState == 1)
-				{
-					Socket.send(JSON.stringify({ Type: "D", Data: _.omit(BM.hero, ['herotiles']) }));
-				}
+		if (BM.hero.right) BM.hero.step_right = true;
+				
+		BM.hero.up = false;
+		BM.hero.down = false;
+		BM.hero.left = false;
+		BM.hero.right = true;
+		
+	}
+	
+	kd.SPACE.down = function(){
+		BM.hero.place_bomb = true;
+	}
+	
+	$(document).on("keydown",
+
+		function(e){
+			
+			BM.hero.sprite++;
+			BM.hero.sprite %= 3;
+			
+			// if (Transmit && Socket && Socket.readyState == 1)
+			if (Socket && Socket.readyState == 1)
+			{
+				Socket.send(JSON.stringify({ Type: "D", Data: _.omit(BM.hero, ['herotiles']) }));
 			}
-		);
+		}
+	);
 
 	    // setInterval(gameloop, 30);	
 });
