@@ -39,8 +39,7 @@ Bomb.prototype.setFlame = function() {
 //поражение всего вокруг каждую игровую петлю.
 Bomb.prototype.damage = function() {
   for (var i = 0; i < Bomb.EXPLODE_MATRIX_3x3.length; i++) {
-    var pos = this.pos + Bomb.EXPLODE_MATRIX_3x3[i];
-    
+    var pos = this.pos - 1 + Bomb.EXPLODE_MATRIX_3x3[i];
     if ((pos >= 0) && (pos<=(15*20))){
 
       if (BM.map[pos] == 10) {

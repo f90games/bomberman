@@ -154,7 +154,10 @@ function runGameFrame(BM){
 		bomb.start();
 		
 		if (checkBombPos(BM, hero.pos-1))
+		{
 			BM.bombs[hero.pos-1] = bomb;
+			Connector && Connector.sendB(bomb)
+		}
 
 	}
 	

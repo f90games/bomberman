@@ -1,4 +1,13 @@
+var Connector = {}
 var Socket = null;
+
+Connector.sendB = function(b){
+	
+	if (!Socket) return;
+	Socket.send(JSON.stringify({ Type: "B", Data: _.omit(b, ['map']) }));
+	
+}
+
 function Connect(){
 
 		var Name = prompt("What is your username?", "Guest");
@@ -76,6 +85,14 @@ function Connect(){
 					
 					BM.heros.push(hero);
 					
+					return;
+				}
+				
+				if(Message.type == 'newB')
+				{
+					var b = new Bomb(Message.b, BM.map);
+					b.start();
+					BM.bombs[b.pos-1] = b;
 					return;
 				}
 				
