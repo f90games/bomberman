@@ -35,7 +35,7 @@ function addNewHero(BM){
 	
 	var hero = {
 		
-		pos: 29,
+		pos: 30,
 		sprite: 0,
 		up: false,
 		down: true,

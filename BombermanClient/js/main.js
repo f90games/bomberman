@@ -68,13 +68,13 @@ window.addEventListener("load", function(){
 			BM.hero.sprite %= 3;
 			
 			// if (Transmit && Socket && Socket.readyState == 1)
-			if (Socket && Socket.readyState == 1)
-			{
-				if(e.which != 32)
-				{
-					Socket.send(JSON.stringify({ Type: "D", Data: _.omit(BM.hero, ['herotiles']) }));
-				}
-			}
+			// if (Socket && Socket.readyState == 1)
+			// {
+				// if(e.which != 32)
+				// {
+					// Socket.send(JSON.stringify({ Type: "D", Data: _.omit(BM.hero, ['herotiles']) }));
+				// }
+			// }
 		}
 	);
 
@@ -168,4 +168,9 @@ function gameloop(BM) {
 	runGameFrame(BM);
 	
 	updateHeros();
+	
+	if (Socket && Socket.readyState == 1)
+	{
+		Socket.send(JSON.stringify({ Type: "D", Data: _.omit(BM.hero, ['herotiles']) }));
+	}
 }
