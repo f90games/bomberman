@@ -13,7 +13,7 @@ Bomb = function(c, map){
   this.power = config.power || 1; //radius
 }
 
-Bomb.EXPLODE_MATRIX_3x3 = [-21, -20, -19, -1, 0, 1, 19, 20, 21];
+Bomb.EXPLODE_MATRIX_3x3 = [-20, -1, 0, 1, 20];
 // Bomb.EXPLODE_MATRIX_3x3 = [-21, -20, -19, -1, 0, 1, 19, 20, 21];
 
 Bomb.prototype.start = function (){
