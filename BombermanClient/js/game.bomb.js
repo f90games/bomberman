@@ -1,13 +1,8 @@
-Flame = function(c){
-  var config = c || {};  
-}
-
-Bomb = function(c, map){
+Bomb = function(c){
 
   var config = c || {};
-  this.map = map;
   this.pos = config.pos || 0;
-  this.status = config.status || 0; //0: destroyed, 1: normal, 2: explode
+  this.status = config.status || 0; //0: destroyed, 1: normal, 2: explode, 3: flame
   this.timeLeft = config.timeLeft || 3000; //3 секунды
 
   this.power = config.power || 1; //radius
@@ -32,14 +27,23 @@ Bomb.prototype.explode = function() {
   }, 1000);
 }
 
-Bomb.prototype.setFlame = function() {
-
+Bomb.prototype.catchFire = function(){
+  setTimeout(function(){
+    self.destroy();
+  }, 1000);  
 }
 
-//поражение всего вокруг каждую игровую петлю.
+Bomb.prototype.setFlame = function(pos) {
+  BM.bombs[pos] = new Bomb({
+    status: 3,
+
+  });
+}
+
 Bomb.prototype.damage = function() {
   for (var i = 0; i < Bomb.EXPLODE_MATRIX_3x3.length; i++) {
     var pos = this.pos - 1 + Bomb.EXPLODE_MATRIX_3x3[i];
+    
     if ((pos >= 0) && (pos<=(15*20))){
 
       if (BM.map[pos] == 10) {

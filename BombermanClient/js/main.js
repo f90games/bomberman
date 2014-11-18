@@ -88,7 +88,7 @@ function clear() {
 
 function setupMap() {
 	
-	var idx = 30, pos = 0;
+	var idx = 30, pos = 0, bomb;
 	var row = Math.floor(idx / 8);
 	var column = idx % 8 - 1;
 	
@@ -109,15 +109,13 @@ function setupMap() {
 		
 			BM.ctx.drawImage(BM.tiles, column * 32 + column + 1, row * 32 + row + 1,  32, 32, i*32, j*32, 32, 32);
 
-
-
-			if (BM.bombs[pos]){
-				if (BM.bombs[pos].status == 1)
+			if (bomb = BM.bombs[pos]){
+				if (bomb.status == 1)
 					BM.ctx.drawImage(BM.fx, 0, 0,  32, 32, i*32, j*32, 32, 32);
-				else if (BM.bombs[pos].status == 2)
+				else if (bomb.status == 2)
 					BM.ctx.drawImage(BM.fx, 32 * 2, 0,  32, 32, i*32, j*32, 32, 32);
-				else if (BM.bombs[pos].status == 0)
-					delete BM.bombs[pos];
+				else if (bomb.status == 0)
+					delete bomb;
 			}
 		}
 	}
