@@ -1,3 +1,7 @@
+Flame = function(c){
+  var config = c || {};  
+}
+
 Bomb = function(c, map){
 
   var config = c || {};
@@ -8,6 +12,9 @@ Bomb = function(c, map){
 
   this.power = config.power || 1; //radius
 }
+
+Bomb.EXPLODE_MATRIX_3x3 = [-21, -20, -19, -1, 0, 1, 19, 20, 21];
+// Bomb.EXPLODE_MATRIX_3x3 = [-21, -20, -19, -1, 0, 1, 19, 20, 21];
 
 Bomb.prototype.start = function (){
   var self = this;
@@ -25,8 +32,29 @@ Bomb.prototype.explode = function() {
   }, 1000);
 }
 
+Bomb.prototype.setFlame = function() {
+
+}
+
 //поражение всего вокруг каждую игровую петлю.
 Bomb.prototype.damage = function() {
+  for (var i = 0; i < Bomb.EXPLODE_MATRIX_3x3.length; i++) {
+    var pos = this.pos + Bomb.EXPLODE_MATRIX_3x3[i];
+    
+    if ((pos >= 0) && (pos<=(15*20))){
+
+      if (BM.map[pos] == 10) {
+        //do nothing
+      } else if (BM.map[pos] == 38) {
+        // debugger;
+        BM.map[pos] = 0;
+        this.setFlame(pos);
+      } else if (BM.map[pos] == 0) {
+        this.setFlame(pos);
+      }
+      
+    }
+  };
   
 }
 
