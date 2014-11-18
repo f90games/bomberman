@@ -115,7 +115,7 @@ function setupMap() {
 				else if (bomb.status == 2)
 					BM.ctx.drawImage(BM.fx, 32 * 2, 0,  32, 32, i*32, j*32, 32, 32);
 				else if (bomb.status == 0)
-					delete bomb;
+					delete BM.bombs[pos];
 			}
 		}
 	}
