@@ -70,7 +70,10 @@ window.addEventListener("load", function(){
 			// if (Transmit && Socket && Socket.readyState == 1)
 			if (Socket && Socket.readyState == 1)
 			{
-				Socket.send(JSON.stringify({ Type: "D", Data: _.omit(BM.hero, ['herotiles']) }));
+				if(e.which != 32)
+				{
+					Socket.send(JSON.stringify({ Type: "D", Data: _.omit(BM.hero, ['herotiles']) }));
+				}
 			}
 		}
 	);

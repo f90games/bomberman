@@ -155,6 +155,11 @@ function HandleClientMessage(ID, Message)
 			if (!C.peer) return;
 			BM.heros[C.heroIndex] = Message.Data
 		break;
+		
+		case "B":
+			if (!C.peer) return;
+			C.peer.sendUTF(JSON.stringify({ type: 'newB', b: Message.Data }))
+		break;
 	}
 }
 
