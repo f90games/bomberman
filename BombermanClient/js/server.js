@@ -53,39 +53,42 @@ Server.on("request",
 					Connection.heroIndex = 0;
 					Connection.sendUTF(JSON.stringify({ type: 'newRoom', room: room }))
 				}
-				else if (Rooms[query.room] && Rooms[query.room].count >= 2)
+				else if (Rooms[query.room])
 				{
-					Connection.sendUTF(JSON.stringify({ error: true, message: 'The room is buisy!' }));
-					return;
-				}
-				else
-				{
-					Rooms[query.room].count = 2;
-					Rooms[query.room].starter.peer = Connection;
-					Connection.room = query.room;
-					Connection.heroIndex = 1;
-					Connection.peer = Rooms[query.room].starter;
-					
-					Rooms[query.room].BM = Game.getNewGameSpace();
-					
-					Game.setupCurrentLevel(Rooms[query.room].BM);
-					var hero = Game.addNewHero(Rooms[query.room].BM);
-					
-					Connection.sendUTF(JSON.stringify({ type: 'newHero', hero: Rooms[query.room].BM.heros[0] }))
-					Connection.peer.sendUTF(JSON.stringify({ type: 'newHero', hero: hero }))
-					
-					setInterval(function()
-						{
-											
-							Game.RunGameFrame(Rooms[query.room].BM);
-							
-							SendGameState();
+					if(Rooms[query.room].count >= 2)
+					{
+						Connection.sendUTF(JSON.stringify({ error: true, message: 'The room is buisy!' }));
+						return;
+					}
+					else
+					{
+						Rooms[query.room].count = 2;
+						Rooms[query.room].starter.peer = Connection;
+						Connection.room = query.room;
+						Connection.heroIndex = 1;
+						Connection.peer = Rooms[query.room].starter;
+						
+						Rooms[query.room].BM = Game.getNewGameSpace();
+						
+						Game.setupCurrentLevel(Rooms[query.room].BM);
+						var hero = Game.addNewHero(Rooms[query.room].BM);
+						
+						Connection.sendUTF(JSON.stringify({ type: 'newHero', hero: Rooms[query.room].BM.heros[0] }))
+						Connection.peer.sendUTF(JSON.stringify({ type: 'newHero', hero: hero }))
+						
+						setInterval(function()
+							{
+												
+								Game.RunGameFrame(Rooms[query.room].BM);
+								
+								SendGameState();
 
-						},
-						Rooms[query.room].BM.GameFrameTime
-					);
-					
-					
+							},
+							Rooms[query.room].BM.GameFrameTime
+						);
+						
+						
+					}
 				}
 				
 				// Assign a random ID that hasn't already been taken.
