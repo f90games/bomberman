@@ -5,7 +5,7 @@ function getNewGameSpace(){
 	
 	BM = {
 		currentLevel: 0,
-		GameFrameTime: 300,
+		GameFrameTime: 150,
 		bombs: {
 			0: []
 		},
