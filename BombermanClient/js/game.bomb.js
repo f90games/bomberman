@@ -9,6 +9,7 @@ Bomb = function(c){
 }
 
 Bomb.EXPLODE_MATRIX_3x3 = [-20, -1, 0, 1, 20];
+Bomb.EXPLODE_MATRIX_5x5 = [-40, -20, -2, -1, 0, 1, 2, 20, 40];
 // Bomb.EXPLODE_MATRIX_3x3 = [-21, -20, -19, -1, 0, 1, 19, 20, 21];
 
 Bomb.prototype.start = function (){
@@ -21,44 +22,52 @@ Bomb.prototype.start = function (){
 Bomb.prototype.explode = function() {
   var self = this;
   this.status = 2;
-  this.damage();
+
+  for (var i = 0; i < Bomb.EXPLODE_MATRIX_5x5.length; i++) {
+    var pos = this.pos - 1 + Bomb.EXPLODE_MATRIX_5x5[i];
+
+    if ((pos >= 0) && (pos<=(15*20))){
+
+    this.damage(pos);
+      
+    }
+  };
+
   setTimeout(function(){
     self.destroy();
   }, 1000);
 }
 
 Bomb.prototype.catchFire = function(){
+  var self = this;
+
   setTimeout(function(){
     self.destroy();
-  }, 1000);  
+  }, 300);  
 }
 
-Bomb.prototype.setFlame = function(pos) {
-  BM.bombs[pos] = new Bomb({
-    status: 3,
-
+Bomb.prototype.setFlame = function(pos) { //форк на осколки
+  this.damage();
+  var bomb = BM.bombs[pos] = new Bomb({
+    status: 3
   });
+  bomb.catchFire();
 }
 
-Bomb.prototype.damage = function() {
-  for (var i = 0; i < Bomb.EXPLODE_MATRIX_3x3.length; i++) {
-    var pos = this.pos - 1 + Bomb.EXPLODE_MATRIX_3x3[i];
-
-    if ((pos >= 0) && (pos<=(15*20))){
-
-      if (BM.map[pos] == 10) {
-        //do nothing
-      } else if (BM.map[pos] == 38) {
-        // debugger;
-        BM.map[pos] = 0;
-        this.setFlame(pos);
-      } else if (BM.map[pos] == 0) {
-        this.setFlame(pos);
-      }
-      
-    }
+Bomb.prototype.damage = function(pos) {
+  if (BM.hero.pos == pos) {
+    alert('Герой ранен!');
   };
-  
+
+  if (BM.map[pos] == 10) {
+    //do nothing
+  } else if (BM.map[pos] == 38) {
+    // debugger;
+    BM.map[pos] = 0;
+    this.setFlame(pos);
+  } else if (BM.map[pos] == 0) {
+    this.setFlame(pos);
+  }
 }
 
 //удаление бомбы с поля
