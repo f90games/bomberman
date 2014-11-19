@@ -1,3 +1,9 @@
+Flame = function(c){
+  var config = c || {};
+  this.pos = config.pos || 0;
+
+}
+
 Bomb = function(c){
 
   var config = c || {};
@@ -8,8 +14,8 @@ Bomb = function(c){
   this.power = config.power || 1; //radius
 }
 
-Bomb.EXPLODE_MATRIX_3x3 = [-20, -1, 0, 1, 20];
-Bomb.EXPLODE_MATRIX_5x5 = [-40, -20, -2, -1, 0, 1, 2, 20, 40];
+Bomb.EXPLODE_MATRIX_3x3 = [-20, -1, 1, 20];
+Bomb.EXPLODE_MATRIX_5x5 = [-40, -20, -2, -1,  1, 2, 20, 40];
 // Bomb.EXPLODE_MATRIX_3x3 = [-21, -20, -19, -1, 0, 1, 19, 20, 21];
 
 Bomb.prototype.start = function (){
@@ -27,9 +33,7 @@ Bomb.prototype.explode = function() {
     var pos = this.pos - 1 + Bomb.EXPLODE_MATRIX_5x5[i];
 
     if ((pos >= 0) && (pos<=(15*20))){
-
-    this.damage(pos);
-      
+      this.damage(pos);
     }
   };
 

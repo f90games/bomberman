@@ -71,6 +71,7 @@ function setupCurrentLevel(BM) {
 		down: true,
 		left: false,
 		right: false,
+		hp: 3
 	};
 	
 	var herotiles = null;
