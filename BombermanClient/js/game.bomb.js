@@ -74,7 +74,7 @@ Bomb.prototype.damage = function(pos) {
     this.setFlame(pos);
   }
 
-  if (BM.hero.pos == this.pos) {
+  if (BM.hero.pos == pos) {
     alert('Герой ранен!');
   };  
 }
