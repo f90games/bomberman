@@ -7,7 +7,10 @@ function getNewGameSpace(){
 		currentLevel: 0,
 		GameFrameTime: 150,
 		bombs: {
-			0: []
+			// 0: []
+		},
+		fx: {
+
 		},
 		hero: {},
 		heros: []
@@ -83,8 +86,8 @@ function setupCurrentLevel(BM) {
 		BM.tiles = new Image();
 		BM.tiles.src = "img/sprites/" + level.maptiles;
 
-		BM.fx = new Image();
-		BM.fx.src = "img/sprites/" + level.bombtiles;
+		BM.items = new Image();
+		BM.items.src = "img/sprites/" + level.bombtiles;
 		
 		BM.hero.herotiles = new Image();
 		BM.hero.herotiles.src = "img/sprites/" + level.herotiles;
@@ -149,7 +152,7 @@ function runGameFrame(BM){
 		var bomb = new Bomb({
 			pos: hero.pos,
 			timeLeft: 3000,
-			status: 1
+			status: BOMB_START
 		}, BM.map);
 
 		bomb.start();

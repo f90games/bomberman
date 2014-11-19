@@ -1,7 +1,19 @@
 Flame = function(c){
   var config = c || {};
   this.pos = config.pos || 0;
+  this.status = config.status || 0;
+}
 
+Flame.prototype.start = function(){
+  var self = this;
+
+  setTimeout(function(){
+    self.destroy();
+  }, 300);  
+}
+
+Flame.prototype.destroy = function(){
+  this.status = 0;
 }
 
 Bomb = function(c){
@@ -27,7 +39,7 @@ Bomb.prototype.start = function (){
 
 Bomb.prototype.explode = function() {
   var self = this;
-  this.status = 2;
+  this.status = BOMB_EXPLODE;
 
   for (var i = 0; i < Bomb.EXPLODE_MATRIX_5x5.length; i++) {
     var pos = this.pos - 1 + Bomb.EXPLODE_MATRIX_5x5[i];
@@ -42,27 +54,18 @@ Bomb.prototype.explode = function() {
   }, 1000);
 }
 
-Bomb.prototype.catchFire = function(){
-  var self = this;
-
-  setTimeout(function(){
-    self.destroy();
-  }, 300);  
-}
-
 Bomb.prototype.setFlame = function(pos) { //форк на осколки
-  this.damage();
-  var bomb = BM.bombs[pos] = new Bomb({
+  var flame = BM.fx[pos] = new Flame({
     status: 3
   });
-  bomb.catchFire();
+
+  flame.start();
 }
 
 Bomb.prototype.damage = function(pos) {
   if (BM.hero.pos == pos) {
     alert('Герой ранен!');
   };
-
   if (BM.map[pos] == 10) {
     //do nothing
   } else if (BM.map[pos] == 38) {

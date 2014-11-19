@@ -1,6 +1,10 @@
 "use strict";
 
 var BM;
+ 
+window.BOMB_START = 1;
+window.BOMB_EXPLODE = 2;
+window.FX_CATCH_FIRE = 3;
 
 window.addEventListener("load", function(){		 			
 	
@@ -88,7 +92,7 @@ function clear() {
 
 function setupMap() {
 	
-	var idx = 30, pos = 0, bomb;
+	var idx = 30, pos = 0, bomb, fx;
 	var row = Math.floor(idx / 8);
 	var column = idx % 8 - 1;
 	
@@ -110,14 +114,19 @@ function setupMap() {
 			BM.ctx.drawImage(BM.tiles, column * 32 + column + 1, row * 32 + row + 1,  32, 32, i*32, j*32, 32, 32);
 
 			if (bomb = BM.bombs[pos]){
-				if (bomb.status == 1)
-					BM.ctx.drawImage(BM.fx, 0, 0,  32, 32, i*32, j*32, 32, 32);
-				else if (bomb.status == 2)
-					BM.ctx.drawImage(BM.fx, 32 * 2, 0,  32, 32, i*32, j*32, 32, 32);
-				else if (bomb.status == 3)
-					BM.ctx.drawImage(BM.fx, 32 * 3, 0,  32, 32, i*32, j*32, 32, 32);				
+				if (bomb.status == BOMB_START)
+					BM.ctx.drawImage(BM.items, 0, 0,  32, 32, i*32, j*32, 32, 32);
+				else if (bomb.status == BOMB_EXPLODE)
+					BM.ctx.drawImage(BM.items, 32 * 2, 0,  32, 32, i*32, j*32, 32, 32);		
 				else if (bomb.status == 0)
 					delete BM.bombs[pos];
+			}
+
+			if (fx = BM.fx[pos]){
+				if (fx.status == 3)
+					BM.ctx.drawImage(BM.items, 32 * 3, 0,  32, 32, i*32, j*32, 32, 32);		
+				else if (fx.status == 0)
+					delete BM.fx[pos];
 			}
 		}
 	}
