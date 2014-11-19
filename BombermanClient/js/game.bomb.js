@@ -56,6 +56,7 @@ Bomb.prototype.explode = function() {
 
 Bomb.prototype.setFlame = function(pos) { //форк на осколки
   var flame = BM.fx[pos] = new Flame({
+    pos: pos,
     status: 3
   });
 
@@ -63,9 +64,6 @@ Bomb.prototype.setFlame = function(pos) { //форк на осколки
 }
 
 Bomb.prototype.damage = function(pos) {
-  if (BM.hero.pos == pos) {
-    alert('Герой ранен!');
-  };
   if (BM.map[pos] == 10) {
     //do nothing
   } else if (BM.map[pos] == 38) {
@@ -75,6 +73,10 @@ Bomb.prototype.damage = function(pos) {
   } else if (BM.map[pos] == 0) {
     this.setFlame(pos);
   }
+
+  if (BM.hero.pos == this.pos) {
+    alert('Герой ранен!');
+  };  
 }
 
 //удаление бомбы с поля
