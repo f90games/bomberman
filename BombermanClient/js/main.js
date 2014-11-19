@@ -128,6 +128,7 @@ function setupMap() {
 				else if (fx.status == 0)
 					delete BM.fx[pos];
 			}
+
 		}
 	}
 	
@@ -165,7 +166,23 @@ function updateHeros()
 		var row = Math.floor(hero.pos / 20);
 		var column = hero.pos % 20 - 1;
 		
-		BM.ctx.drawImage(hero.herotiles, hx, hy, 32, 32, column * 32, row * 32, 32, 32)
+		BM.ctx.drawImage(hero.herotiles, hx, hy, 32, 32, column * 32, row * 32, 32, 32);
+
+		//lifebar
+		if (hero.hp > 0) {
+		  BM.ctx.beginPath();
+	    BM.ctx.moveTo(column * 32, row * 32 - 5);
+	    BM.ctx.lineTo(column * 32 + hero.hp * 10, row * 32 - 5);
+	    BM.ctx.lineWidth = 4;
+	    if (hero.hp == 3){
+	    	BM.ctx.strokeStyle = 'green';
+	    } else if (hero.hp == 2) {
+	    	BM.ctx.strokeStyle = 'yellow';
+	    } else if (hero.hp == 1) {
+	    	BM.ctx.strokeStyle = 'red';
+	    } 
+	    BM.ctx.stroke();
+    }
 	}
 
 }

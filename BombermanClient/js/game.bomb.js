@@ -75,7 +75,10 @@ Bomb.prototype.damage = function(pos) {
   }
 
   if (BM.hero.pos == pos) {
-    alert('Герой ранен!');
+    BM.hero.hp -= 1;
+
+    if (BM.hero.hp == 0)
+      alert('Герой убит!');
   };  
 }
 

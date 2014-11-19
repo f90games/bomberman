@@ -40,6 +40,7 @@ function addNewHero(BM){
 		
 		pos: 30,
 		sprite: 0,
+		// hp: 3,
 		up: false,
 		down: true,
 		left: false,
