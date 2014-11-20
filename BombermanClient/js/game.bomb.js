@@ -56,7 +56,7 @@ Bomb.prototype.explode = function() {
       var pos = this.pos - 1 + (Bomb.EXPLODE_MATRIX_3x3[d] * i);
 
       if ((pos >= 0) && (pos<=(15*20))){
-        goExplode = this.damage(pos);
+        goExplode = this.damage(pos, d);
       }
 
       i++;
