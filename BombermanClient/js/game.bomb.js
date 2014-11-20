@@ -41,12 +41,26 @@ Bomb.prototype.explode = function() {
   var self = this;
   this.status = BOMB_EXPLODE;
 
-  for (var i = 0; i < Bomb.EXPLODE_MATRIX_5x5.length; i++) {
-    var pos = this.pos - 1 + Bomb.EXPLODE_MATRIX_5x5[i];
+  // for (var i = 0; i < Bomb.EXPLODE_MATRIX_5x5.length; i++) {
+  //   var pos = this.pos - 1 + Bomb.EXPLODE_MATRIX_5x5[i];
 
-    if ((pos >= 0) && (pos<=(15*20))){
-      this.damage(pos);
-    }
+  //   if ((pos >= 0) && (pos<=(15*20))){
+  //     this.damage(pos);
+  //   }
+  // };
+
+  for (var d = 0; d < 4; d++) { //d = direction
+    var i = 1, goExplode = true;
+    do {
+
+      var pos = this.pos - 1 + (Bomb.EXPLODE_MATRIX_3x3[d] * i);
+
+      if ((pos >= 0) && (pos<=(15*20))){
+        goExplode = this.damage(pos);
+      }
+
+      i++;
+    } while ((i <= this.power) && goExplode);
   };
 
   setTimeout(function(){
@@ -66,6 +80,7 @@ Bomb.prototype.setFlame = function(pos) { //форк на осколки
 Bomb.prototype.damage = function(pos) {
   if (BM.map[pos] == 10) {
     //do nothing
+    return false;
   } else if (BM.map[pos] == 38) {
     // debugger;
     BM.map[pos] = 0;
@@ -79,7 +94,9 @@ Bomb.prototype.damage = function(pos) {
 
     if (BM.hero.hp == 0)
       alert('Герой убит!');
-  };  
+  }; 
+
+  return true; 
 }
 
 //удаление бомбы с поля
