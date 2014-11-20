@@ -3,8 +3,18 @@ var Socket = null;
 
 Connector.sendB = function(b){
 	
-	if (!Socket) return;
-	Socket.send(JSON.stringify({ Type: "B", Data: _.omit(b, ['map']) }));
+	if (Socket && Socket.readyState == 1) 
+	{
+		Socket.send(JSON.stringify({ Type: "B", Data: _.omit(b, ['map']) }));
+	}
+	
+}
+
+Connector.sendReset = function(){
+	if (Socket && Socket.readyState == 1) 
+	{
+		Socket.send(JSON.stringify({ Type: "RESET", Data: {} }));
+	}
 	
 }
 
@@ -34,16 +44,18 @@ function Connect(){
 			// alert("WebSocket error: " + JSON.stringify(E)); 
 			if (!BM.Timer)
 			{
-				setInterval(function(){
+				BM.Timer = setInterval(function(){
 							gameloop(BM)
 						},
 						BM.GameFrameTime);
+				BM.connectionError = true;
 			}
 		
 		};
 
 		Socket.onclose = function (E)
 			{
+				if (BM.connectionError) return;
 				// Shut down the game loop.
 				if (BM.Timer) clearInterval(BM.Timer);
 				BM.Timer = null;
@@ -77,6 +89,7 @@ function Connect(){
 				
 				if(Message.type == 'newHero')
 				{
+					
 					var hero = Message.hero;
 
 					hero.herotiles = new Image();
@@ -85,6 +98,12 @@ function Connect(){
 					
 					BM.heros.push(hero);
 					
+					return;
+				}
+				
+				if(Message.type == 'reset')
+				{
+					BM = resetGame(BM);
 					return;
 				}
 				
@@ -97,6 +116,7 @@ function Connect(){
 				}
 				
 				if (Message.data && Message.data.pos) {
+					if (!BM.heros[1]) return;
 					_.extend(BM.heros[1], Message.data);
 				}
 

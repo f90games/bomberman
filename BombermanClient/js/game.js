@@ -1,3 +1,27 @@
+function resetGame(BM)
+{
+
+	clearInterval(BM.Timer);
+	BM.Timer = null;
+	BM = getNewGameSpace();
+	setupCurrentLevel(BM)
+	
+	if (typeof exports !== "undefined")
+	{
+		
+	}
+	else
+	{
+		BM.Timer = setInterval(function(){
+				gameloop(BM)
+			},
+			BM.GameFrameTime
+		);
+	}
+	
+	return BM;
+}
+
 
 function getNewGameSpace(){
 	
@@ -176,5 +200,6 @@ if (typeof exports !== "undefined")
 	exports.setupCurrentLevel = setupCurrentLevel;
 	exports.getNewGameSpace = getNewGameSpace;
 	exports.addNewHero = addNewHero;
+	exports.resetGame = resetGame;
 }
 

@@ -70,19 +70,17 @@ window.addEventListener("load", function(){
 			
 			BM.hero.sprite++;
 			BM.hero.sprite %= 3;
-			
-			// if (Transmit && Socket && Socket.readyState == 1)
-			// if (Socket && Socket.readyState == 1)
-			// {
-				// if(e.which != 32)
-				// {
-					// Socket.send(JSON.stringify({ Type: "D", Data: _.omit(BM.hero, ['herotiles']) }));
-				// }
-			// }
+
 		}
 	);
+	
+	$('#reset-button').click(function(){
+		BM = resetGame(BM);
+		$(this).trigger('blur');
+		Connector.sendReset();
+		return false;
+	});
 
-	    // setInterval(gameloop, 30);	
 });
 
 function clear() {	
@@ -170,19 +168,21 @@ function updateHeros()
 
 		//lifebar
 		if (hero.hp > 0) {
-		  BM.ctx.beginPath();
-	    BM.ctx.moveTo(column * 32, row * 32 - 5);
-	    BM.ctx.lineTo(column * 32 + hero.hp * 10, row * 32 - 5);
-	    BM.ctx.lineWidth = 4;
-	    if (hero.hp == 3){
-	    	BM.ctx.strokeStyle = 'green';
-	    } else if (hero.hp == 2) {
-	    	BM.ctx.strokeStyle = 'yellow';
-	    } else if (hero.hp == 1) {
-	    	BM.ctx.strokeStyle = 'red';
-	    } 
-	    BM.ctx.stroke();
-    }
+			BM.ctx.beginPath();
+			BM.ctx.moveTo(column * 32, row * 32 - 5);
+			BM.ctx.lineTo(column * 32 + hero.hp * 10, row * 32 - 5);
+			BM.ctx.lineWidth = 4;
+			
+			if (hero.hp == 3){
+				BM.ctx.strokeStyle = 'green';
+			} else if (hero.hp == 2) {
+				BM.ctx.strokeStyle = 'yellow';
+			} else if (hero.hp == 1) {
+				BM.ctx.strokeStyle = 'red';
+			}
+			
+			BM.ctx.stroke();
+		}
 	}
 
 }

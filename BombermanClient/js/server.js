@@ -134,6 +134,9 @@ function HandleClientMessage(ID, Message)
 	
 	// Handle the different types of messages we expect.
 	var C = Connections[ID];
+	
+	if (!Rooms[C.room]) return;
+	
 	var BM = Rooms[C.room].BM;
 	switch (Message.Type)
 	{
@@ -162,6 +165,28 @@ function HandleClientMessage(ID, Message)
 		case "B":
 			if (!C.peer) return;
 			C.peer.sendUTF(JSON.stringify({ type: 'newB', b: Message.Data }))
+		break;
+		
+		case "RESET":
+			BM = Game.resetGame(BM);
+			
+			if (C.peer)
+			{
+				C.peer.sendUTF(JSON.stringify({ type: 'reset' }))
+				var hero = Game.addNewHero(BM);
+
+				C.sendUTF(JSON.stringify({ type: 'newHero', hero: BM.heros[C.peer.heroIndex] }))
+				C.peer.sendUTF(JSON.stringify({ type: 'newHero', hero: BM.heros[C.heroIndex] }))
+				
+				setInterval(function()
+					{
+						Game.RunGameFrame(BM);
+						SendGameState();
+					},
+					BM.GameFrameTime
+				);
+			}
+			
 		break;
 	}
 }
