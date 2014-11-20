@@ -74,7 +74,7 @@ Bomb.prototype.damage = function(pos) {
     this.setFlame(pos);
   }
 
-  if (BM.hero.pos == pos) {
+  if ((BM.hero.pos - 1) == pos) {
     BM.hero.hp -= 1;
 
     if (BM.hero.hp == 0)
