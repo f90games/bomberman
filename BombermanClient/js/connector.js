@@ -20,7 +20,7 @@ Connector.sendReset = function(){
 
 function Connect(){
 
-		var Name = prompt("What is your username?", "Guest");
+		var Name = 'Guest';
 
 		try
 		{
@@ -72,6 +72,8 @@ function Connect(){
 						gameloop(BM)
 					},
 					BM.GameFrameTime);
+					
+				$('#menu').css('display', 'block');
 			};
 
 		Socket.onmessage = function(E)
@@ -83,7 +85,7 @@ function Connect(){
 				
 				if(Message.type == 'newRoom')
 				{
-					$('#info').text(location.protocol + '//' + location.host + location.pathname + '#' + Message.room);
+					$('#info').val(location.protocol + '//' + location.host + location.pathname + '#' + Message.room).select();
 					return;
 				}
 				

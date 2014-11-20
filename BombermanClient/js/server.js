@@ -138,6 +138,9 @@ function HandleClientMessage(ID, Message)
 	if (!Rooms[C.room]) return;
 	
 	var BM = Rooms[C.room].BM;
+	
+	if (!BM) return;
+	
 	switch (Message.Type)
 	{
 		// Handshake.

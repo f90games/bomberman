@@ -1,0 +1,17 @@
+.body {
+	
+	font-family: Verdana;
+	
+}
+
+.game-hole {
+	
+	text-align: center;
+	border: solid 2px white;
+}
+
+.game-hole:hover {
+	
+	border: solid 2px green;
+	
+}

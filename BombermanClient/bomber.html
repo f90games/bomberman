@@ -17,19 +17,39 @@
   <script type="text/javascript" src='js/main.js'></script>
   
   <script type="text/javascript" src='js/connector.js'></script>
+  
+  <script>
+	
+	$(function(){
+	
+		$('#info').on('click', function(){
+			$(this).select();
+		});
+		
+	});
+	
+  </script>
 
 </head>
 <body>
 
   <section id="interface">
-	<div id="controls"><button id="reset-button">Reset!</button></div>
-	<div style="width: 704px; margin: 30px auto 0 auto">
+	
+	
+	<div id="menu" style="width: 260px; margin: 30px 20px 0px 0px; height: 456px; float: right; border: dashed 6px lightgreen; padding: 12px; display: none;">
+		<div>Pass URL to your opponent:<br/><br/><input id="info" type="text" style="width: 100%" readonly/></div>
+		<br/><br/>
+		<div id="controls"><button id="reset-button">Reset Game!</button></div>
+		
+		<h2><a href="/">Back to portal...</a><h2>
+		
+	</div>
+	
+	<div style="width: 640px; margin: 30px 30px 0px 0px; float: right;">
 		<canvas id="game-canvas" width="640px" height="480px"></canvas>
 	</div>
 	
-	<div id="info" style="width: 704px; margin: 50px auto 0 auto">
-    
-	</div>
+	<div style="clear: both;"></div>
   
   </section>
   <footer>
