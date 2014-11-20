@@ -134,6 +134,10 @@ function checkHeroPos(BM, newPos){
 }
 
 function checkBombPos(BM, pos){
+	//добавляем крутых взрывов
+	if(BM.bombs[pos])
+		BM.bombs[pos].power++;
+
 	return BM.bombs[pos] == null
 }
 
@@ -175,6 +179,7 @@ function runGameFrame(BM){
 		var bomb_idx = new Date().getTime();
 
 		var bomb = new Bomb({
+			power: 2,
 			pos: hero.pos,
 			timeLeft: 3000,
 			status: BOMB_START
