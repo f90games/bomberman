@@ -2,6 +2,7 @@ Flame = function(c){
   var config = c || {};
   this.pos = config.pos || 0;
   this.status = config.status || 0;
+  this.direction = config.direction || 0;
 }
 
 Flame.prototype.start = function(){
@@ -49,6 +50,8 @@ Bomb.prototype.explode = function() {
   //   }
   // };
 
+  this.damage(this.pos)
+
   for (var d = 0; d < 4; d++) { //d = direction
     var i = 1, goExplode = true;
     do {
@@ -63,30 +66,34 @@ Bomb.prototype.explode = function() {
     } while ((i <= this.power) && goExplode);
   };
 
+  // debugger;
+  // console.log(BM.fx);
+
   setTimeout(function(){
     self.destroy();
   }, 1000);
 }
 
-Bomb.prototype.setFlame = function(pos) { //форк на осколки
+Bomb.prototype.setFlame = function(pos, d) { //форк на осколки
   var flame = BM.fx[pos] = new Flame({
     pos: pos,
-    status: 3
+    status: 3,
+    direction: d
   });
 
   flame.start();
 }
 
-Bomb.prototype.damage = function(pos) {
+Bomb.prototype.damage = function(pos, d) {
   if (BM.map[pos] == 10) {
     //do nothing
     return false;
   } else if (BM.map[pos] == 38) {
     // debugger;
     BM.map[pos] = 0;
-    this.setFlame(pos);
+    this.setFlame(pos, d);
   } else if (BM.map[pos] == 0) {
-    this.setFlame(pos);
+    this.setFlame(pos, d);
   }
 
   if ((BM.hero.pos - 1) == pos) {

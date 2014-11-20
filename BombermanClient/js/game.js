@@ -144,53 +144,57 @@ function checkBombPos(BM, pos){
 function runGameFrame(BM){
 	
 	var hero = BM.hero;
-	
-	if(hero.step_up)
-	{
-		if (checkHeroPos(BM, hero.pos - 20))
-		{
-			hero.pos -= 20;
-		}
-	}
-	else if (hero.step_down)
-	{
-		
-		if (checkHeroPos(BM, hero.pos + 20))
-		{
-			hero.pos += 20;
-		}
-	}
-	else if (hero.step_left)
-	{
-		if (checkHeroPos(BM, hero.pos - 1))
-		{
-			hero.pos--;
-		}
-	}
-	else if (hero.step_right)
-	{
-		if (checkHeroPos(BM, hero.pos + 1))
-		{
-			hero.pos++;
-		}
-	} 
-	
-	if (hero.place_bomb) {
-		var bomb_idx = new Date().getTime();
 
-		var bomb = new Bomb({
-			power: 2,
-			pos: hero.pos,
-			timeLeft: 3000,
-			status: BOMB_START
-		}, BM.map);
-
-		bomb.start();
-		
-		if (checkBombPos(BM, hero.pos-1))
+	if (hero.hp > 0){
+	
+		if(hero.step_up)
 		{
-			BM.bombs[hero.pos-1] = bomb;
-			Connector && Connector.sendB(bomb)
+			if (checkHeroPos(BM, hero.pos - 20))
+			{
+				hero.pos -= 20;
+			}
+		}
+		else if (hero.step_down)
+		{
+			
+			if (checkHeroPos(BM, hero.pos + 20))
+			{
+				hero.pos += 20;
+			}
+		}
+		else if (hero.step_left)
+		{
+			if (checkHeroPos(BM, hero.pos - 1))
+			{
+				hero.pos--;
+			}
+		}
+		else if (hero.step_right)
+		{
+			if (checkHeroPos(BM, hero.pos + 1))
+			{
+				hero.pos++;
+			}
+		} 
+		
+		if (hero.place_bomb) {
+			var bomb_idx = new Date().getTime();
+
+			var bomb = new Bomb({
+				power: 2,
+				pos: hero.pos,
+				timeLeft: 3000,
+				status: BOMB_START
+			}, BM.map);
+
+			bomb.start();
+			
+			if (checkBombPos(BM, hero.pos-1))
+			{
+				BM.bombs[hero.pos-1] = bomb;
+				Connector && Connector.sendB(bomb)
+			}
+
 		}
 
 	}

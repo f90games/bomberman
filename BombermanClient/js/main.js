@@ -121,8 +121,15 @@ function setupMap() {
 			}
 
 			if (fx = BM.fx[pos]){
-				if (fx.status == 3)
-					BM.ctx.drawImage(BM.items, 32 * 3, 0,  32, 32, i*32, j*32, 32, 32);		
+				if (fx.status == 3){
+
+					if (fx.direction == 0  || fx.direction == 3 )
+						BM.ctx.drawImage(BM.items, (32 * 3), 0,  32, 32, i*32, j*32, 32, 32);		
+					else 
+						BM.ctx.drawImage(BM.items, (32 * 4), 0,  32, 32, i*32, j*32, 32, 32);	
+
+					// BM.ctx.drawImage(BM.items, (32 * (3 + (fx.direction % 2))), 0,  32, 32, i*32, j*32, 32, 32);		
+				}
 				else if (fx.status == 0)
 					delete BM.fx[pos];
 			}
@@ -164,8 +171,7 @@ function updateHeros()
 		var row = Math.floor(hero.pos / 20);
 		var column = hero.pos % 20 - 1;
 		
-		BM.ctx.drawImage(hero.herotiles, hx, hy, 32, 32, column * 32, row * 32, 32, 32);
-
+		
 		//lifebar
 		if (hero.hp > 0) {
 			BM.ctx.beginPath();
@@ -182,6 +188,8 @@ function updateHeros()
 			}
 			
 			BM.ctx.stroke();
+
+			BM.ctx.drawImage(hero.herotiles, hx, hy, 32, 32, column * 32, row * 32, 32, 32);
 		}
 	}
 
