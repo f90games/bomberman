@@ -95,7 +95,7 @@ function Connect(){
 				if(msg.type == 'newRoom')
 				{
 					$('#info').val(location.protocol + '//' + location.host + location.pathname + '#' + msg.room).select();
-					$('#room-number').html(Message.room);
+					$('#room-number').html(msg.room);
 					return;
 				}
 				

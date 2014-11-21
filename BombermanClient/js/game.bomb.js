@@ -42,6 +42,10 @@ Bomb.prototype.explode = function() {
   var self = this;
   this.status = BOMB_EXPLODE;
 
+  var sound = new Howl({
+    urls: ['/data/sound/bomb.mp3']
+  }).play();
+
   // for (var i = 0; i < Bomb.EXPLODE_MATRIX_5x5.length; i++) {
   //   var pos = this.pos - 1 + Bomb.EXPLODE_MATRIX_5x5[i];
 
@@ -99,8 +103,11 @@ Bomb.prototype.damage = function(pos, d) {
   if ((BM.hero.pos - 1) == pos) {
     BM.hero.hp -= 1;
 
-    if (BM.hero.hp == 0)
-      alert('Герой убит!');
+    if (BM.hero.hp == 0){
+      var sound = new Howl({
+        urls: ['/data/sound/die.mp3']
+      }).play();
+    }
   }; 
 
   return true; 
