@@ -1,3 +1,5 @@
+"use strict"
+
 var System = require("sys");
 var HTTP = require("http");
 var WebSocketServer = require("websocket").server;
@@ -76,11 +78,11 @@ Server.on("request",
 						Connection.sendUTF(JSON.stringify({ type: 'newHero', hero: Rooms[query.room].BM.heros[0] }))
 						Connection.peer.sendUTF(JSON.stringify({ type: 'newHero', hero: hero }))
 						
+						//start game loop
 						setInterval(function()
 							{
 												
 								Game.RunGameFrame(Rooms[query.room].BM);
-								
 								SendGameState();
 
 							},
@@ -120,6 +122,8 @@ function HandleClientClosure(ID)
 	{
 		System.log("Disconnect from " + Connections[ID].IP);
 		delete Connections[ID];
+		
+		//TODO - handle room state
 	}
 }
 
@@ -130,9 +134,9 @@ function HandleClientMessage(ID, Message)
 	
 	try { Message = JSON.parse(Message); }
 	catch (Err) { return; }
+	
 	if (!("Type" in Message && "Data" in Message)) return;
 	
-	// Handle the different types of messages we expect.
 	var C = Connections[ID];
 	
 	if (!Rooms[C.room]) return;
@@ -145,17 +149,6 @@ function HandleClientMessage(ID, Message)
 	{
 		// Handshake.
 		case "HI":
-		
-			
-			
-		break;
-			
-		// Key up.
-		case "U":
-			
-			if (Message.Data == 37) C.KeysPressed &= ~2; // Left
-			else if (Message.Data == 39) C.KeysPressed &= ~4; // Right
-			else if (Message.Data == 38) C.KeysPressed &= ~1; // Up
 			
 		break;
 			
@@ -165,6 +158,7 @@ function HandleClientMessage(ID, Message)
 			BM.heros[C.heroIndex] = Message.Data
 		break;
 		
+		//bomb
 		case "B":
 			if (!C.peer) return;
 			C.peer.sendUTF(JSON.stringify({ type: 'newB', b: Message.Data }))

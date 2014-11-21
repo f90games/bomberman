@@ -1,3 +1,6 @@
+"use strict"
+
+
 var Connector = {}
 var Socket = null;
 
@@ -20,7 +23,7 @@ Connector.sendReset = function(){
 
 function Connect(){
 
-		var Name = 'Guest';
+		var name = 'Guest';
 
 		try
 		{
@@ -35,13 +38,12 @@ function Connect(){
 				return false;
 			}
 		}
-		catch (E) { 
+		catch (e) { 
 			Socket = null;
 		}
 
-		Socket.onerror = function(E) { 
+		Socket.onerror = function(e) { 
 		
-			// alert("WebSocket error: " + JSON.stringify(E)); 
 			if (!BM.Timer)
 			{
 				BM.Timer = setInterval(function(){
@@ -53,7 +55,7 @@ function Connect(){
 		
 		};
 
-		Socket.onclose = function (E)
+		Socket.onclose = function (e)
 			{
 				if (BM.connectionError) return;
 				// Shut down the game loop.
@@ -65,7 +67,7 @@ function Connect(){
 			{
 			
 				// Send a handshake message.
-				Socket.send(JSON.stringify({ Type: "HI", Data: Name.substring(0, 10) }));
+				Socket.send(JSON.stringify({ Type: "HI", Data: name.substring(0, 10) }));
 				
 				// Set up game loop.
 				BM.Timer = setInterval(function(){
@@ -76,23 +78,23 @@ function Connect(){
 				$('#menu').css('display', 'block');
 			};
 
-		Socket.onmessage = function(E)
+		Socket.onmessage = function(e)
 			{
-				var Message;
+				var msg;
 				
-				try { Message = JSON.parse(E.data); }
-				catch (Err) { return; }
+				try { msg = JSON.parse(e.data); }
+				catch (err) { return; }
 				
-				if(Message.type == 'newRoom')
+				if(msg.type == 'newRoom')
 				{
-					$('#info').val(location.protocol + '//' + location.host + location.pathname + '#' + Message.room).select();
+					$('#info').val(location.protocol + '//' + location.host + location.pathname + '#' + msg.room).select();
 					return;
 				}
 				
-				if(Message.type == 'newHero')
+				if(msg.type == 'newHero')
 				{
 					
-					var hero = Message.hero;
+					var hero = msg.hero;
 
 					hero.herotiles = new Image();
 					hero.herotiles.src = BM.hero.herotiles.src;
@@ -103,23 +105,23 @@ function Connect(){
 					return;
 				}
 				
-				if(Message.type == 'reset')
+				if(msg.type == 'reset')
 				{
 					BM = resetGame(BM);
 					return;
 				}
 				
-				if(Message.type == 'newB')
+				if(msg.type == 'newB')
 				{
-					var b = new Bomb(Message.b, BM.map);
+					var b = new Bomb(msg.b, BM.map);
 					b.start();
 					BM.bombs[b.pos-1] = b;
 					return;
 				}
 				
-				if (Message.data && Message.data.pos) {
+				if (msg.data && msg.data.pos) {
 					if (!BM.heros[1]) return;
-					_.extend(BM.heros[1], Message.data);
+					_.extend(BM.heros[1], msg.data);
 				}
 
 			};

@@ -6,11 +6,7 @@ function resetGame(BM)
 	BM = getNewGameSpace();
 	setupCurrentLevel(BM)
 	
-	if (typeof exports !== "undefined")
-	{
-		
-	}
-	else
+	if (typeof exports === "undefined")
 	{
 		BM.Timer = setInterval(function(){
 				gameloop(BM)
@@ -31,8 +27,9 @@ function getNewGameSpace(){
 		currentLevel: 0,
 		GameFrameTime: 150,
 		bombs: {
-			// 0: []
+
 		},
+		//effects
 		fx: {
 
 		},
@@ -64,7 +61,6 @@ function addNewHero(BM){
 		
 		pos: 30,
 		sprite: 0,
-		// hp: 3,
 		up: false,
 		down: true,
 		left: false,

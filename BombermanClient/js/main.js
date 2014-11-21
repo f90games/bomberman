@@ -6,7 +6,7 @@ window.BOMB_START = 1;
 window.BOMB_EXPLODE = 2;
 window.FX_CATCH_FIRE = 3;
 
-window.addEventListener("load", function(){		 			
+$(function(){		 			
 	
 	BM = getNewGameSpace();
 	setupCurrentLevel(BM);
