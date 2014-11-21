@@ -74,6 +74,7 @@ function Connect(){
 					BM.GameFrameTime);
 					
 				$('#menu').css('display', 'block');
+				$('.online').show();
 			};
 
 		Socket.onmessage = function(E)
@@ -86,6 +87,7 @@ function Connect(){
 				if(Message.type == 'newRoom')
 				{
 					$('#info').val(location.protocol + '//' + location.host + location.pathname + '#' + Message.room).select();
+					$('#room-number').html(Message.room);
 					return;
 				}
 				
