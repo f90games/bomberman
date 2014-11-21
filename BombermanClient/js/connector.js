@@ -23,6 +23,7 @@ Connector.sendReset = function(){
 
 function Connect(){
 
+
 		var name = 'Guest';
 
 		try
@@ -38,12 +39,15 @@ function Connect(){
 				return false;
 			}
 		}
+
 		catch (e) { 
 			Socket = null;
 		}
 
+
 		Socket.onerror = function(e) { 
 		
+
 			if (!BM.Timer)
 			{
 				BM.Timer = setInterval(function(){
@@ -54,6 +58,7 @@ function Connect(){
 			}
 		
 		};
+
 
 		Socket.onclose = function (e)
 			{
@@ -76,18 +81,21 @@ function Connect(){
 					BM.GameFrameTime);
 					
 				$('#menu').css('display', 'block');
+				$('.online').show();
 			};
 
 		Socket.onmessage = function(e)
 			{
+
 				var msg;
 				
 				try { msg = JSON.parse(e.data); }
 				catch (err) { return; }
-				
+
 				if(msg.type == 'newRoom')
 				{
 					$('#info').val(location.protocol + '//' + location.host + location.pathname + '#' + msg.room).select();
+					$('#room-number').html(Message.room);
 					return;
 				}
 				

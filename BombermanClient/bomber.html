@@ -1,59 +1,112 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Bomberman v0.01</title>
-  <link rel="stylesheet" href="./css/main.css">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Bomberman v0.01</title>
+    <link rel="stylesheet" href="./css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/main.css">
 
-  <script src="js/lib/underscore.js"></script>
-  <script src="js/lib/jquery-2.1.1.min.js"></script>
-  <script src="js/lib/keydrown.js"></script>
+    <script src="js/lib/underscore.js"></script>
+    <script src="js/lib/jquery-2.1.1.min.js"></script>
+    <script src="js/lib/bootstrap.min.js"></script>
+    <script src="js/lib/keydrown.js"></script>
 
-  <script type="text/javascript" src='js/game.js'></script>
-  <script type="text/javascript" src='js/game.bomb.js'></script>
-  <script type="text/javascript" src='js/game.hero.js'></script>
-  <script type="text/javascript" src='js/game.ghost.js'></script>
-  <script type="text/javascript" src='js/main.js'></script>
-  
-  <script type="text/javascript" src='js/connector.js'></script>
-  
-  <script>
-	
-	$(function(){
-	
-		$('#info').on('click', function(){
-			$(this).select();
-		});
-		
-	});
-	
-  </script>
+    <script type="text/javascript" src='js/game.js'></script>
+    <script type="text/javascript" src='js/game.bomb.js'></script>
+    <script type="text/javascript" src='js/game.hero.js'></script>
+    <script type="text/javascript" src='js/game.ghost.js'></script>
+    <script type="text/javascript" src='js/main.js'></script>
 
+    <script type="text/javascript" src='js/connector.js'></script>
+
+    <script>
+    $(function() {
+
+        $('#info').on('click', function() {
+            $(this).select();
+        });
+
+    });
+    </script>
 </head>
-<body>
 
-  <section id="interface">
-	
-	
-	<div id="menu" style="width: 260px; margin: 30px 20px 0px 0px; height: 456px; float: right; border: dashed 6px lightgreen; padding: 12px; display: none;">
-		<div>Pass URL to your opponent:<br/><br/><input id="info" type="text" style="width: 100%" readonly/></div>
-		<br/><br/>
-		<div id="controls"><button id="reset-button">Reset Game!</button></div>
-		
-		<h2><a href="/">Back to portal...</a><h2>
-		
-	</div>
-	
-	<div style="width: 640px; margin: 30px 30px 0px 0px; float: right;">
-		<canvas id="game-canvas" width="640px" height="480px"></canvas>
-	</div>
-	
-	<div style="clear: both;"></div>
-  
-  </section>
-  <footer>
-    
-  </footer>
+<body>
+    <header class="container">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Bomberman</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/">Back to portal...</a>
+                        </li>
+                        <li class="active"><a href="#">Bomberman&nbsp;<sup class="online blink">(online)</sup></a>
+                        </li>
+
+                    </ul>
+                    <form class="navbar-form navbar-right">
+                        <div class="form-group">
+                            <a href="#" data-toggle="modal" data-target="#show-link">Room #<span id="room-number"></span></a>
+                        </div>
+                        <div class="form-group">
+                            <button id="reset-button">Reset Game!</button>
+                        </div>
+                    </form>
+
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div style="width: 640px; margin: 0 auto; ">
+                    <canvas id="game-canvas" width="640px" height="480px"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+
+    </footer>
+
+<!-- Modal -->
+<div class="modal fade" id="show-link" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Pass URL to your opponent:</h4>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+              <input id="info" type="text" style="width: 100%" readonly/>
+          </div>        
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
+
 </html>
