@@ -1,7 +1,7 @@
 "use strict";
 
 var BM;
- 
+
 window.BOMB_START = 1;
 window.BOMB_EXPLODE = 2;
 window.FX_CATCH_FIRE = 3;
@@ -18,46 +18,35 @@ $(function(){
 	});
 
 	kd.LEFT.down = function(){
+
+		BM.hero.turn(PLAYER_LEFT);
 		
 		if (BM.hero.left) BM.hero.step_left = true;
-				
-		BM.hero.up = false;
-		BM.hero.down = false;
-		BM.hero.left = true;
-		BM.hero.right = false;
+
 	}
 	
 	kd.UP.down = function(){
+
+		BM.hero.turn(PLAYER_UP);
 		
 		if (BM.hero.up) BM.hero.step_up = true;
-					
-		BM.hero.up = true;
-		BM.hero.down = false;
-		BM.hero.left = false;
-		BM.hero.right = false;
 		
 	}
 	
 	kd.DOWN.down = function(){
 		
+		BM.hero.turn(PLAYER_DOWN);
+
 		if (BM.hero.down) BM.hero.step_down = true;
-				
-		BM.hero.up = false;
-		BM.hero.down = true;
-		BM.hero.left = false;
-		BM.hero.right = false;
-		
+
 	}
 	
 	kd.RIGHT.down = function(){
+
+		BM.hero.turn(PLAYER_RIGHT);
 				
 		if (BM.hero.right) BM.hero.step_right = true;
-				
-		BM.hero.up = false;
-		BM.hero.down = false;
-		BM.hero.left = false;
-		BM.hero.right = true;
-		
+
 	}
 	
 	kd.SPACE.down = function(){
@@ -68,8 +57,8 @@ $(function(){
 
 		function(e){
 			
-			BM.hero.sprite++;
-			BM.hero.sprite %= 3;
+			// BM.hero.step++;
+			// BM.hero.step %= 3;
 
 		}
 	);
@@ -148,7 +137,7 @@ function updateHeros()
 			hx = 0,
 			hy = 0;
 
-		var hx = 32 * ((hero.heroTileIndex % 4) - 1) * 3 + 32 * hero.sprite;
+		var hx = 32 * ((hero.heroTileIndex % 4) - 1) * 3 + 32 * hero.step;
 		if (hero.up)
 		{
 			hy = 32 * 3;
@@ -168,10 +157,14 @@ function updateHeros()
 		
 		if (hero.heroTileIndex > 4) hy += 32 * 4;
 		
-		var row = Math.floor(hero.pos / 20);
-		var column = hero.pos % 20 - 1;
+		// var row = Math.floor(hero.pos / 20);
+		// var column = hero.pos % 20 - 1;
 		
-		
+		hero.moveTo();
+
+		var row = hero.point.y;
+		var column = hero.point.x;
+
 		//lifebar
 		if (hero.hp > 0) {
 			BM.ctx.beginPath();

@@ -57,16 +57,12 @@ function getNewGameSpace(){
 
 function addNewHero(BM){
 	
-	var hero = {
-		
+	BM.hero = new Hero({
 		pos: 30,
 		sprite: 0,
-		up: false,
-		down: true,
-		left: false,
-		right: false
-
-	};
+		skin: 0,
+		hp: 3
+	});
 	
 	BM.heros.push(hero);
 	
@@ -88,15 +84,12 @@ function setupCurrentLevel(BM) {
 	
 	if (!level) return;
 	
-	BM.hero = {
+	BM.hero = new Hero({
 		pos: 30,
 		sprite: 0,
-		up: false,
-		down: true,
-		left: false,
-		right: false,
+		skin: 0,
 		hp: 3
-	};
+	});
 	
 	var herotiles = null;
 	if (typeof exports == "undefined")
@@ -142,36 +135,47 @@ function runGameFrame(BM){
 	var hero = BM.hero;
 
 	if (hero.hp > 0){
-	
-		if(hero.step_up)
-		{
-			if (checkHeroPos(BM, hero.pos - 20))
+
+		// if((hero.point.x == hero.pointTarget.x) && (hero.point.y == hero.pointTarget.y)){
+		if((hero.posTarget == hero.pos)){			
+
+			if(hero.step_up)
 			{
-				hero.pos -= 20;
+				if (checkHeroPos(BM, hero.pos - 20))
+				{
+					hero.posTarget -= 20;
+				}
 			}
-		}
-		else if (hero.step_down)
-		{
+			else if (hero.step_down)
+			{
+				
+				if (checkHeroPos(BM, hero.pos + 20))
+				{
+					hero.posTarget += 20;
+				}
+			}
+			else if (hero.step_left)
+			{
+				if (checkHeroPos(BM, hero.pos - 1))
+				{
+					hero.posTarget--;
+				}
+			}
+			else if (hero.step_right)
+			{
+				if (checkHeroPos(BM, hero.pos + 1))
+				{
+					hero.posTarget++;
+				}
+			}
+
+			hero.updatePointTarget();
+
+		}	 
+
+		// if ((hero.newpos != hero.pos) && (herp.path.length > 1)) {
 			
-			if (checkHeroPos(BM, hero.pos + 20))
-			{
-				hero.pos += 20;
-			}
-		}
-		else if (hero.step_left)
-		{
-			if (checkHeroPos(BM, hero.pos - 1))
-			{
-				hero.pos--;
-			}
-		}
-		else if (hero.step_right)
-		{
-			if (checkHeroPos(BM, hero.pos + 1))
-			{
-				hero.pos++;
-			}
-		} 
+		// }		
 		
 		if (hero.place_bomb) {
 			var bomb_idx = new Date().getTime();
@@ -195,7 +199,9 @@ function runGameFrame(BM){
 
 	}
 	
-	hero.place_bomb = hero.step_left = hero.step_right = hero.step_up = hero.step_down = false;
+	// hero.place_bomb = hero.step_left = hero.step_right = hero.step_up = hero.step_down = false;
+
+	hero.place_bomb = false;
 	
 }
 
