@@ -288,7 +288,10 @@ function checkScreenScroll(hero, right, left, up, down){
 	
 	
 	if (BM.screenOffset.x > 0) BM.screenOffset.x = 0;
+	if (BM.screenOffset.x < (BM.screenWidth - level.mapTileSize * level.mapWidth)) BM.screenOffset.x = BM.screenWidth - level.mapTileSize * level.mapWidth;
+	
 	if (BM.screenOffset.y > 0) BM.screenOffset.y = 0;
+	if (BM.screenOffset.y < (BM.screenHeight - level.mapTileSize * level.mapHeight)) BM.screenOffset.y = BM.screenHeight - level.mapTileSize * level.mapHeight;
 	
 	$('#game-canvas').css('left', BM.screenOffset.x + 'px');
 	$('#game-canvas').css('top', BM.screenOffset.y + 'px');

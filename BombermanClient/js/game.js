@@ -56,6 +56,7 @@ function getNewGameSpace(){
 			
 			"mapTileSize": 32,
 			"mapWidth": 20,
+			"mapHeight": 15,
 			
 			"herotiles": "vx_chara00.png",
 			"bombtiles": "bomb.png",
