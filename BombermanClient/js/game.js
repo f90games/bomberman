@@ -27,6 +27,14 @@ function getNewGameSpace(){
 	var BM = new Object();
 	
 	BM = {
+		
+		screenWidth: 500,
+		screenHeight: 300,
+		screenOffset: {
+			x: 0,
+			y: 0
+		},
+		
 		currentLevel: 0,
 		GameFrameTime: 50,
 		bombs: {
@@ -45,6 +53,10 @@ function getNewGameSpace(){
 		{
 			"level" : 0,
 			"maptiles" : "tmw_desert_spacing.png",
+			
+			"mapTileSize": 32,
+			"mapWidth": 20,
+			
 			"herotiles": "vx_chara00.png",
 			"bombtiles": "bomb.png",
 			"heroTileIndex": 1, //hero idx 1..8  
