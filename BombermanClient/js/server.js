@@ -4,7 +4,7 @@ var System = require("sys");
 var HTTP = require("http");
 var WebSocketServer = require("websocket").server;
 var _ = require('underscore');
-var Game = require("game");
+var Game = require("game.server");
 
 var Frame = 0;
 var FramesPerGameStateTransmission = 3;

@@ -1,3 +1,6 @@
+"use strict"
+
+
 function resetGame(BM)
 {
 
@@ -25,7 +28,7 @@ function getNewGameSpace(){
 	
 	BM = {
 		currentLevel: 0,
-		GameFrameTime: 150,
+		GameFrameTime: 50,
 		bombs: {
 
 		},
@@ -57,7 +60,7 @@ function getNewGameSpace(){
 
 function addNewHero(BM){
 	
-	BM.hero = new Hero({
+	var hero = new Hero({
 		pos: 30,
 		sprite: 0,
 		skin: 0,
