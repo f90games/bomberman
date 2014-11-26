@@ -25,9 +25,11 @@ Hero = function(c){
   this.left = c.left || false;
   this.right = c.right || false;
 
+  this.level = c.level;
+
   this.point = {
-    y: Math.floor(this.pos / 20),
-    x: this.pos % 20 - 1
+    y: Math.floor(this.pos / this.level.mapWidth),
+    x: this.pos % this.level.mapWidth - 1
   }
 
   this.pointTarget = {
@@ -56,11 +58,11 @@ Hero.prototype.updatePointTarget = function(){
 
 Hero.prototype.moveTo = function(){
 
-  var from_y = Math.floor(this.pos / 20);
-  var from_x = this.pos % 20 - 1;
+  var from_y = Math.floor(this.pos / this.level.mapWidth);
+  var from_x = this.pos % this.level.mapWidth - 1;
 
-  var to_y = this.pointTarget.y = Math.floor(this.posTarget / 20);
-  var to_x = this.pointTarget.x = this.posTarget % 20 - 1;
+  var to_y = this.pointTarget.y = Math.floor(this.posTarget / this.level.mapWidth);
+  var to_x = this.pointTarget.x = this.posTarget % this.level.mapWidth - 1;
 
   var delta_y = to_y - from_y;
   var delta_x = to_x - from_x;

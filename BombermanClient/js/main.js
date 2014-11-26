@@ -97,12 +97,12 @@ function setupMap() {
 	var row = Math.floor(idx / 8);
 	var column = idx % 8 - 1;
 	
-	for (var j=0; j < 15; j++)
+	for (var j=0; j < BM.level.mapHeight; j++)
 	{
-		for (var i=0; i < 20; i++)
+		for (var i=0; i < BM.level.mapWidth; i++)
 		{
 			
-			pos = i + j * 20;
+			pos = i + j * BM.level.mapWidth;
 
 			idx = BM.map[pos];
 			
@@ -171,8 +171,8 @@ function updateHeros()
 		
 		if (hero.heroTileIndex > 4) hy += 32 * 4;
 		
-		// var row = Math.floor(hero.pos / 20);
-		// var column = hero.pos % 20 - 1;
+		// var row = Math.floor(hero.pos / BM.level.mapWidth);
+		// var column = hero.pos % BM.level.mapWidth - 1;
 		
 		hero.moveTo();
 

@@ -27,10 +27,6 @@ Bomb = function(c){
   this.power = config.power || 1; //radius
 }
 
-Bomb.EXPLODE_MATRIX_3x3 = [-20, -1, 1, 20];
-Bomb.EXPLODE_MATRIX_5x5 = [-40, -20, -2, -1,  1, 2, 20, 40];
-// Bomb.EXPLODE_MATRIX_3x3 = [-21, -20, -19, -1, 0, 1, 19, 20, 21];
-
 Bomb.prototype.start = function (){
   var self = this;
   setTimeout(function(){
@@ -49,7 +45,7 @@ Bomb.prototype.explode = function() {
   // for (var i = 0; i < Bomb.EXPLODE_MATRIX_5x5.length; i++) {
   //   var pos = this.pos - 1 + Bomb.EXPLODE_MATRIX_5x5[i];
 
-  //   if ((pos >= 0) && (pos<=(15*20))){
+  //   if ((pos >= 0) && (pos<=(15*this.level.mapWidth))){
   //     this.damage(pos);
   //   }
   // };
@@ -62,7 +58,7 @@ Bomb.prototype.explode = function() {
 
       var pos = this.pos - 1 + (Bomb.EXPLODE_MATRIX_3x3[d] * i);
 
-      if ((pos >= 0) && (pos<=(15*20))){
+      if ((pos >= 0) && (pos<=(this.level.mapHeight*this.level.mapWidth))){
         goExplode = this.damage(pos, d);
       }
 
