@@ -15,6 +15,14 @@ $(function(){
 		'height': BM.screenHeight + 'px'
 		});
 	
+	var level = getLevel(BM.currentLevel);
+	
+	$('#canvas-wrapper').html(
+		'<canvas id="game-canvas" width="' + level.mapWidth * level.mapTileSize + 'px" height="' + level.mapHeight * level.mapTileSize + 'px" style="position: relative; transition: left 1s, top 1s;"></canvas>'
+	);
+	$('#canvas-game').attr('width', level.mapTileSize * level.mapWidth);
+	$('#canvas-game').attr('height', level.mapTileSize * level.mapHeight);
+	
 	setupCurrentLevel(BM);
 	
 	Connect();
