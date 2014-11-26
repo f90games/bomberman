@@ -28,8 +28,8 @@ function getNewGameSpace(){
 	
 	BM = {
 		
-		screenWidth: 500,
-		screenHeight: 300,
+		screenWidth: 800,
+		screenHeight: 500,
 		screenOffset: {
 			x: 0,
 			y: 0

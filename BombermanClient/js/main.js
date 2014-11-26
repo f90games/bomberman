@@ -117,8 +117,17 @@ function setupMap() {
 			//map into real tiles
 			if (idx == 0) idx = 30;
 			
-			row = Math.floor(idx / 8);
-			column = idx % 8 - 1;
+			var xDisp = idx % 8;
+			if (xDisp)
+			{
+				row = Math.floor(idx / 8);
+				column = xDisp - 1;
+			}
+			else
+			{
+				row = Math.floor(idx / 8) - 1;
+				column = 7;
+			}
 		
 			BM.ctx.drawImage(BM.tiles, column * 32 + column + 1, row * 32 + row + 1,  32, 32, i*32, j*32, 32, 32);
 
