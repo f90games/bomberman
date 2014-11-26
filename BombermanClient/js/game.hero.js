@@ -81,8 +81,6 @@ Hero.prototype.moveTo = function(){
     this.step %= 3;
   }
 
-  console.log(this.point);
-
   if ((this.point.x == this.pointTarget.x) && (this.point.y == this.pointTarget.y)){
     this.pos = this.posTarget;
     this.step_left = this.step_right = this.step_up = this.step_down = false;

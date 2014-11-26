@@ -4,7 +4,7 @@ var System = require("sys");
 var HTTP = require("http");
 var WebSocketServer = require("websocket").server;
 var _ = require('underscore');
-var Game = require("game");
+var Game = require("game.server");
 
 var Frame = 0;
 var FramesPerGameStateTransmission = 3;
@@ -18,7 +18,7 @@ var HTTPServer = HTTP.createServer(
 				Response.writeHead(200, { "Content-Type": "text/plain" });
 				Response.end();
 			}
-			);
+);
 
 HTTPServer.listen(9001, function() { System.log("Listening for connections on port 9001"); });
 
@@ -27,7 +27,7 @@ var Server = new WebSocketServer(
 				httpServer: HTTPServer,
 				closeTimeout: 2000
 			}
-			);
+);
 			
 // on connect
 Server.on("request",
@@ -79,16 +79,16 @@ Server.on("request",
 						Connection.peer.sendUTF(JSON.stringify({ type: 'newHero', hero: hero }))
 						
 						//start game loop
-						setInterval(function()
+						Rooms[query.room].BM.Timer = setInterval(function()
 							{
-												
-								Game.RunGameFrame(Rooms[query.room].BM);
-								SendGameState();
-
+								if (Rooms[query.room])
+								{
+									Game.RunGameFrame(Rooms[query.room].BM);
+									SendGameState();
+								}
 							},
 							Rooms[query.room].BM.GameFrameTime
 						);
-						
 						
 					}
 				}
@@ -120,6 +120,19 @@ function HandleClientClosure(ID)
 {
 	if (ID in Connections)
 	{
+		
+		var conn = Connections[ID],
+			room = Rooms[conn.room];
+		
+		if (room) {
+			room.count--;
+			if (room.count <= 0 && room.BM) {
+				System.log('timer:' + room.BM.Timer)
+				clearInterval(room.BM.Timer);
+				delete Rooms[conn.room];
+			}
+		}
+	
 		System.log("Disconnect from " + Connections[ID].IP);
 		delete Connections[ID];
 		
