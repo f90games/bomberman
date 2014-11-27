@@ -20,6 +20,7 @@ Flame.prototype.destroy = function(){
 Bomb = function(c){
 
   var config = c || {};
+  this.level = c.level;
   this.pos = config.pos || 0;
   this.status = config.status || 0; //0: destroyed, 1: normal, 2: explode, 3: flame
   this.timeLeft = config.timeLeft || 3000; //3 секунды
@@ -85,10 +86,10 @@ Bomb.prototype.setFlame = function(pos, d) { //форк на осколки
 }
 
 Bomb.prototype.damage = function(pos, d) {
-  if (BM.map[pos] == 10) {
+  if (_.contains(this.level.fixed_terrian_sprite, BM.map[pos])) {
     //do nothing
     return false;
-  } else if (BM.map[pos] == 38) {
+  } else if (_.contains(this.level.destroy_terrian_sprite, BM.map[pos])) {
     // debugger;
     BM.map[pos] = 0;
     this.setFlame(pos, d);
