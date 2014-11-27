@@ -57,6 +57,7 @@ function getNewGameSpace(){
 			"mapTileSize": 32,
 			"mapWidth": 21,
 			"mapHeight": 15,
+			"heroSpown" : 23,
 			
 			"herotiles": "vx_chara00.png",
 			"bombtiles": "bomb.png",
@@ -73,6 +74,7 @@ function getNewGameSpace(){
 			"mapTileSize": 32,
 			"mapWidth": 45,
 			"mapHeight": 15,
+			"heroSpown" : 47,
 
 			"herotiles": "vx_chara00.png",
 			"bombtiles": "bomb.png",
@@ -119,7 +121,7 @@ function setupCurrentLevel(BM) {
 	if (!level) return;
 	
 	BM.hero = new Hero({
-		pos: 30,
+		pos: level.heroSpown,
 		sprite: 0,
 		skin: 0,
 		hp: 3,
