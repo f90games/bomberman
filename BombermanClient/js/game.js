@@ -45,7 +45,10 @@ function getNewGameSpace(){
 
 		},
 		hero: {},
-		heros: []
+		heros: [],
+
+		sounds: [],
+		level: null
 	};
 
 	BM.levels = 
@@ -108,7 +111,18 @@ function addNewHero(BM){
 }
 
 function setupCurrentLevel(BM) {
-	
+  
+  if (BM.sounds['theme']){
+    BM.sounds['theme'].stop();  
+    BM.sounds['theme'].play();  
+  } else {
+    BM.sounds['theme'] = new Howl({
+      volume: 0.2,
+      loop: true,
+      urls: ['/data/sound/theme.mp3']
+    }).play();          
+  } 
+
 	var level = null;
 	for (var i=0, max = BM.levels.length; i < max; i++)
 	{
@@ -156,7 +170,7 @@ function setupCurrentLevel(BM) {
 
 	var heroTileIndex = level.heroTileIndex;
 	
-	BM.heros.push(BM.hero);
+	BM.heros.push(BM.hero); 	
 
 }
 

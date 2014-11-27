@@ -37,26 +37,20 @@ Hero = function(c){
     x: this.point.y
   }  
 
+  this.isTopTop = false
+
   this.hp = 3;
 }
 
-Hero.prototype.getCoord = function(){ //
-  return this.point;
-}
 
-Hero.prototype.pushPoint = function(){
-
-}
-
-Hero.prototype.popPoint = function(){
-
-}
 
 Hero.prototype.updatePointTarget = function(){
 
 }
 
 Hero.prototype.moveTo = function(){
+
+  var self = this;
 
   var from_y = Math.floor(this.pos / this.level.mapWidth);
   var from_x = this.pos % this.level.mapWidth - 1;
@@ -74,13 +68,30 @@ Hero.prototype.moveTo = function(){
   this.point = {
     x: this.point.x + delta_x * speed_x,
     y: this.point.y + delta_y * speed_y
-  }
+  } 
 
   // console.log(this.point);
 
   if (this.step_up || this.step_down || this.step_left || this.step_right) {
     this.step++;
-    this.step %= 3;
+    this.step %= 3; 
+
+
+    if (BM.sounds['pl_step4']){
+      if (!this.isTopTop)
+        BM.sounds['pl_step4'].play();  
+    } else {
+      BM.sounds['pl_step4'] = new Howl({
+        volume: 0.1,
+        onplay: function() {
+          self.isTopTop = true;
+        },        
+        onend: function() {
+          self.isTopTop = false;
+        },
+        urls: ['/data/sound/pl_step4.wav']
+      }).play();          
+    }          
   }
 
   if ((this.point.x == this.pointTarget.x) && (this.point.y == this.pointTarget.y)){
@@ -111,5 +122,6 @@ Hero.prototype.turn = function(direction){
       this.down = true;
     break;            
   }
+
 
 }

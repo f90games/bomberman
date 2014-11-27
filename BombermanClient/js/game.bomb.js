@@ -29,6 +29,16 @@ Bomb = function(c){
 }
 
 Bomb.prototype.start = function (){
+
+  if (BM.sounds['click']){
+    BM.sounds['click'].play();  
+  } else {
+    BM.sounds['click'] = new Howl({
+      volume: 0.3,
+      urls: ['/data/sound/click.mp3']
+    }).play();          
+  }  
+
   var self = this;
   setTimeout(function(){
     self.explode();
@@ -39,9 +49,14 @@ Bomb.prototype.explode = function() {
   var self = this;
   this.status = BOMB_EXPLODE;
 
-  var sound = new Howl({
-    urls: ['/data/sound/bomb.mp3']
-  }).play();
+  if (BM.sounds['bomb']){
+    BM.sounds['bomb'].play();
+  } else {
+    BM.sounds['bomb'] = new Howl({
+      volume: 0.2,
+      urls: ['/data/sound/bomb.mp3']
+    }).play();            
+  }  
 
   // for (var i = 0; i < Bomb.EXPLODE_MATRIX_5x5.length; i++) {
   //   var pos = this.pos - 1 + Bomb.EXPLODE_MATRIX_5x5[i];
@@ -101,9 +116,16 @@ Bomb.prototype.damage = function(pos, d) {
     BM.hero.hp -= 1;
 
     if (BM.hero.hp == 0){
-      var sound = new Howl({
-        urls: ['/data/sound/die.mp3']
-      }).play();
+
+      if (BM.sounds['die']){
+        BM.sounds['die'].play();  
+      } else {
+        BM.sounds['die'] = new Howl({
+          volume: 0.3,
+          urls: ['/data/sound/die.mp3']
+        }).play(); 
+      }
+      
     }
   }; 
 
