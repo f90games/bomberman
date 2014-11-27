@@ -4,6 +4,8 @@
 function resetGame(BM)
 {
 
+	BM.sounds['theme'].stop();
+
 	clearInterval(BM.Timer);
 	BM.Timer = null;
 	BM = getNewGameSpace();
@@ -17,6 +19,20 @@ function resetGame(BM)
 			BM.GameFrameTime
 		);
 	}
+
+  if (BM.music){
+	  
+	  // if (BM.sounds['theme']){ 
+	  //   BM.sounds['theme'].play();  
+	  // } else {
+    BM.sounds['theme'] = new Howl({
+      volume: 0.2,
+      loop: true,
+      urls: ['/data/sound/theme.mp3']
+    }).play();          
+	  // } 
+	  // BM.music = true;
+  }
 	
 	return BM;
 }
@@ -48,6 +64,7 @@ function getNewGameSpace(){
 		heros: [],
 
 		sounds: [],
+		music: true,
 		level: null
 	};
 
@@ -111,17 +128,6 @@ function addNewHero(BM){
 }
 
 function setupCurrentLevel(BM) {
-  
-  if (BM.sounds['theme']){
-    BM.sounds['theme'].stop();  
-    BM.sounds['theme'].play();  
-  } else {
-    BM.sounds['theme'] = new Howl({
-      volume: 0.2,
-      loop: true,
-      urls: ['/data/sound/theme.mp3']
-    }).play();          
-  } 
 
 	var level = null;
 	for (var i=0, max = BM.levels.length; i < max; i++)

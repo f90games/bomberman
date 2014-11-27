@@ -92,6 +92,21 @@ $(function(){
 		return false;
 	});
 
+	$('#music-toggle').click(function(){
+
+		if(BM.music) 
+			BM.sounds['theme'].pause();
+		else 
+			BM.sounds['theme'].play();
+		BM.music = !BM.music;	
+
+	});
+
+	$('.select-level').click(function(){
+		BM.currentLevel = $(this).data('level');
+		resetGame(BM);
+	});
+
 });
 
 function clear() {	
