@@ -97,7 +97,8 @@ function addNewHero(BM){
 		pos: 30,
 		sprite: 0,
 		skin: 0,
-		hp: 3
+		hp: 3,
+		level: BM.level
 	});
 	
 	BM.heros.push(hero);

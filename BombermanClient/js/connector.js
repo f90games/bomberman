@@ -102,7 +102,7 @@ function Connect(){
 				if(msg.type == 'newHero')
 				{
 					
-					var hero = new Hero(msg.hero);
+					var hero = new Hero(_.extend(msg.hero, {level: BM.level}));
 
 					hero.herotiles = new Image();
 					hero.herotiles.src = BM.hero.herotiles.src;
