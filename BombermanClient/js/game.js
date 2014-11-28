@@ -130,6 +130,7 @@ function addNewHero(BM){
 	
 	var hero = new Hero({
 		pos: BM.level.heroSpown,
+		posTarget: BM.level.heroSpown,
 		sprite: 0,
 		skin: 0,
 		hp: 3,
