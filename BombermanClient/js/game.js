@@ -16,8 +16,9 @@ function resetGame(BM, level)
 	clearInterval(BM.Timer);
 	BM.Timer = null;
 	BM = getNewGameSpace(level);
-	updateCanvasHtml()
-	setupCurrentLevel(BM)
+	
+	updateCanvasHtml(BM.currentLevel)
+	BM = setupCurrentLevel(BM)
 	
 	if (typeof exports === "undefined")
 	{
@@ -47,8 +48,6 @@ function resetGame(BM, level)
 
 
 function getNewGameSpace(level){
-	
-	console.log('new space', level)
 	
 	var BM = new Object();
 	
@@ -85,6 +84,8 @@ function getNewGameSpace(level){
 		{
 			"level" : 0,
 			"maptiles" : "tmw_desert_spacing.png",
+			"screenWidth": 672,
+			"screenHeight": 480,
 			
 			"mapTileSize": 32,
 			"mapWidth": 21,
@@ -103,6 +104,9 @@ function getNewGameSpace(level){
 			"level" : 1,
 			"maptiles" : "tmw_desert_spacing.png",
 
+			"screenWidth": 800,
+			"screenHeight": 500,
+			
 			"mapTileSize": 32,
 			"mapWidth": 45,
 			"mapHeight": 15,
@@ -151,7 +155,7 @@ function setupCurrentLevel(BM) {
 		}
 	}
 	
-	if (!level) return;
+	if (!level) return BM;
 	
 	BM.hero = new Hero({
 		pos: level.heroSpown,
@@ -189,7 +193,9 @@ function setupCurrentLevel(BM) {
 
 	var heroTileIndex = level.heroTileIndex;
 	
-	BM.heros.push(BM.hero); 	
+	BM.heros.push(BM.hero); 
+
+	return BM;
 
 }
 
