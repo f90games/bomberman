@@ -6,23 +6,14 @@ window.BOMB_START = 1;
 window.BOMB_EXPLODE = 2;
 window.FX_CATCH_FIRE = 3;
 
-$(function(){		 			
+$(function(){		 
+
+	var level = 1
 	
-	BM = getNewGameSpace(1);
+	BM = getNewGameSpace(level);
 	
-	$('#canvas-wrapper').css({
-		'width': BM.screenWidth + 'px',
-		'height': BM.screenHeight + 'px'
-		});
-	
-	var level = getLevel(BM.currentLevel);
-	
-	$('#canvas-wrapper').html(
-		'<canvas id="game-canvas" width="' + level.mapWidth * level.mapTileSize + 'px" height="' + level.mapHeight * level.mapTileSize + 'px" style="position: relative; transition: left 1s, top 1s;"></canvas>'
-	);
-	$('#canvas-game').attr('width', level.mapTileSize * level.mapWidth);
-	$('#canvas-game').attr('height', level.mapTileSize * level.mapHeight);
-	
+	updateCanvasHtml(level);
+
 	setupCurrentLevel(BM);
 	
 	Connect();
@@ -265,14 +256,14 @@ function checkScreenScroll(hero, right, left, up, down){
 		step = 3;
 	
 	if (!level) return;
-	
+
 	//horizontal
 	var heroPosX = ((hero.pos - 1) % level.mapWidth) * level.mapTileSize
 	var heroPosY = Math.ceil((hero.pos - 1) / level.mapWidth) * level.mapTileSize;
 	
 	if (right)
 	{
-		deltaX = BM.screenWidth - (heroPosX + BM.screenOffset.x);
+		deltaX = level.screenWidth - (heroPosX + BM.screenOffset.x);
 	}
 	else if(left)
 	{
@@ -284,7 +275,7 @@ function checkScreenScroll(hero, right, left, up, down){
 	}
 	else if(down)
 	{
-		deltaY = BM.screenHeight - (heroPosY + BM.screenOffset.y)
+		deltaY = level.screenHeight - (heroPosY + BM.screenOffset.y)
 	}
 	
 	
@@ -318,12 +309,22 @@ function checkScreenScroll(hero, right, left, up, down){
 	}
 	
 	
-	if (BM.screenOffset.x > 0) BM.screenOffset.x = 0;
-	if (BM.screenOffset.x < (BM.screenWidth - level.mapTileSize * level.mapWidth)) BM.screenOffset.x = BM.screenWidth - level.mapTileSize * level.mapWidth;
+	if (BM.screenOffset.x > 0) {
+		BM.screenOffset.x = 0;
+	}
+	else
+	{
+		if (BM.screenOffset.x < (level.screenWidth - level.mapTileSize * level.mapWidth)) BM.screenOffset.x = level.screenWidth - level.mapTileSize * level.mapWidth;
+	}
 	
-	if (BM.screenOffset.y > 0) BM.screenOffset.y = 0;
-	if (BM.screenOffset.y < (BM.screenHeight - level.mapTileSize * level.mapHeight)) BM.screenOffset.y = BM.screenHeight - level.mapTileSize * level.mapHeight;
+	if (BM.screenOffset.y >= 0) {
+		BM.screenOffset.y = 0;
+	}
+	else if (BM.screenOffset.y < (level.screenHeight - level.mapTileSize * level.mapHeight)) {
+		BM.screenOffset.y = level.screenHeight - level.mapTileSize * level.mapHeight;
+	}
 	
+	console.log(BM.screenOffset.y)
 	$('#game-canvas').css('left', BM.screenOffset.x + 'px');
 	$('#game-canvas').css('top', BM.screenOffset.y + 'px');
 	
@@ -331,14 +332,16 @@ function checkScreenScroll(hero, right, left, up, down){
 }
 
 
-function updateCanvasHtml(){
+function updateCanvasHtml(level){
+	
+	level = getLevel(level);
+	
+	if (!level) return;
 	
 	$('#canvas-wrapper').css({
-		'width': BM.screenWidth + 'px',
-		'height': BM.screenHeight + 'px'
+		'width': level.screenWidth + 'px',
+		'height': level.screenHeight + 'px'
 		});
-	
-	var level = getLevel(BM.currentLevel);
 	
 	$('#canvas-wrapper').html(
 		'<canvas id="game-canvas" width="' + level.mapWidth * level.mapTileSize + 'px" height="' + level.mapHeight * level.mapTileSize + 'px" style="position: relative; transition: left 1s, top 1s;"></canvas>'
@@ -346,7 +349,10 @@ function updateCanvasHtml(){
 	$('#canvas-game').attr('width', level.mapTileSize * level.mapWidth);
 	$('#canvas-game').attr('height', level.mapTileSize * level.mapHeight);
 	
-	var canvas = document.getElementById("game-canvas");  
-	BM.ctx = canvas.getContext("2d");
+	$('#game-canvas').css('left', '0px');
+	$('#game-canvas').css('top', '0px');
+	
+	// var canvas = document.getElementById("game-canvas");  
+	// BM.ctx = canvas.getContext("2d");
 	
 }
