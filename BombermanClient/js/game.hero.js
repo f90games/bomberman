@@ -18,7 +18,7 @@ Hero = function(c){
 
   this.moveTick = c.moveTick || 0;
 
-  this.skin = c.skin || 0;
+  this.skin = c.skin || _.random(0, 3) ;
 
   this.up = c.up || false;
   this.down = c.down || true;
