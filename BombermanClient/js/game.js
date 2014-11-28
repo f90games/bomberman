@@ -143,6 +143,7 @@ function setupCurrentLevel(BM) {
 	
 	BM.hero = new Hero({
 		pos: level.heroSpown,
+		posTarget: level.heroSpown,
 		sprite: 0,
 		skin: 0,
 		hp: 3,
