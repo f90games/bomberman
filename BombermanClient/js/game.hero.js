@@ -12,7 +12,7 @@ Hero = function(c){
   this.path = c.path || [];
 
   this.pos = c.pos || 30;
-  this.posTarget = c.posTarget || 30;
+  this.posTarget = c.posTarget || this.pos;
 
   this.step = c.step || 0;
 
