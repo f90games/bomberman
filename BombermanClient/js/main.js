@@ -8,7 +8,7 @@ window.FX_CATCH_FIRE = 3;
 
 $(function(){		 			
 	
-	BM = getNewGameSpace();
+	BM = getNewGameSpace(1);
 	
 	$('#canvas-wrapper').css({
 		'width': BM.screenWidth + 'px',
@@ -86,7 +86,7 @@ $(function(){
 	);
 	
 	$('#reset-button').click(function(){
-		BM = resetGame(BM);
+		BM = resetGame(BM, 1);
 		$(this).trigger('blur');
 		Connector.sendReset();
 		return false;
@@ -103,8 +103,7 @@ $(function(){
 	});
 
 	$('.select-level').click(function(){
-		BM.currentLevel = $(this).data('level');
-		resetGame(BM);
+		BM = resetGame(BM, $(this).data('level') - 1);
 	});
 
 });
@@ -328,5 +327,26 @@ function checkScreenScroll(hero, right, left, up, down){
 	$('#game-canvas').css('left', BM.screenOffset.x + 'px');
 	$('#game-canvas').css('top', BM.screenOffset.y + 'px');
 	
+	
+}
+
+
+function updateCanvasHtml(){
+	
+	$('#canvas-wrapper').css({
+		'width': BM.screenWidth + 'px',
+		'height': BM.screenHeight + 'px'
+		});
+	
+	var level = getLevel(BM.currentLevel);
+	
+	$('#canvas-wrapper').html(
+		'<canvas id="game-canvas" width="' + level.mapWidth * level.mapTileSize + 'px" height="' + level.mapHeight * level.mapTileSize + 'px" style="position: relative; transition: left 1s, top 1s;"></canvas>'
+	);
+	$('#canvas-game').attr('width', level.mapTileSize * level.mapWidth);
+	$('#canvas-game').attr('height', level.mapTileSize * level.mapHeight);
+	
+	var canvas = document.getElementById("game-canvas");  
+	BM.ctx = canvas.getContext("2d");
 	
 }

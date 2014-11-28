@@ -4,13 +4,19 @@
 function resetGame(BM, level)
 {
 
-	level = level || BM.level;
+	if (_.isUndefined(level)) 
+	{
+		level = BM.currentLevel;
+	}
+	
+	if (!getLevel(level)) return BM;
 
-	BM.sounds['theme'].stop();
+	BM.sounds['theme'] && BM.sounds['theme'].stop();
 
 	clearInterval(BM.Timer);
 	BM.Timer = null;
 	BM = getNewGameSpace(level);
+	updateCanvasHtml()
 	setupCurrentLevel(BM)
 	
 	if (typeof exports === "undefined")
@@ -41,6 +47,8 @@ function resetGame(BM, level)
 
 
 function getNewGameSpace(level){
+	
+	console.log('new space', level)
 	
 	var BM = new Object();
 	
