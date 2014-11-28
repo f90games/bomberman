@@ -219,7 +219,7 @@ function updateHeros()
 			
 			BM.ctx.stroke();
 
-			BM.ctx.drawImage(hero.herotiles, hx, hy, 32, 32, column * 32, row * 32, 32, 32);
+			BM.ctx.drawImage(hero.herotiles, hx + hero.skin * 96, hy, 32, 32, column * 32, row * 32, 32, 32);
 		}
 	}
 
