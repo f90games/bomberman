@@ -1,14 +1,16 @@
 "use strict"
 
 
-function resetGame(BM)
+function resetGame(BM, level)
 {
+
+	level = level || BM.level;
 
 	BM.sounds['theme'].stop();
 
 	clearInterval(BM.Timer);
 	BM.Timer = null;
-	BM = getNewGameSpace();
+	BM = getNewGameSpace(level);
 	setupCurrentLevel(BM)
 	
 	if (typeof exports === "undefined")
@@ -38,9 +40,11 @@ function resetGame(BM)
 }
 
 
-function getNewGameSpace(){
+function getNewGameSpace(level){
 	
 	var BM = new Object();
+	
+	level = level || 0;
 	
 	BM = {
 		
@@ -51,7 +55,7 @@ function getNewGameSpace(){
 			y: 0
 		},
 		
-		currentLevel: 1,
+		currentLevel: level,
 		GameFrameTime: 50,
 		bombs: {
 

@@ -16,7 +16,7 @@ Connector.sendB = function(b){
 Connector.sendReset = function(){
 	if (Socket && Socket.readyState == 1) 
 	{
-		Socket.send(JSON.stringify({ Type: "RESET", Data: {} }));
+		Socket.send(JSON.stringify({ Type: "RESET", Data: {level: BM.level} }));
 	}
 	
 }

@@ -178,7 +178,7 @@ function HandleClientMessage(ID, Message)
 		break;
 		
 		case "RESET":
-			BM = Game.resetGame(BM);
+			BM = Game.resetGame(BM, Message.Data.level);
 			
 			if (C.peer)
 			{
