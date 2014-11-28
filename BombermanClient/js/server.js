@@ -4,7 +4,7 @@ var System = require("sys");
 var HTTP = require("http");
 var WebSocketServer = require("websocket").server;
 var _ = require('underscore');
-var Game = require("game.server");
+var Game = require("./game.server");
 
 var Frame = 0;
 var FramesPerGameStateTransmission = 3;
@@ -179,10 +179,10 @@ function HandleClientMessage(ID, Message)
 		
 		case "RESET":
 			BM = Game.resetGame(BM, Message.Data.level);
-			
+
 			if (C.peer)
 			{
-				C.peer.sendUTF(JSON.stringify({ type: 'reset' }))
+				C.peer.sendUTF(JSON.stringify({ type: 'reset', level: Message.Data.level }))
 				var hero = Game.addNewHero(BM);
 
 				C.sendUTF(JSON.stringify({ type: 'newHero', hero: BM.heros[C.peer.heroIndex] }))

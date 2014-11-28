@@ -16,7 +16,8 @@ Connector.sendB = function(b){
 Connector.sendReset = function(){
 	if (Socket && Socket.readyState == 1) 
 	{
-		Socket.send(JSON.stringify({ Type: "RESET", Data: {level: BM.level} }));
+		console.log('send reset');
+		Socket.send(JSON.stringify({ Type: "RESET", Data: {level: BM.currentLevel} }));
 	}
 	
 }
@@ -115,7 +116,7 @@ function Connect(){
 				
 				if(msg.type == 'reset')
 				{
-					BM = resetGame(BM);
+					BM = resetGame(BM, msg.level);
 					return;
 				}
 				

@@ -95,6 +95,7 @@ $(function(){
 
 	$('.select-level').click(function(){
 		BM = resetGame(BM, $(this).data('level') - 1);
+		Connector.sendReset();
 	});
 
 });
@@ -240,14 +241,6 @@ function gameloop(BM) {
 	}
 }
 
-function getLevel(level){
-	
-	return _.find(BM.levels, function(item){
-		return item.level == level
-	});
-	
-}
-
 function checkScreenScroll(hero, right, left, up, down){
 	
 	var level = getLevel(BM.currentLevel);
@@ -308,23 +301,22 @@ function checkScreenScroll(hero, right, left, up, down){
 		}
 	}
 	
+	if (BM.screenOffset.x < (level.screenWidth - level.mapTileSize * level.mapWidth)) {
+		BM.screenOffset.x = level.screenWidth - level.mapTileSize * level.mapWidth;
+	}
+	
+	if (BM.screenOffset.y < (level.screenHeight - level.mapTileSize * level.mapHeight)) {
+		BM.screenOffset.y = level.screenHeight - level.mapTileSize * level.mapHeight;
+	}
+	
+	if (Number(BM.screenOffset.y) > 0) {
+		BM.screenOffset.y = 0;
+	}
 	
 	if (BM.screenOffset.x > 0) {
 		BM.screenOffset.x = 0;
 	}
-	else
-	{
-		if (BM.screenOffset.x < (level.screenWidth - level.mapTileSize * level.mapWidth)) BM.screenOffset.x = level.screenWidth - level.mapTileSize * level.mapWidth;
-	}
 	
-	if (BM.screenOffset.y >= 0) {
-		BM.screenOffset.y = 0;
-	}
-	else if (BM.screenOffset.y < (level.screenHeight - level.mapTileSize * level.mapHeight)) {
-		BM.screenOffset.y = level.screenHeight - level.mapTileSize * level.mapHeight;
-	}
-	
-	console.log(BM.screenOffset.y)
 	$('#game-canvas').css('left', BM.screenOffset.x + 'px');
 	$('#game-canvas').css('top', BM.screenOffset.y + 'px');
 	

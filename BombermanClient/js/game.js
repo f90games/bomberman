@@ -1,6 +1,5 @@
 "use strict"
 
-
 function resetGame(BM, level)
 {
 
@@ -284,6 +283,14 @@ function runGameFrame(BM){
 	// hero.place_bomb = hero.step_left = hero.step_right = hero.step_up = hero.step_down = false;
 
 	hero.place_bomb = false;
+	
+}
+
+function getLevel(level){
+	
+	return _.find(BM.levels, function(item){
+		return item.level == level
+	});
 	
 }
 
