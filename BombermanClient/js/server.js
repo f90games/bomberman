@@ -1,5 +1,10 @@
 "use strict"
 
+require('nodetime').profile({
+    accountKey: '25e93db5dd4d53be9bd4e8fff5ffe190f19613e3', 
+    appName: 'Bomberman server'
+});
+
 var System = require("sys");
 var HTTP = require("http");
 var WebSocketServer = require("websocket").server;
@@ -7,7 +12,7 @@ var _ = require('underscore');
 var Game = require("./game.server");
 
 var Frame = 0;
-var FramesPerGameStateTransmission = 3;
+var frameMult = 3;
 var MaxConnections = 10;
 var Connections = {};
 var Rooms = {};
@@ -83,11 +88,11 @@ Server.on("request",
 							{
 								if (Rooms[query.room])
 								{
-									Game.RunGameFrame(Rooms[query.room].BM);
+									// Game.RunGameFrame(Rooms[query.room].BM);
 									SendGameState();
 								}
 							},
-							Rooms[query.room].BM.GameFrameTime
+							Rooms[query.room].BM.GameFrameTime * frameMult
 						);
 						
 					}
@@ -124,14 +129,14 @@ function HandleClientClosure(ID)
 		var conn = Connections[ID],
 			room = Rooms[conn.room];
 		
-		if (room) {
-			room.count--;
-			if (room.count <= 0 && room.BM) {
-				System.log('timer:' + room.BM.Timer)
-				clearInterval(room.BM.Timer);
-				delete Rooms[conn.room];
-			}
-		}
+		// if (room) {
+			// room.count--;
+			// if (room.count <= 0 && room.BM) {
+				// System.log('timer:' + room.BM.Timer)
+				// clearInterval(room.BM.Timer);
+				// delete Rooms[conn.room];
+			// }
+		// }
 	
 		System.log("Disconnect from " + Connections[ID].IP);
 		delete Connections[ID];
@@ -167,6 +172,7 @@ function HandleClientMessage(ID, Message)
 			
 		// Key down.
 		case "D":
+			console.log('key down', C.ID)
 			if (!C.peer) return;
 			BM.heros[C.heroIndex] = Message.Data
 		break;
@@ -178,7 +184,7 @@ function HandleClientMessage(ID, Message)
 		break;
 		
 		case "RESET":
-			BM = Game.resetGame(BM, Message.Data.level);
+			Game.resetGame(BM, Message.Data.level);
 
 			if (C.peer)
 			{
@@ -193,7 +199,7 @@ function HandleClientMessage(ID, Message)
 						Game.RunGameFrame(BM);
 						SendGameState();
 					},
-					BM.GameFrameTime
+					BM.GameFrameTime * frameMult
 				);
 			}
 			

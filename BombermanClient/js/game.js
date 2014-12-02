@@ -74,7 +74,7 @@ function getNewGameSpace(level){
 		heros: [],
 
 		sounds: [],
-		music: true,
+		music: false,
 		level: null
 	};
 

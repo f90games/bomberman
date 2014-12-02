@@ -70,9 +70,7 @@ $(function(){
 
 		function(e){
 			
-			// BM.hero.step++;
-			// BM.hero.step %= 3;
-
+			Connector.sendHeroState();
 		}
 	);
 	
@@ -198,6 +196,12 @@ function updateHeros()
 		// var column = hero.pos % BM.level.mapWidth - 1;
 		
 		hero.moveTo();
+		
+		if (hero.pos != hero.posTarget)
+		{
+			hero.step = 0
+			Connector.sendHeroState()
+		}
 
 		var row = hero.point.y;
 		var column = hero.point.x;
@@ -235,10 +239,10 @@ function gameloop(BM) {
 	
 	updateHeros();
 	
-	if (Socket && Socket.readyState == 1)
+	/* if (Socket && Socket.readyState == 1)
 	{
 		Socket.send(JSON.stringify({ Type: "D", Data: _.omit(BM.hero, ['herotiles']) }));
-	}
+	} */
 }
 
 function checkScreenScroll(hero, right, left, up, down){

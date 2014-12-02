@@ -22,6 +22,14 @@ Connector.sendReset = function(){
 	
 }
 
+Connector.sendHeroState = function()
+{
+	if (Socket && Socket.readyState == 1)
+	{
+		Socket.send(JSON.stringify({ Type: "D", Data: _.omit(BM.hero, ['herotiles']) }));
+	}
+}
+
 function Connect(){
 
 
@@ -104,7 +112,7 @@ function Connect(){
 				{
 					
 					var hero = new Hero(_.extend(msg.hero, {level: BM.level}));
-
+					console.log(hero)
 					hero.herotiles = new Image();
 					hero.herotiles.src = BM.hero.herotiles.src;
 					hero.heroTileIndex = BM.hero.heroTileIndex;
@@ -129,6 +137,7 @@ function Connect(){
 				}
 				
 				if (msg.data && msg.data.pos) {
+					console.log('new pos', msg.data);
 					if (!BM.heros[1]) return;
 					_.extend(BM.heros[1], msg.data);
 				}
