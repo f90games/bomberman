@@ -27,20 +27,6 @@ function resetGame(BM, level)
 			BM.GameFrameTime
 		);
 	}
-
-  if (BM.music){
-	  
-	  // if (BM.sounds['theme']){ 
-	  //   BM.sounds['theme'].play();  
-	  // } else {
-    BM.sounds['theme'] = new Howl({
-      volume: 0.2,
-      loop: true,
-      urls: ['/data/sound/theme.mp3']
-    }).play();          
-	  // } 
-	  // BM.music = true;
-  }
 	
 	return BM;
 }
@@ -74,7 +60,7 @@ function getNewGameSpace(level){
 		heros: [],
 
 		sounds: [],
-		music: false,
+		music: true,
 		level: null
 	};
 
@@ -156,6 +142,20 @@ function setupCurrentLevel(BM) {
 	}
 	
 	if (!level) return BM;
+
+  if (BM.music){
+	  
+	  if (BM.sounds['theme']){ 
+	    BM.sounds['theme'].play();  
+	  } else {
+    BM.sounds['theme'] = new Howl({
+      volume: 0.2,
+      loop: true,
+      urls: ['/data/sound/theme.mp3']
+    }).play();          
+	  } 
+	  // BM.music = true;
+  }	
 	
 	BM.hero = new Hero({
 		pos: level.heroSpown,
