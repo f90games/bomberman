@@ -4,6 +4,11 @@ var Render = function(с){
   this.sprites = [];
   this.tiles = [];
   this.sounds = [];
+
+}
+
+Render.prototype.setScene = function(){
+
 }
 
 Render.prototype.setContext = function(ctx) {
@@ -22,90 +27,6 @@ Render.prototype.playSound = function(sound, onplay, onstop, volume){
       }).play();          
     }   
 }
-
-Render.prototype.checkScreenScroll = function(hero, right, left, up, down){
-  
-  var level = getLevel(BM.currentLevel);
-  var deltaX = 0,
-    deltaY = 0,
-    step = 3;
-  
-  if (!level) return;
-
-  //horizontal
-  var heroPosX = ((hero.pos - 1) % level.mapWidth) * level.mapTileSize
-  var heroPosY = Math.ceil((hero.pos - 1) / level.mapWidth) * level.mapTileSize;
-  
-  if (right)
-  {
-    deltaX = level.screenWidth - (heroPosX + BM.screenOffset.x);
-  }
-  else if(left)
-  {
-    deltaX = (heroPosX + BM.screenOffset.x)
-  }
-  else if(up)
-  {
-    deltaY = (heroPosY + BM.screenOffset.y)
-  }
-  else if(down)
-  {
-    deltaY = level.screenHeight - (heroPosY + BM.screenOffset.y)
-  }
-  
-  
-  if (right)
-  {
-    if (deltaX <= step * level.mapTileSize)
-    {
-      BM.screenOffset.x -= step * level.mapTileSize;
-    }
-  }
-  else if(left)
-  {
-    if (deltaX <= step * level.mapTileSize)
-    {
-      BM.screenOffset.x += step * level.mapTileSize;
-    }
-  }
-  else if(up)
-  {
-    if (deltaY <= step * level.mapTileSize)
-    {
-      BM.screenOffset.y += step * level.mapTileSize;
-    }
-  }
-  else if (down)
-  {
-    if (deltaY <= step * level.mapTileSize)
-    {
-      BM.screenOffset.y -= step * level.mapTileSize;
-    }
-  }
-  
-  if (BM.screenOffset.x < (level.screenWidth - level.mapTileSize * level.mapWidth)) {
-    BM.screenOffset.x = level.screenWidth - level.mapTileSize * level.mapWidth;
-  }
-  
-  if (BM.screenOffset.y < (level.screenHeight - level.mapTileSize * level.mapHeight)) {
-    BM.screenOffset.y = level.screenHeight - level.mapTileSize * level.mapHeight;
-  }
-  
-  if (Number(BM.screenOffset.y) > 0) {
-    BM.screenOffset.y = 0;
-  }
-  
-  if (BM.screenOffset.x > 0) {
-    BM.screenOffset.x = 0;
-  }
-  
-  $('#game-canvas').css('left', BM.screenOffset.x + 'px');
-  $('#game-canvas').css('top', BM.screenOffset.y + 'px');
-  
-  
-}
-
-
 
 Render.prototype.clear = function() {  
   this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height); 
@@ -141,13 +62,13 @@ Render.prototype.drawMap  = function() {
         column = 7;
       }
     
-      BM.ctx.drawImage(BM.tiles, column * 32 + column + 1, row * 32 + row + 1,  32, 32, i*32, j*32, 32, 32);
+      this.ctx.drawImage(BM.tiles, column * 32 + column + 1, row * 32 + row + 1,  32, 32, i*32, j*32, 32, 32);
 
       if (bomb = BM.bombs[pos]){
         if (bomb.status == BOMB_START)
-          BM.ctx.drawImage(BM.items, 0, 0,  32, 32, i*32, j*32, 32, 32);
+          this.ctx.drawImage(BM.items, 0, 0,  32, 32, i*32, j*32, 32, 32);
         else if (bomb.status == BOMB_EXPLODE)
-          BM.ctx.drawImage(BM.items, 32 * 2, 0,  32, 32, i*32, j*32, 32, 32);   
+          this.ctx.drawImage(BM.items, 32 * 2, 0,  32, 32, i*32, j*32, 32, 32);   
         else if (bomb.status == 0)
           delete BM.bombs[pos];
       }
@@ -156,11 +77,11 @@ Render.prototype.drawMap  = function() {
         if (fx.status == 3){
 
           if (fx.direction == 0  || fx.direction == 3 )
-            BM.ctx.drawImage(BM.items, (32 * 3), 0,  32, 32, i*32, j*32, 32, 32);   
+            this.ctx.drawImage(BM.items, (32 * 3), 0,  32, 32, i*32, j*32, 32, 32);   
           else 
-            BM.ctx.drawImage(BM.items, (32 * 4), 0,  32, 32, i*32, j*32, 32, 32); 
+            this.ctx.drawImage(BM.items, (32 * 4), 0,  32, 32, i*32, j*32, 32, 32); 
 
-          // BM.ctx.drawImage(BM.items, (32 * (3 + (fx.direction % 2))), 0,  32, 32, i*32, j*32, 32, 32);   
+          // this.ctx.drawImage(BM.items, (32 * (3 + (fx.direction % 2))), 0,  32, 32, i*32, j*32, 32, 32);   
         }
         else if (fx.status == 0)
           delete BM.fx[pos];
@@ -215,22 +136,22 @@ Render.prototype.drawHeroes = function (){
 
     //lifebar
     if (hero.hp > 0) {
-      BM.ctx.beginPath();
-      BM.ctx.moveTo(column * 32, row * 32 - 5);
-      BM.ctx.lineTo(column * 32 + hero.hp * 10, row * 32 - 5);
-      BM.ctx.lineWidth = 4;
+      this.ctx.beginPath();
+      this.ctx.moveTo(column * 32, row * 32 - 5);
+      this.ctx.lineTo(column * 32 + hero.hp * 10, row * 32 - 5);
+      this.ctx.lineWidth = 4;
       
       if (hero.hp == 3){
-        BM.ctx.strokeStyle = 'green';
+        this.ctx.strokeStyle = 'green';
       } else if (hero.hp == 2) {
-        BM.ctx.strokeStyle = 'yellow';
+        this.ctx.strokeStyle = 'yellow';
       } else if (hero.hp == 1) {
-        BM.ctx.strokeStyle = 'red';
+        this.ctx.strokeStyle = 'red';
       }
       
-      BM.ctx.stroke();
+      this.ctx.stroke();
 
-      BM.ctx.drawImage(hero.herotiles, hx + hero.skin * 96, hy, 32, 32, column * 32, row * 32, 32, 32);
+      this.ctx.drawImage(hero.herotiles, hx + hero.skin * 96, hy, 32, 32, column * 32, row * 32, 32, 32);
     }
   }
 
@@ -238,30 +159,121 @@ Render.prototype.drawHeroes = function (){
 
 var Camera = function(c){
 
+  this.elId = c.elId || 'game-canvas';
+  this.embedToId = c.embedToId || 'canvas-wrapper';
+
+  this.screenWidth = c.screenWidth || 640;
+  this.screenHeight = c.screenHeight || 480;
+
+  this.mapTileSize = c.mapTileSize || 32;
+
+  this.mapWidth = c.mapWidth || 20;
+  this.screenWidth = c.mapWidth || 15;
+
+  this.screenOffset = {};
 }
 
 
-Camera.prototype.updateCanvasHtml = function(level){
-  
-  level = getLevel(level);
+Camera.prototype.updateCanvasHtml = function(){
   
   if (!level) return;
   
   $('#canvas-wrapper').css({
-    'width': level.screenWidth + 'px',
-    'height': level.screenHeight + 'px'
+    'width': this.screenWidth + 'px',
+    'height': this.screenHeight + 'px'
     });
   
   $('#canvas-wrapper').html(
-    '<canvas id="game-canvas" width="' + level.mapWidth * level.mapTileSize + 'px" height="' + level.mapHeight * level.mapTileSize + 'px" style="position: relative; transition: left 1s, top 1s;"></canvas>'
+    '<canvas id="game-canvas" width="' + this.mapWidth * this.mapTileSize + 'px" height="' + this.mapHeight * this.mapTileSize + 'px" style="position: relative; transition: left 1s, top 1s;"></canvas>'
   );
-  $('#canvas-game').attr('width', level.mapTileSize * level.mapWidth);
-  $('#canvas-game').attr('height', level.mapTileSize * level.mapHeight);
+  $('#canvas-game').attr('width', this.mapTileSize * this.mapWidth);
+  $('#canvas-game').attr('height', this.mapTileSize * this.mapHeight);
   
   $('#game-canvas').css('left', '0px');
   $('#game-canvas').css('top', '0px');
   
   // var canvas = document.getElementById("game-canvas");  
-  // BM.ctx = canvas.getContext("2d");
+  // this.ctx = canvas.getContext("2d");
+  
+}
+
+Camera.prototype.checkScreenScroll = function(hero, dir){
+
+  var deltaX = 0,
+    deltaY = 0,
+    step = 3;
+  
+  if (!level) return;
+
+  //horizontal
+  var heroPosX = ((hero.pos - 1) % this.mapWidth) * this.mapTileSize
+  var heroPosY = Math.ceil((hero.pos - 1) / this.mapWidth) * this.mapTileSize;
+  
+  if (dir.right)
+  {
+    deltaX = this.screenWidth - (heroPosX + this.screenOffset.x);
+  }
+  else if(dir.left)
+  {
+    deltaX = (heroPosX + this.screenOffset.x)
+  }
+  else if(dir.up)
+  {
+    deltaY = (heroPosY + this.screenOffset.y)
+  }
+  else if(dir.down)
+  {
+    deltaY = this.screenHeight - (heroPosY + this.screenOffset.y)
+  }
+  
+  
+  if (right)
+  {
+    if (deltaX <= step * this.mapTileSize)
+    {
+      this.screenOffset.x -= step * this.mapTileSize;
+    }
+  }
+  else if(left)
+  {
+    if (deltaX <= step * this.mapTileSize)
+    {
+      this.screenOffset.x += step * this.mapTileSize;
+    }
+  }
+  else if(up)
+  {
+    if (deltaY <= step * this.mapTileSize)
+    {
+      this.screenOffset.y += step * this.mapTileSize;
+    }
+  }
+  else if (down)
+  {
+    if (deltaY <= step * this.mapTileSize)
+    {
+      this.screenOffset.y -= step * this.mapTileSize;
+    }
+  }
+  
+  if (this.screenOffset.x < (this.screenWidth - this.mapTileSize * this.mapWidth)) {
+    this.screenOffset.x = this.screenWidth - this.mapTileSize * this.mapWidth;
+  }
+  
+  if (this.screenOffset.y < (this.screenHeight - this.mapTileSize * this.mapHeight)) {
+    this.screenOffset.y = this.screenHeight - this.mapTileSize * this.mapHeight;
+  }
+  
+  if (Number(this.screenOffset.y) > 0) {
+    this.screenOffset.y = 0;
+  }
+  
+  if (this.screenOffset.x > 0) {
+    this.screenOffset.x = 0;
+  }
+  
+  $('#game-canvas').css('left', this.screenOffset.x + 'px');
+  $('#game-canvas').css('top', this.screenOffset.y + 'px');
+  
   
 }

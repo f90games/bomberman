@@ -47,10 +47,45 @@ Game.prototype.setState = function(state){
   this.state = state;
 }
 
-Game.prototype.setScene = function(scene){
-  this.scene = scene;
+Game.prototype.setScene = function(s){
 
-  // this.render
+  switch (s) {
+    case PLAY_SCENE:
+      this.scene = new PlayScene();
+    break;
+
+    case START_SCENE:
+      this.scene = new StartScene();
+    break;
+
+    case LOADING_SCENE:
+      this.scene = new LoadingScene();
+    break;
+
+    case MENU_SCENE:
+      this.scene = new LoadingScene();
+    break;
+
+    case SELECT_ROOM_SCENE:
+      this.scene = new LoadingScene();
+    break;
+
+    case YOU_LOST_SCENE:
+      this.scene = new LoadingScene();
+    break;
+
+    case SHOP_SCENE:
+      this.scene = new LoadingScene();
+    break;
+  } 
+
+  this.scene.run();
+
+  this.render.setScene(this.scene);
+}
+
+Game.prototype.updateState = function(){
+
 }
 
 Game.prototype.loadLevel = function(){

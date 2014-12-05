@@ -54,3 +54,4 @@ Input.prototype.init = function(){
     BM.hero.place_bomb = true;
   }
 }
+

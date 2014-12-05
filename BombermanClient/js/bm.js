@@ -14,6 +14,14 @@ window.PLAYER_STEPS = 4; //количество шагов
 
 var BM;
 
+function extend(Child, Parent) {
+  var F = function() { }
+  F.prototype = Parent.prototype
+  Child.prototype = new F()
+  Child.prototype.constructor = Child
+  Child.superclass = Parent.prototype
+}
+
 (function(){
   BM = {}; //для глобальной видимости
 
@@ -26,10 +34,12 @@ var BM;
 
     var input = BM.input = new Input({});
 
-    var canvas = document.getElementById("game-canvas");  
-
     var render = BM.render = new Render({
+      elId: "game-canvas",
+      embedToId: "canvas-wrapper"
     });
+
+    // var canvas = document.getElementById("game-canvas");     
 
     var connector = BM.connector = new Connector({});
 
@@ -40,6 +50,6 @@ var BM;
 
     game.init();
 
-    game.setScene(START_SCENE);    
+    game.setScene(LOADING_SCENE);    
   }
 })();
