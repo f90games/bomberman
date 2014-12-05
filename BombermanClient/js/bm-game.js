@@ -47,7 +47,7 @@ Game.prototype.setState = function(state){
   this.state = state;
 }
 
-Game.prototype.setScene = function(s){
+Game.prototype.createScene = function(s){
 
   switch (s) {
     case PLAY_SCENE:
