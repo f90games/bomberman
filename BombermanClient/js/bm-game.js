@@ -59,23 +59,23 @@ Game.prototype.createScene = function(s){
     break;
 
     case LOADING_SCENE:
-      this.scene = new LoadingScene();
+      this.scene = new LoadingScene({});
     break;
 
     case MENU_SCENE:
-      this.scene = new LoadingScene();
+      this.scene = new LoadingScene({});
     break;
 
     case SELECT_ROOM_SCENE:
-      this.scene = new LoadingScene();
+      this.scene = new LoadingScene({});
     break;
 
     case YOU_LOST_SCENE:
-      this.scene = new LoadingScene();
+      this.scene = new LoadingScene({});
     break;
 
     case SHOP_SCENE:
-      this.scene = new LoadingScene();
+      this.scene = new LoadingScene({});
     break;
   } 
 

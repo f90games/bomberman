@@ -29,3 +29,12 @@ body {
 	font-family: Verdana;
 	font-size: 12px;
 }
+
+#canvasLoader {
+  position: relative;
+}
+
+#canvasLoader canvas{
+  margin: 200px auto;
+  display: block;
+}

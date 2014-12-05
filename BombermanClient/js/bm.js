@@ -50,6 +50,8 @@ function extend(Child, Parent) {
 
     game.init();
 
-    game.createScene(LOADING_SCENE);    
+    game.createScene(LOADING_SCENE);
+
+    setTimeout(3000, game.createScene(PLAY_SCENE));
   }
 })();
