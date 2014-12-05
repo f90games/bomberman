@@ -51,11 +51,11 @@ Game.prototype.createScene = function(s){
 
   switch (s) {
     case PLAY_SCENE:
-      this.scene = new PlayScene();
+      this.scene = new PlayScene({});
     break;
 
     case START_SCENE:
-      this.scene = new StartScene();
+      this.scene = new StartScene({});
     break;
 
     case LOADING_SCENE:

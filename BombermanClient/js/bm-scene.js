@@ -10,6 +10,9 @@ window.SHOP_SCENE = 7;
 
 var Scene = function(c){
 
+  if (!c)
+    var c = {};
+
   this.elId = c.elId || 'game-canvas';
   this.embedToId = c.embedToId || 'canvas-wrapper';
 
