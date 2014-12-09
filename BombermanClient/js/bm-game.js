@@ -3,51 +3,17 @@
 //***********************************************************************************
 // Game - он же State Manager
 var Game = function(c){
-
+  this.interval = null;
 }
 
 Game.prototype.init = function(){
 
 };
 
-
-Game.prototype.gameloop = function(BM) {  
-  
-  // clear();
-
-  // setupMap();
-  
-  // runGameFrame(BM);
-  
-  // updateHeros();
-  
-  /* if (Socket && Socket.readyState == 1)
-  {
-    Socket.send(JSON.stringify({ Type: "D", Data: _.omit(BM.hero, ['herotiles']) }));
-  } */
-}
-
-Game.prototype.setState = function(state){
-  this.state = state;
-}
-
-Game.prototype.setInput = function(input){
-  this.input = input;
-}
-
-Game.prototype.setConnector = function(connector){
-  this.connector = connector;
-}
-
-Game.prototype.setRender = function(render){
-  this.render = render;
-}
-
-Game.prototype.setState = function(state){
-  this.state = state;
-}
-
 Game.prototype.createScene = function(s){
+
+  if (this.scene)
+    this.scene.stop();
 
   switch (s) {
     case PLAY_SCENE:
@@ -88,83 +54,99 @@ Game.prototype.updateState = function(){
 
 }
 
-Game.prototype.loadLevel = function(){
+Game.prototype.loadLevel = function(levelId){
   
+  var levels = 
+  [
+    {
+      "level" : 0,
+      "maptiles" : "tmw_desert_spacing.png",
+      "screenWidth": 672,
+      "screenHeight": 480,
+      
+      "mapTileSize": 32,
+      "mapWidth": 21,
+      "mapHeight": 15,
+      "heroSpown" : 23,
+      
+      "herotiles": "vx_chara00.png",
+      "bombtiles": "bomb.png",
+      "heroTileIndex": 1, //hero idx 1..8  
+      "map":[10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 38, 10, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 38, 0, 38, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 38, 10, 0, 10, 10, 0, 0, 0, 0, 0, 38, 0, 0, 0, 38, 38, 38, 38, 38, 0, 0, 0, 0, 0, 10, 10, 0, 10, 0, 10, 38, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 38, 10, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 38, 0, 0, 0, 38, 0, 38, 0, 0, 0, 0, 0, 10, 10, 0, 10, 38, 10, 0, 10, 38, 10, 0, 10, 0, 10, 0, 10, 0, 10, 38, 10, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 38, 0, 38, 0, 38, 0, 0, 0, 10, 10, 0, 10, 38, 10, 38, 10, 0, 10, 38, 10, 0, 10, 0, 10, 0, 10, 38, 10, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 38, 0, 38, 0, 0, 38, 0, 0, 10, 10, 0, 10, 0, 10, 0, 10, 0, 10, 38, 10, 38, 10, 0, 10, 38, 10, 38, 10, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+      "fixed_terrian_sprite" : [10],
+      "destroy_terrian_sprite" : [38, 39]             
+    },
+
+    {
+      "level" : 1,
+      "maptiles" : "tmw_desert_spacing.png",
+
+      "screenWidth": 800,
+      "screenHeight": 500,
+      
+      "mapTileSize": 32,
+      "mapWidth": 45,
+      "mapHeight": 15,
+      "heroSpown" : 47,
+
+      "herotiles": "vx_chara00.png",
+      "bombtiles": "bomb.png",
+      "heroTileIndex": 1, //hero idx 1..8  
+      "map":[10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 32, 10, 32, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 38, 10, 0, 10, 0, 10, 0, 10, 10, 0, 0, 46, 0, 0, 38, 0, 0, 0, 0, 32, 32, 0, 0, 0, 32, 32, 0, 0, 0, 0, 0, 40, 0, 0, 0, 40, 0, 0, 0, 40, 40, 40, 40, 40, 0, 0, 0, 38, 0, 38, 38, 0, 10, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 32, 10, 0, 10, 0, 10, 32, 10, 0, 10, 0, 10, 40, 10, 0, 10, 40, 10, 0, 10, 40, 10, 0, 10, 40, 10, 0, 10, 0, 10, 0, 10, 0, 10, 10, 0, 0, 0, 0, 38, 0, 38, 0, 0, 0, 32, 47, 47, 47, 47, 47, 32, 0, 0, 0, 0, 0, 40, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0, 0, 40, 0, 0, 0, 38, 0, 0, 0, 0, 10, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 47, 10, 47, 10, 47, 10, 47, 10, 0, 10, 0, 10, 40, 10, 0, 10, 40, 10, 0, 10, 0, 10, 0, 10, 40, 10, 0, 10, 0, 10, 0, 10, 0, 10, 10, 0, 0, 38, 0, 0, 0, 38, 0, 0, 0, 32, 32, 0, 0, 0, 32, 32, 0, 0, 0, 0, 0, 40, 40, 40, 40, 40, 0, 0, 0, 40, 40, 40, 40, 40, 0, 0, 0, 0, 0, 38, 38, 0, 10, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 32, 10, 32, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 40, 10, 0, 10, 40, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 10, 0, 0, 0, 0, 38, 0, 0, 0, 0, 0, 0, 32, 47, 47, 47, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 40, 0, 0, 0, 40, 0, 0, 0, 0, 0, 0, 0, 38, 38, 0, 0, 0, 10, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 32, 10, 32, 10, 32, 10, 32, 10, 0, 10, 0, 10, 0, 10, 0, 10, 40, 10, 0, 10, 40, 10, 0, 10, 40, 10, 0, 10, 0, 10, 0, 10, 0, 10, 10, 38, 0, 38, 0, 0, 0, 38, 0, 0, 0, 0, 0, 47, 0, 47, 0, 0, 0, 0, 0, 38, 0, 0, 0, 0, 0, 40, 0, 0, 0, 40, 40, 40, 40, 40, 0, 31, 0, 31, 0, 31, 0, 0, 10, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 32, 10, 32, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 0, 10, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 32, 32, 0, 32, 32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+      "fixed_terrian_sprite" : [10],
+      "destroy_terrian_sprite" : [32, 38, 46, 40, 47, 31]             
+    },
+
+
+  ];
+
+  this.state.level = levels[levelId];
+  this.state.map = this.state.level.map;
+
+  return this.state.level;
+
 }
 
-Game.prototype.runGameFrame = function(BM){
-  
-  var hero = BM.hero;
+Game.prototype.setGameLoop = function(gameLoop){
+  this.gameLoop = gameLoop;
+}
 
-  if (hero.hp > 0){
+//***************************************************************************
+// Getters and setters
+Game.prototype.setState = function(state){
+  this.state = state;
+}
 
-    // if((hero.point.x == hero.pointTarget.x) && (hero.point.y == hero.pointTarget.y)){
-    if((hero.posTarget == hero.pos)){     
+Game.prototype.setInput = function(input){
+  this.input = input;
+}
 
-      if(hero.step_up)
-      {
-        if (checkHeroPos(BM, hero.pos - BM.level.mapWidth))
-        {
-          hero.posTarget -= BM.level.mapWidth;
-        }
-      }
-      else if (hero.step_down)
-      {
-        
-        if (checkHeroPos(BM, hero.pos + BM.level.mapWidth))
-        {
-          hero.posTarget += BM.level.mapWidth;
-        }
-      }
-      else if (hero.step_left)
-      {
-        if (checkHeroPos(BM, hero.pos - 1))
-        {
-          hero.posTarget--;
-        }
-      }
-      else if (hero.step_right)
-      {
-        if (checkHeroPos(BM, hero.pos + 1))
-        {
-          hero.posTarget++;
-        }
-      }
+Game.prototype.setConnector = function(connector){
+  this.connector = connector;
+}
 
+Game.prototype.setRender = function(render){
+  this.render = render;
+}
 
-    }  
+Game.prototype.setSound = function(sound){
+  this.sound = sound;
+}
 
-    // if ((hero.newpos != hero.pos) && (herp.path.length > 1)) {
-      
-    // }    
-    
-    if (hero.place_bomb) {
-      var bomb_idx = new Date().getTime();
+Game.prototype.getState = function(){
+  return this.state;
+}
 
-      var bomb = new Bomb({
-        power: 2,
-        pos: hero.pos,
-        timeLeft: 3000,
-        status: BOMB_START,
-        level: BM.level
-      }, BM.map);
+Game.prototype.getInput = function(){
+  return this.input;
+}
 
-      bomb.start();
-      
-      if (checkBombPos(BM, hero.pos-1))
-      {
-        BM.bombs[hero.pos-1] = bomb;
-        Connector && Connector.sendB(bomb)
-      }
+Game.prototype.getRender = function(){
+  return this.render;
+}
 
-    }
-
-  }
-  
-  // hero.place_bomb = hero.step_left = hero.step_right = hero.step_up = hero.step_down = false;
-
-  hero.place_bomb = false;
-  
+Game.prototype.getSound = function(){
+  return this.sound;
 }
 
 
@@ -172,7 +154,17 @@ Game.prototype.runGameFrame = function(BM){
 // 
 // 
 var GameState = function(c){
+  this.currentHero = null;
+  this.bombs = [];
+  this.fx = [];
+}
 
+GameState.prototype.setCurrentHero = function(hero){
+  this.currentHero = hero;
+}
+
+GameState.prototype.getCurrentHero = function(hero){
+  return this.currentHero;
 }
 
 //***************************************************************************

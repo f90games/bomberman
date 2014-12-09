@@ -1,22 +1,54 @@
 "use strict"
 
-var Render = function(c){
+var GraphEngine = function(c){
   this.sprites = [];
   this.tiles = [];
-  this.sounds = [];
-
 }
 
-Render.prototype.setScene = function(){
-
-}
-
-Render.prototype.setContext = function(ctx) {
+GraphEngine.prototype.setContext = function(ctx) {
   this.ctx = ctx;
 }
 
-Render.prototype.playSound = function(sound, onplay, onstop, volume){
-    if (BM.sounds[sound]){
+GraphEngine.prototype.setScene = function(scene) {
+  this.scene = scene;
+}
+
+GraphEngine.prototype.setCamera = function(camera) {
+  this.camera = camera;
+}
+
+GraphEngine.prototype.clear = function() {  
+  this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height); 
+}
+
+GraphEngine.prototype.resourceFactory = function(resource, isTile){
+
+  if(isTile){
+    if(this.tiles[resource])
+      return this.tiles[resource]
+    else {
+      var image  = new Image();
+      image.src = "img/sprites/" + resource;
+      return this.tiles[resource] = image;
+    }
+  } else {
+    if(this.tiles[resource])
+      return this.tiles[resource]
+    else {
+      var image  = new Image();
+      image.src = "img/sprites/" + resource;
+      return this.tiles[resource] = image;
+    }    
+  }
+}
+
+
+var SoundEngine = function(){
+  this.sounds = [];
+}
+
+SoundEngine.prototype.playSound = function(sound, onplay, onstop, volume){
+    if (this.sounds[sound]){
       this.sounds[sound].play();  
     } else {
       this.sounds[sound] = new Howl({
@@ -27,11 +59,6 @@ Render.prototype.playSound = function(sound, onplay, onstop, volume){
       }).play();          
     }   
 }
-
-Render.prototype.clear = function() {  
-  this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height); 
-}
-
 
 var Camera = function(c){
 

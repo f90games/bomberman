@@ -34,9 +34,13 @@ function extend(Child, Parent) {
 
     var input = BM.input = new Input({});
 
-    var render = BM.render = new Render({
+    var render = BM.graphEngine = new GraphEngine({
       elId: "game-canvas",
       embedToId: "canvas-wrapper"
+    });
+
+    var sound = BM.soundEngine = new SoundEngine({
+
     });
 
     // var canvas = document.getElementById("game-canvas");     
@@ -45,6 +49,7 @@ function extend(Child, Parent) {
 
     game.setState(state); //именно state будет обнуляться
     game.setRender(render);
+    game.setSound(sound);
     game.setInput(input);
     game.setConnector(connector);
 
@@ -53,6 +58,7 @@ function extend(Child, Parent) {
     game.createScene(LOADING_SCENE);
 
     setTimeout(function(){
+      game.loadLevel(1);
       game.createScene(PLAY_SCENE);
     }, 3000);
   }
