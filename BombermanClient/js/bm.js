@@ -12,8 +12,6 @@ window.PLAYER_RIGHT = 4;
 window.PLAYER_SPEED = 4; //количество фреймов для движения
 window.PLAYER_STEPS = 4; //количество шагов
 
-var BM;
-
 function extend(Child, Parent) {
   var F = function() { }
   F.prototype = Parent.prototype
@@ -22,6 +20,8 @@ function extend(Child, Parent) {
   Child.superclass = Parent.prototype
 }
 
+var BM;
+
 (function(){
   BM = {}; //для глобальной видимости
 
@@ -29,7 +29,7 @@ function extend(Child, Parent) {
     var game = BM.game = new Game({});
     
     var state = BM.state = new GameState({
-      level: 1 //
+      currentLevel: 0
     });
 
     var input = BM.input = new Input({});
@@ -41,9 +41,7 @@ function extend(Child, Parent) {
 
     var sound = BM.soundEngine = new SoundEngine({
 
-    });
-
-    // var canvas = document.getElementById("game-canvas");     
+    });  
 
     var connector = BM.connector = new Connector({});
 
@@ -58,8 +56,9 @@ function extend(Child, Parent) {
     game.createScene(LOADING_SCENE);
 
     setTimeout(function(){
-      game.loadLevel(1);
+      game.getState().setCurrentLevel(_.random(0,1));
+      game.loadLevel();
       game.createScene(PLAY_SCENE);
-    }, 3000);
+    }, 300);
   }
 })();

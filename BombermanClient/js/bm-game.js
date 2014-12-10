@@ -4,6 +4,8 @@
 // Game - он же State Manager
 var Game = function(c){
   this.interval = null;
+
+  this.em = new EventManager();
 }
 
 Game.prototype.init = function(){
@@ -15,33 +17,51 @@ Game.prototype.createScene = function(s){
   if (this.scene)
     this.scene.stop();
 
+  var state = this.state;
+
   switch (s) {
     case PLAY_SCENE:
-      this.scene = new PlayScene({});
+      
+      var level = state.level;
+
+      this.scene = new PlayScene({
+        screenWidth: level.screenWidth,
+        screenHeight: level.screenHeight,
+        mapTileSize: level.mapTileSize,
+        mapWidth: level.mapWidth,
+        mapHeight: level.mapHeight,
+        heroSpown : level.heroSpown        
+      });
     break;
 
     case START_SCENE:
-      this.scene = new StartScene({});
+      this.scene = new StartScene({
+      });
     break;
 
     case LOADING_SCENE:
-      this.scene = new LoadingScene({});
+      this.scene = new LoadingScene({
+      });
     break;
 
     case MENU_SCENE:
-      this.scene = new LoadingScene({});
+      this.scene = new LoadingScene({
+      });
     break;
 
     case SELECT_ROOM_SCENE:
-      this.scene = new LoadingScene({});
+      this.scene = new LoadingScene({
+      });
     break;
 
     case YOU_LOST_SCENE:
-      this.scene = new LoadingScene({});
+      this.scene = new LoadingScene({
+      });
     break;
 
     case SHOP_SCENE:
-      this.scene = new LoadingScene({});
+      this.scene = new LoadingScene({
+      });
     break;
   } 
 
@@ -55,6 +75,10 @@ Game.prototype.updateState = function(){
 }
 
 Game.prototype.loadLevel = function(levelId){
+
+  if (!levelId){
+    var levelId = this.state.currentLevel;
+  }
   
   var levels = 
   [
@@ -115,22 +139,27 @@ Game.prototype.setGameLoop = function(gameLoop){
 // Getters and setters
 Game.prototype.setState = function(state){
   this.state = state;
+  this.state.game = this;
 }
 
 Game.prototype.setInput = function(input){
   this.input = input;
+  this.input.game = this;
 }
 
 Game.prototype.setConnector = function(connector){
   this.connector = connector;
+  this.connector.game = this;
 }
 
 Game.prototype.setRender = function(render){
   this.render = render;
+  this.render.game = this;
 }
 
 Game.prototype.setSound = function(sound){
   this.sound = sound;
+  this.sound.game = this;
 }
 
 Game.prototype.getState = function(){
@@ -154,17 +183,23 @@ Game.prototype.getSound = function(){
 // 
 // 
 var GameState = function(c){
-  this.currentHero = null;
+  this.currentHeroEntity = null;
+  this.currentLevel = c.currentLevel || 0;
+  this.heroes = [];
   this.bombs = [];
   this.fx = [];
 }
 
 GameState.prototype.setCurrentHero = function(hero){
-  this.currentHero = hero;
+  this.currentHeroEntity = hero;
 }
 
 GameState.prototype.getCurrentHero = function(hero){
-  return this.currentHero;
+  return this.currentHeroEntity;
+}
+
+GameState.prototype.setCurrentLevel = function(levelId){
+  this.currentLevel = levelId;
 }
 
 //***************************************************************************

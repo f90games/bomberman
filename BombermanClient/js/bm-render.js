@@ -62,15 +62,17 @@ SoundEngine.prototype.playSound = function(sound, onplay, onstop, volume){
 
 var Camera = function(c){
 
+  // debugger;
+
   this.elId = c.elId || 'game-canvas';
   this.embedToId = c.embedToId || 'canvas-wrapper';
 
-  this.screenWidth = c.screenWidth || 640;
+  this.screenWidth = c.screenWidth || 672;
   this.screenHeight = c.screenHeight || 480;
 
   this.mapTileSize = c.mapTileSize || 32;
 
-  this.mapWidth = c.mapWidth || 20;
+  this.mapWidth = c.mapWidth || 21;
   this.mapHeight = c.mapWidth || 15;
 
   this.screenOffset = {};

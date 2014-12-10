@@ -16,16 +16,31 @@ var Scene = function(c){
   this.elId = c.elId || 'game-canvas';
   this.embedToId = c.embedToId || 'canvas-wrapper';
 
+  this.screenWidth = c.screenWidth || 672;
+  this.screenHeight = c.screenHeight || 480;
+
+  this.mapTileSize = c.mapTileSize || 32;
+
+  this.mapWidth = c.mapWidth || 21;
+  this.mapHeight = c.mapWidth || 15;
 
   this.camera = new Camera({
     elId: this.elId,
     embedToId: this.embedToId,
 
-    width: c.width,
-    height: c.height
+    screenWidth: c.screenWidth,
+    screenHeight: c.screenHeight,
+
+    mapTileSize: c.mapTileSize,
+    
+    mapWidth: c.mapWidth,
+    mapHeight: c.mapHeight
   });
 
-  this.render = BM.game.getRender();
+
+  this.game = c.game || BM.game;
+
+  this.render = this.game.getRender();
 
   this.render.setCamera(this.camera);
 
@@ -64,9 +79,9 @@ extend(PlayScene, Scene);
 
 PlayScene.prototype.run = function(){
 
-  var game = BM.game;
+  var game = this.game;
 
-  var state = BM.game.getState();    
+  var state = this.game.getState();    
 
   this.drawMap(state); //первый кадр
 }
@@ -111,7 +126,7 @@ PlayScene.prototype.stop = function(){
 }
 
 PlayScene.prototype.gameLoop = function (){
-  var state = BM.game.getState();
+  var state = this.game.getState();
 
   var hero = state.getCurrentHero();
 
@@ -181,7 +196,7 @@ PlayScene.prototype.gameLoop = function (){
 
 PlayScene.prototype.frame = function(){
 
-  var state = BM.game.getState();
+  var state = this.game.getState();
 
   this.drawMap(state);
   this.drawHeroes(state);
@@ -189,7 +204,7 @@ PlayScene.prototype.frame = function(){
 
 PlayScene.prototype.drawMap  = function(state) {
 
-  var game = BM.game;
+  var game = this.game;
 
   var tilesImage = this.render.resourceFactory('tmw_desert_spacing.png');
   var itemsImage = this.render.resourceFactory('bomb.png');
@@ -256,7 +271,7 @@ PlayScene.prototype.drawMap  = function(state) {
 PlayScene.prototype.drawHeroes = function (state){
 
   if (!state)
-    var state = BM.game.getState();
+    var state = this.game.getState();
 
   for (var i=0, max = state.heros.length; i < max; i++)
   {
