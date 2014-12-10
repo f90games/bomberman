@@ -59,6 +59,6 @@ var BM;
       game.getState().setCurrentLevel(_.random(0,1));
       game.loadLevel();
       game.createScene(PLAY_SCENE);
-    }, 300);
+    }, 1000);
   }
 })();

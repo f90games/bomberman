@@ -32,7 +32,7 @@ var Scene = function(c){
     screenHeight: c.screenHeight,
 
     mapTileSize: c.mapTileSize,
-    
+
     mapWidth: c.mapWidth,
     mapHeight: c.mapHeight
   });
@@ -45,6 +45,8 @@ var Scene = function(c){
   this.render.setCamera(this.camera);
 
 }
+
+///////////////////////////////////////////////////////////////////////////
 
 var LoadingScene = function(c){
   LoadingScene.superclass.constructor.apply(this, arguments);
@@ -65,6 +67,8 @@ LoadingScene.prototype.stop = function(){
   this.cl.hide();
 }
 
+///////////////////////////////////////////////////////////////////////////
+
 var PlayScene = function(c){
   PlayScene.superclass.constructor.apply(this, arguments);
   this.camera.updateCanvasHtml();
@@ -81,43 +85,129 @@ PlayScene.prototype.run = function(){
 
   var game = this.game;
 
-  var state = this.game.getState();    
+  var state = this.game.getState(); 
 
   this.drawMap(state); //первый кадр
+  this.initControls();
+  this.spawnHero();
+  // debugger;
 }
+
+PlayScene.prototype.spawnHero = function(){
+  
+}
+
+PlayScene.place_bomb = function(self){
+
+  console.log(self);
+
+}
+
+PlayScene.press_left = function(self){
+
+  console.log(self);
+
+  self.camera.checkScreenScroll(BM.hero, false, true);  
+  game.turn(PLAYER_LEFT);
+  if (BM.hero.left) BM.hero.step_left = true;
+}
+
+PlayScene.press_up = function(self){
+
+  console.log(self);
+  self.camera.checkScreenScroll(BM.hero, false, false, true, false);
+  BM.hero.turn(PLAYER_UP);
+  if (BM.hero.up) BM.hero.step_up = true;
+}
+
+PlayScene.press_right = function(self){
+
+  console.log(self);
+
+  self.camera.checkScreenScroll(BM.hero, true, false);
+  BM.hero.turn(PLAYER_RIGHT);
+  if (BM.hero.right) BM.hero.step_right = true;
+}
+
+PlayScene.press_down = function(self){
+
+  console.log(self);
+
+  self.camera.checkScreenScroll(BM.hero, false, false, false, true);
+  BM.hero.turn(PLAYER_DOWN);
+  if (BM.hero.down) BM.hero.step_down = true;  
+
+}
+
+PlayScene.press_switch = function(self){
+  console.log(self);
+
+}
+
+PlayScene.press_pause = function(self){
+  console.log(self);
+
+}
+
 
 PlayScene.prototype.initControls = function(){
 
+  var em = this.game.em;
+
+  em.addListener('player.place_bomb', PlayScene.place_bomb);
+
+  em.addListener('player.press_left', PlayScene.press_left);
+  em.addListener('player.press_up', PlayScene.press_up);
+  em.addListener('player.press_right', PlayScene.press_right);
+  em.addListener('player.press_down', PlayScene.press_down);
+
+  em.addListener('player.press_switch', PlayScene.press_switch);
+
+  em.addListener('player.press_pause', PlayScene.press_pause);
+
+  var self = this; //коряво
 
 
   kd.LEFT.down = function(){
-    // this.camera.checkScreenScroll(BM.hero, false, true);  
-    // game.turn(PLAYER_LEFT);
-    // if (BM.hero.left) BM.hero.step_left = true;
+
+    em.fire('player.press_left', [self]);
+
   }
   
   kd.UP.down = function(){
-    // this.camera.checkScreenScroll(BM.hero, false, false, true, false);
-    // BM.hero.turn(PLAYER_UP);
-    // if (BM.hero.up) BM.hero.step_up = true;
+
+    em.fire('player.press_up', [self]);
+
+
   }
   
   kd.DOWN.down = function(){
-    // this.camera.checkScreenScroll(BM.hero, false, false, false, true);
-    // BM.hero.turn(PLAYER_DOWN);
-    // if (BM.hero.down) BM.hero.step_down = true;
+
+    em.fire('player.press_down', [self]);
+
+
   }
   
   kd.RIGHT.down = function(){
-    // this.camera.checkScreenScroll(BM.hero, true, false);
-    // BM.hero.turn(PLAYER_RIGHT);
-    // if (BM.hero.right) BM.hero.step_right = true;
+
+    em.fire('player.press_right', [self]);
+
+
   }
   
   kd.SPACE.down = function(){
+
+    em.fire('player.place_bomb', [self]);
+
     // BM.hero.place_bomb = true;
   }
 
+  kd.X.down = function(){
+
+    em.fire('player.press_switch', [self]);
+    
+    // BM.hero.place_bomb = true;
+  }
 
 }
 

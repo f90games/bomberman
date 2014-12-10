@@ -22,7 +22,7 @@ Game.prototype.createScene = function(s){
   switch (s) {
     case PLAY_SCENE:
       
-      var level = state.level;
+      var level = state.level;      
 
       this.scene = new PlayScene({
         screenWidth: level.screenWidth,
@@ -183,6 +183,16 @@ Game.prototype.getSound = function(){
 // 
 // 
 var GameState = function(c){
+
+  //GLOBAL
+  this.musicMute = false;
+  this.soundMute = false;
+
+  //LOADING SCENE
+  this.isLoaded = false;
+
+  //PLAY SCENE
+  this.room = 0; //local game
   this.currentHeroEntity = null;
   this.currentLevel = c.currentLevel || 0;
   this.heroes = [];
@@ -190,6 +200,8 @@ var GameState = function(c){
   this.fx = [];
 }
 
+
+//???
 GameState.prototype.setCurrentHero = function(hero){
   this.currentHeroEntity = hero;
 }

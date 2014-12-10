@@ -108,7 +108,7 @@ Camera.prototype.checkScreenScroll = function(hero, dir){
     deltaY = 0,
     step = 3;
   
-  if (!level) return;
+  // if (!level) return;
 
   //horizontal
   var heroPosX = ((hero.pos - 1) % this.mapWidth) * this.mapTileSize
