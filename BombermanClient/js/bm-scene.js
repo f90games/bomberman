@@ -24,6 +24,8 @@ var Scene = function(c){
   this.mapWidth = c.mapWidth || 21;
   this.mapHeight = c.mapWidth || 15;
 
+  this.gameFrameTime = c.gameFrameTime || 50;
+
   this.camera = new Camera({
     elId: this.elId,
     embedToId: this.embedToId,
@@ -83,6 +85,8 @@ extend(PlayScene, Scene);
 
 PlayScene.prototype.run = function(){
 
+  var self = this;
+
   var game = this.game;
 
   var state = this.game.getState(); 
@@ -90,63 +94,105 @@ PlayScene.prototype.run = function(){
   this.drawMap(state); //первый кадр
   this.initControls();
   this.spawnHero();
-  // debugger;
+
+  this.timer = setInterval(function(){
+      self.frame.call(self);
+    },
+    this.gameFrameTime
+  );  
+
+}
+
+
+PlayScene.prototype.stop = function(){
+  clearInterval(this.timer);
 }
 
 PlayScene.prototype.spawnHero = function(){
-  
+  var state = this.game.getState();
+  var level = state.level;
+
+  var hero = new Hero({
+    pos: level.heroSpown,
+    posTarget: level.heroSpown,
+    heroTileIndex: level.heroTileIndex,
+    sprite: 0,
+    skin: 0,
+    hp: 3,
+    level: level
+  });
+
+  state.setCurrentHero(hero);
+
+  state.heros.push(hero);
+
+
 }
 
 PlayScene.place_bomb = function(self){
 
-  console.log(self);
+  
 
 }
 
+//, right, left, up, down
+
 PlayScene.press_left = function(self){
 
-  console.log(self);
+  
 
-  self.camera.checkScreenScroll(BM.hero, false, true);  
-  game.turn(PLAYER_LEFT);
-  if (BM.hero.left) BM.hero.step_left = true;
+  var hero = self.game.state.getCurrentHero();
+
+  self.camera.checkScreenScroll(hero, {right: false, left: true, up: false, down: false});  
+  hero.turn(PLAYER_LEFT);
+  if (hero.left) hero.step_left = true;
 }
 
 PlayScene.press_up = function(self){
 
-  console.log(self);
-  self.camera.checkScreenScroll(BM.hero, false, false, true, false);
-  BM.hero.turn(PLAYER_UP);
-  if (BM.hero.up) BM.hero.step_up = true;
+  var hero = self.game.state.getCurrentHero();
+
+  
+  self.camera.checkScreenScroll(hero, {right: false, left: false, up: true, down: false});
+  hero.turn(PLAYER_UP);
+  if (hero.up) hero.step_up = true;
 }
 
 PlayScene.press_right = function(self){
 
-  console.log(self);
+  
 
-  self.camera.checkScreenScroll(BM.hero, true, false);
-  BM.hero.turn(PLAYER_RIGHT);
-  if (BM.hero.right) BM.hero.step_right = true;
+  var hero = self.game.state.getCurrentHero();
+
+  self.camera.checkScreenScroll(hero, {right: true, left: false, up: false, down: false});
+  hero.turn(PLAYER_RIGHT);
+  if (hero.right) hero.step_right = true;
 }
 
 PlayScene.press_down = function(self){
 
-  console.log(self);
+  var hero = self.game.state.getCurrentHero();
 
-  self.camera.checkScreenScroll(BM.hero, false, false, false, true);
-  BM.hero.turn(PLAYER_DOWN);
-  if (BM.hero.down) BM.hero.step_down = true;  
+  
+
+  self.camera.checkScreenScroll(hero, {right: false, left: false, up: false, down: true});
+  hero.turn(PLAYER_DOWN);
+  if (hero.down) hero.step_down = true;  
 
 }
 
 PlayScene.press_switch = function(self){
-  console.log(self);
+  
 
 }
 
 PlayScene.press_pause = function(self){
-  console.log(self);
+  
 
+}
+
+PlayScene.checkHeroPos = function(map, newPos){
+  return map[newPos - 1] === 0
 }
 
 
@@ -199,25 +245,21 @@ PlayScene.prototype.initControls = function(){
 
     em.fire('player.place_bomb', [self]);
 
-    // BM.hero.place_bomb = true;
+    // hero.place_bomb = true;
   }
 
   kd.X.down = function(){
 
     em.fire('player.press_switch', [self]);
     
-    // BM.hero.place_bomb = true;
+    // hero.place_bomb = true;
   }
 
 }
 
-PlayScene.prototype.stop = function(){
-
-}
 
 PlayScene.prototype.gameLoop = function (){
   var state = this.game.getState();
-
   var hero = state.getCurrentHero();
 
   if (hero.hp > 0){
@@ -226,29 +268,29 @@ PlayScene.prototype.gameLoop = function (){
 
       if(hero.step_up)
       {
-        if (checkHeroPos(BM, hero.pos - BM.level.mapWidth))
+        if (PlayScene.checkHeroPos(state.map, hero.pos - state.level.mapWidth))
         {
-          hero.posTarget -= BM.level.mapWidth;
+          hero.posTarget -= state.level.mapWidth;
         }
       }
       else if (hero.step_down)
       {
         
-        if (checkHeroPos(BM, hero.pos + BM.level.mapWidth))
+        if (PlayScene.checkHeroPos(state.map, hero.pos + state.level.mapWidth))
         {
-          hero.posTarget += BM.level.mapWidth;
+          hero.posTarget += state.level.mapWidth;
         }
       }
       else if (hero.step_left)
       {
-        if (checkHeroPos(BM, hero.pos - 1))
+        if (PlayScene.checkHeroPos(state.map, hero.pos - 1))
         {
           hero.posTarget--;
         }
       }
       else if (hero.step_right)
       {
-        if (checkHeroPos(BM, hero.pos + 1))
+        if (PlayScene.checkHeroPos(state.map, hero.pos + 1))
         {
           hero.posTarget++;
         }
@@ -264,14 +306,14 @@ PlayScene.prototype.gameLoop = function (){
         pos: hero.pos,
         timeLeft: 3000,
         status: BOMB_START,
-        level: BM.level
+        level: state.level
       }, BM.map);
 
       bomb.start();
       
       if (checkBombPos(BM, hero.pos-1))
       {
-        BM.bombs[hero.pos-1] = bomb;
+        state.bombs[hero.pos-1] = bomb;
         Connector && Connector.sendB(bomb)
       }
 
@@ -287,6 +329,8 @@ PlayScene.prototype.gameLoop = function (){
 PlayScene.prototype.frame = function(){
 
   var state = this.game.getState();
+
+  this.gameLoop();
 
   this.drawMap(state);
   this.drawHeroes(state);
@@ -350,7 +394,7 @@ PlayScene.prototype.drawMap  = function(state) {
           // this.render.ctx.drawImage(BM.items, (32 * (3 + (fx.direction % 2))), 0,  32, 32, i*32, j*32, 32, 32);   
         }
         else if (fx.status == 0)
-          delete BM.fx[pos];
+          delete state.fx[pos];
       }
 
     }
@@ -359,6 +403,8 @@ PlayScene.prototype.drawMap  = function(state) {
 }
 
 PlayScene.prototype.drawHeroes = function (state){
+
+  var spritesImage = this.render.resourceFactory('vx_chara00.png');
 
   if (!state)
     var state = this.game.getState();
@@ -395,7 +441,7 @@ PlayScene.prototype.drawHeroes = function (state){
     if (hero.pos != hero.posTarget)
     {
       hero.step = 0
-      Connector.sendHeroState()
+      // Connector.sendHeroState()
     }
 
     var row = hero.point.y;
@@ -418,7 +464,7 @@ PlayScene.prototype.drawHeroes = function (state){
       
       this.render.ctx.stroke();
 
-      this.render.ctx.drawImage(hero.herotiles, hx + hero.skin * 96, hy, 32, 32, column * 32, row * 32, 32, 32);
+      this.render.ctx.drawImage(spritesImage, hx + hero.skin * 96, hy, 32, 32, column * 32, row * 32, 32, 32);
     }
   }
 

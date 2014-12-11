@@ -132,28 +132,28 @@ Camera.prototype.checkScreenScroll = function(hero, dir){
   }
   
   
-  if (right)
+  if (dir.right)
   {
     if (deltaX <= step * this.mapTileSize)
     {
       this.screenOffset.x -= step * this.mapTileSize;
     }
   }
-  else if(left)
+  else if(dir.left)
   {
     if (deltaX <= step * this.mapTileSize)
     {
       this.screenOffset.x += step * this.mapTileSize;
     }
   }
-  else if(up)
+  else if(dir.up)
   {
     if (deltaY <= step * this.mapTileSize)
     {
       this.screenOffset.y += step * this.mapTileSize;
     }
   }
-  else if (down)
+  else if (dir.down)
   {
     if (deltaY <= step * this.mapTileSize)
     {

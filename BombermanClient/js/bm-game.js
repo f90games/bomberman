@@ -195,7 +195,7 @@ var GameState = function(c){
   this.room = 0; //local game
   this.currentHeroEntity = null;
   this.currentLevel = c.currentLevel || 0;
-  this.heroes = [];
+  this.heros = [];
   this.bombs = [];
   this.fx = [];
 }
@@ -222,6 +222,7 @@ var Hero = function(c){
 
   this.pos = c.pos || 30;
   this.posTarget = c.posTarget || this.pos;
+  this.heroTileIndex = c.heroTileIndex || 1;
 
   this.step = c.step || 0;
 
@@ -265,7 +266,9 @@ Hero.prototype.moveTo = function(){
   var delta_y = to_y - from_y;
   var delta_x = to_x - from_x;
 
-  var speed_x = speed_y = 1 / PLAYER_SPEED;
+  var speed_x, speed_y; 
+
+  speed_x = speed_y = 1 / PLAYER_SPEED;
 
   // debugger;
 
