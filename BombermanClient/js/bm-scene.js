@@ -129,9 +129,38 @@ PlayScene.prototype.spawnHero = function(){
 
 }
 
+//STATIC!!! ---
+
+function checkBombPos(state, pos){ 
+  //добавляем крутых взрывов
+  if(state.bombs[pos])
+    state.bombs[pos].power++;
+
+  return state.bombs[pos] == null
+}
+
 PlayScene.place_bomb = function(self){
 
+  var state = self.game.getState();
+  var hero = state.getCurrentHero();
+
+  var bomb_idx = new Date().getTime();
+
+  var bomb = new Bomb({
+    power: 2,
+    pos: hero.pos,
+    timeLeft: 3000,
+    status: BOMB_START,
+    level: state.level
+  }, state.map);
+
+  bomb.start();
   
+  if (checkBombPos(state, hero.pos-1))
+  {
+    state.bombs[hero.pos-1] = bomb;
+    // Connector && Connector.sendB(bomb)
+  }
 
 }
 
@@ -195,6 +224,7 @@ PlayScene.checkHeroPos = function(map, newPos){
   return map[newPos - 1] === 0
 }
 
+//!!!STATIC ---
 
 PlayScene.prototype.initControls = function(){
 
@@ -376,11 +406,11 @@ PlayScene.prototype.drawMap  = function(state) {
 
       if (bomb = state.bombs[pos]){
         if (bomb.status == BOMB_START)
-          this.render.ctx.drawImage(state.items, 0, 0,  32, 32, i*32, j*32, 32, 32);
+          this.render.ctx.drawImage(itemsImage, 0, 0,  32, 32, i*32, j*32, 32, 32);
         else if (bomb.status == BOMB_EXPLODE)
-          this.render.ctx.drawImage(state.items, 32 * 2, 0,  32, 32, i*32, j*32, 32, 32);   
+          this.render.ctx.drawImage(itemsImage, 32 * 2, 0,  32, 32, i*32, j*32, 32, 32);   
         else if (bomb.status == 0)
-          delete game.bombs[pos];
+          delete state.bombs[pos];
       }
 
       if (fx = state.fx[pos]){

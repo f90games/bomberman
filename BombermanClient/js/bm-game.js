@@ -32,6 +32,9 @@ Game.prototype.createScene = function(s){
         mapHeight: level.mapHeight,
         heroSpown : level.heroSpown        
       });
+
+      Bomb.EXPLODE_MATRIX_3x3 = [-level.mapWidth, -1, 1, level.mapWidth];
+
     break;
 
     case START_SCENE:
@@ -352,14 +355,14 @@ var Bomb = function(c){
 
 Bomb.prototype.start = function (){
 
-  if (BM.sounds['click']){
-    BM.sounds['click'].play();  
-  } else {
-    BM.sounds['click'] = new Howl({
-      volume: 0.3,
-      urls: ['/data/sound/click.mp3']
-    }).play();          
-  }  
+  // if (BM.sounds['click']){
+  //   BM.sounds['click'].play();  
+  // } else {
+  //   BM.sounds['click'] = new Howl({
+  //     volume: 0.3,
+  //     urls: ['/data/sound/click.mp3']
+  //   }).play();          
+  // }  
 
   var self = this;
   setTimeout(function(){
@@ -371,14 +374,14 @@ Bomb.prototype.explode = function() {
   var self = this;
   this.status = BOMB_EXPLODE;
 
-  if (BM.sounds['bomb']){
-    BM.sounds['bomb'].play();
-  } else {
-    BM.sounds['bomb'] = new Howl({
-      volume: 0.2,
-      urls: ['/data/sound/bomb.mp3']
-    }).play();            
-  }  
+  // if (BM.sounds['bomb']){
+  //   BM.sounds['bomb'].play();
+  // } else {
+  //   BM.sounds['bomb'] = new Howl({
+  //     volume: 0.2,
+  //     urls: ['/data/sound/bomb.mp3']
+  //   }).play();            
+  // }  
 
   this.damage(this.pos)
 
@@ -405,7 +408,10 @@ Bomb.prototype.explode = function() {
 }
 
 Bomb.prototype.setFlame = function(pos, d) { //форк на осколки
-  var flame = BM.fx[pos] = new Flame({
+
+  var fx = BM.game.state.fx;
+
+  var flame = fx[pos] = new Flame({
     pos: pos,
     status: 3,
     direction: d
@@ -415,30 +421,35 @@ Bomb.prototype.setFlame = function(pos, d) { //форк на осколки
 }
 
 Bomb.prototype.damage = function(pos, d) {
-  if (_.contains(this.level.fixed_terrian_sprite, BM.map[pos])) {
+
+  //TODO переделать!!!
+  var map = BM.game.state.map;
+  var hero = BM.game.state.currentHeroEntity;
+
+  if (_.contains(this.level.fixed_terrian_sprite, map[pos])) {
     //do nothing
     return false;
-  } else if (_.contains(this.level.destroy_terrian_sprite, BM.map[pos])) {
+  } else if (_.contains(this.level.destroy_terrian_sprite, map[pos])) {
     // debugger;
-    BM.map[pos] = 0;
+    map[pos] = 0;
     this.setFlame(pos, d);
-  } else if (BM.map[pos] == 0) {
+  } else if (map[pos] == 0) {
     this.setFlame(pos, d);
   }
 
-  if ((BM.hero.pos - 1) == pos) {
-    BM.hero.hp -= 1;
+  if ((hero.pos - 1) == pos) {
+    hero.hp -= 1;
 
-    if (BM.hero.hp == 0){
+    if (hero.hp == 0){
 
-      if (BM.sounds['die']){
-        BM.sounds['die'].play();  
-      } else {
-        BM.sounds['die'] = new Howl({
-          volume: 0.3,
-          urls: ['/data/sound/die.mp3']
-        }).play(); 
-      }
+      // if (BM.sounds['die']){
+      //   BM.sounds['die'].play();  
+      // } else {
+      //   BM.sounds['die'] = new Howl({
+      //     volume: 0.3,
+      //     urls: ['/data/sound/die.mp3']
+      //   }).play(); 
+      // }
       
     }
   }; 
