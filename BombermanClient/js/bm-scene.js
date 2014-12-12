@@ -239,7 +239,7 @@ PlayScene.prototype.initControls = function(){
 
   em.addListener('player.press_switch', PlayScene.press_switch);
 
-  em.addListener('player.press_pause', PlayScene.press_pause);
+  em.addListener('player.press_menu', PlayScene.press_menu);
 
   var self = this; //коряво
 
@@ -281,6 +281,13 @@ PlayScene.prototype.initControls = function(){
   kd.X.down = function(){
 
     em.fire('player.press_switch', [self]);
+    
+    // hero.place_bomb = true;
+  }
+
+  kd.ESC.down = function(){
+
+    em.fire('player.press_menu', [self]);
     
     // hero.place_bomb = true;
   }
@@ -514,10 +521,16 @@ StartScene.prototype.run = function(){
 
 var MenuScene = function(c){
   MenuScene.superclass.constructor.apply(this, arguments);
+
+  this.currentLevelPage = 0;
 }
 
 extend(MenuScene, Scene);
 
 MenuScene.prototype.run = function(){
+
+}
+
+MenuScene.prototype.frame = function(){
   
 }
