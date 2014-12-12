@@ -510,3 +510,14 @@ extend(StartScene, Scene);
 StartScene.prototype.run = function(){
 
 }
+
+
+var MenuScene = function(c){
+  MenuScene.superclass.constructor.apply(this, arguments);
+}
+
+extend(MenuScene, Scene);
+
+MenuScene.prototype.run = function(){
+  
+}

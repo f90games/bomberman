@@ -355,14 +355,7 @@ var Bomb = function(c){
 
 Bomb.prototype.start = function (){
 
-  // if (BM.sounds['click']){
-  //   BM.sounds['click'].play();  
-  // } else {
-  //   BM.sounds['click'] = new Howl({
-  //     volume: 0.3,
-  //     urls: ['/data/sound/click.mp3']
-  //   }).play();          
-  // }  
+  BM.game.em.fire('bomb.place', [self]);
 
   var self = this;
   setTimeout(function(){
@@ -374,14 +367,7 @@ Bomb.prototype.explode = function() {
   var self = this;
   this.status = BOMB_EXPLODE;
 
-  // if (BM.sounds['bomb']){
-  //   BM.sounds['bomb'].play();
-  // } else {
-  //   BM.sounds['bomb'] = new Howl({
-  //     volume: 0.2,
-  //     urls: ['/data/sound/bomb.mp3']
-  //   }).play();            
-  // }  
+  BM.game.em.fire('bomb.explode', [self]);
 
   this.damage(this.pos)
 
@@ -442,14 +428,7 @@ Bomb.prototype.damage = function(pos, d) {
 
     if (hero.hp == 0){
 
-      // if (BM.sounds['die']){
-      //   BM.sounds['die'].play();  
-      // } else {
-      //   BM.sounds['die'] = new Howl({
-      //     volume: 0.3,
-      //     urls: ['/data/sound/die.mp3']
-      //   }).play(); 
-      // }
+      BM.game.em.fire('hero.die', [hero]);
       
     }
   }; 

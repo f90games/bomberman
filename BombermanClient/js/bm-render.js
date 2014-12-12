@@ -45,6 +45,27 @@ GraphEngine.prototype.resourceFactory = function(resource, isTile){
 
 var SoundEngine = function(){
   this.sounds = [];
+
+  var game = this.game = BM.game; //
+
+  var self = this;
+
+  game.em.addListener('hero.die', function(){
+    self.playSound('die');
+  });
+
+  game.em.addListener('hero.step', function(){
+    // self.playSound('bomb');
+  });
+
+  game.em.addListener('bomb.explode', function(){
+    self.playSound('bomb');
+  });   
+
+  game.em.addListener('bomb.place', function(){
+    self.playSound('click');
+  });    
+
 }
 
 SoundEngine.prototype.playSound = function(sound, onplay, onstop, volume){
@@ -75,7 +96,7 @@ var Camera = function(c){
   this.mapWidth = c.mapWidth || 21;
   this.mapHeight = c.mapWidth || 15;
 
-  this.screenOffset = {};
+  this.screenOffset = {x: 0, y: 0};
 }
 
 
