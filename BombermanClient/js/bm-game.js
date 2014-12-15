@@ -48,7 +48,7 @@ Game.prototype.createScene = function(s){
     break;
 
     case MENU_SCENE:
-      this.scene = new LoadingScene({
+      this.scene = new MenuScene({
       });
     break;
 
@@ -134,6 +134,38 @@ Game.prototype.loadLevel = function(levelId){
 
 }
 
+Game.prototype.makeGame = function(level){
+  
+  if (!level)
+    var level = 0;
+
+  this.getState().setCurrentLevel(level);
+  this.loadLevel();
+  this.spawnHero();
+  this.createScene(PLAY_SCENE);
+}
+
+
+Game.prototype.spawnHero = function(){
+  var state = this.state;
+  var level = state.level;
+
+  var hero = new Hero({
+    pos: level.heroSpown,
+    posTarget: level.heroSpown,
+    heroTileIndex: level.heroTileIndex,
+    sprite: 0,
+    skin: 0,
+    hp: 3,
+    level: level
+  });
+
+  state.setCurrentHero(hero);
+
+  state.heros.push(hero);
+
+}
+
 Game.prototype.setGameLoop = function(gameLoop){
   this.gameLoop = gameLoop;
 }
@@ -215,6 +247,10 @@ GameState.prototype.getCurrentHero = function(hero){
 
 GameState.prototype.setCurrentLevel = function(levelId){
   this.currentLevel = levelId;
+}
+
+GameState.prototype.getCurrentLevel = function(levelId){
+  return this.currentLevel;
 }
 
 //***************************************************************************

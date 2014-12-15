@@ -48,6 +48,10 @@ var Scene = function(c){
 
 }
 
+Scene.prototype.stop = function(){
+  $('#' + this.embedToId).text('');
+}
+
 ///////////////////////////////////////////////////////////////////////////
 
 var LoadingScene = function(c){
@@ -67,6 +71,7 @@ LoadingScene.prototype.run = function(){
 
 LoadingScene.prototype.stop = function(){
   this.cl.hide();
+  LoadingScene.superclass.stop.apply(this, arguments);
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -76,63 +81,16 @@ var PlayScene = function(c){
   this.camera.updateCanvasHtml();
 
   var canvas = document.getElementById("game-canvas"); 
-
   this.render.setContext(canvas.getContext("2d")); 
 
 }
 
 extend(PlayScene, Scene);
 
-PlayScene.prototype.run = function(){
-
-  var self = this;
-
-  var game = this.game;
-
-  var state = this.game.getState(); 
-
-  this.drawMap(state); //первый кадр
-  this.initControls();
-  this.spawnHero();
-
-  this.timer = setInterval(function(){
-      self.frame.call(self);
-    },
-    this.gameFrameTime
-  );  
-
-}
-
-
-PlayScene.prototype.stop = function(){
-  clearInterval(this.timer);
-}
-
-PlayScene.prototype.spawnHero = function(){
-  var state = this.game.getState();
-  var level = state.level;
-
-  var hero = new Hero({
-    pos: level.heroSpown,
-    posTarget: level.heroSpown,
-    heroTileIndex: level.heroTileIndex,
-    sprite: 0,
-    skin: 0,
-    hp: 3,
-    level: level
-  });
-
-  state.setCurrentHero(hero);
-
-  state.heros.push(hero);
-
-
-}
 
 //STATIC!!! ---
 
-function checkBombPos(state, pos){ 
-  //добавляем крутых взрывов
+PlayScene.checkBombPos = function(state, pos){ 
   if(state.bombs[pos])
     state.bombs[pos].power++;
 
@@ -140,7 +98,6 @@ function checkBombPos(state, pos){
 }
 
 PlayScene.place_bomb = function(self){
-
   var state = self.game.getState();
   var hero = state.getCurrentHero();
 
@@ -156,20 +113,14 @@ PlayScene.place_bomb = function(self){
 
   bomb.start();
   
-  if (checkBombPos(state, hero.pos-1))
+  if (PlayScene.checkBombPos(state, hero.pos-1))
   {
     state.bombs[hero.pos-1] = bomb;
     // Connector && Connector.sendB(bomb)
   }
-
 }
 
-//, right, left, up, down
-
 PlayScene.press_left = function(self){
-
-  
-
   var hero = self.game.state.getCurrentHero();
 
   self.camera.checkScreenScroll(hero, {right: false, left: true, up: false, down: false});  
@@ -178,9 +129,7 @@ PlayScene.press_left = function(self){
 }
 
 PlayScene.press_up = function(self){
-
   var hero = self.game.state.getCurrentHero();
-
   
   self.camera.checkScreenScroll(hero, {right: false, left: false, up: true, down: false});
   hero.turn(PLAYER_UP);
@@ -188,9 +137,6 @@ PlayScene.press_up = function(self){
 }
 
 PlayScene.press_right = function(self){
-
-  
-
   var hero = self.game.state.getCurrentHero();
 
   self.camera.checkScreenScroll(hero, {right: true, left: false, up: false, down: false});
@@ -199,95 +145,106 @@ PlayScene.press_right = function(self){
 }
 
 PlayScene.press_down = function(self){
-
   var hero = self.game.state.getCurrentHero();
-
-  
 
   self.camera.checkScreenScroll(hero, {right: false, left: false, up: false, down: true});
   hero.turn(PLAYER_DOWN);
   if (hero.down) hero.step_down = true;  
-
 }
 
 PlayScene.press_switch = function(self){
   
-
 }
 
 PlayScene.press_pause = function(self){
   
+}
 
+PlayScene.press_menu = function(self){
+  self.game.createScene(MENU_SCENE);
 }
 
 PlayScene.checkHeroPos = function(map, newPos){
   return map[newPos - 1] === 0
 }
 
-//!!!STATIC ---
+
+
+
+PlayScene.prototype.run = function(){
+
+  var self = this;
+
+  var game = this.game;
+
+  var state = this.game.getState(); 
+
+  this.drawMap(state); //первый кадр
+  this.initControls();
+  // this.spawnHero();
+
+  this.timer = setInterval(function(){
+      self.frame.call(self);
+    },
+    this.gameFrameTime
+  );  
+
+}
+
+PlayScene.prototype.stop = function(){
+  clearInterval(this.timer);
+  PlayScene.superclass.stop.apply(this, arguments);
+}
 
 PlayScene.prototype.initControls = function(){
 
   var em = this.game.em;
 
-  em.addListener('player.place_bomb', PlayScene.place_bomb);
-
-  em.addListener('player.press_left', PlayScene.press_left);
-  em.addListener('player.press_up', PlayScene.press_up);
-  em.addListener('player.press_right', PlayScene.press_right);
-  em.addListener('player.press_down', PlayScene.press_down);
-
-  em.addListener('player.press_switch', PlayScene.press_switch);
-
-  em.addListener('player.press_menu', PlayScene.press_menu);
+  this.game.input.reset();  
 
   var self = this; //коряво
 
-
   kd.LEFT.down = function(){
 
-    em.fire('player.press_left', [self]);
+    em.fire('play_scene.press_left', [self]);
 
   }
   
   kd.UP.down = function(){
 
-    em.fire('player.press_up', [self]);
-
+    em.fire('play_scene.press_up', [self]);
 
   }
   
   kd.DOWN.down = function(){
 
-    em.fire('player.press_down', [self]);
-
+    em.fire('play_scene.press_down', [self]);
 
   }
   
   kd.RIGHT.down = function(){
 
-    em.fire('player.press_right', [self]);
-
+    em.fire('play_scene.press_right', [self]);
 
   }
   
   kd.SPACE.down = function(){
 
-    em.fire('player.place_bomb', [self]);
+    em.fire('play_scene.place_bomb', [self]);
 
     // hero.place_bomb = true;
   }
 
-  kd.X.down = function(){
+  kd.ENTER.down = function(){
 
-    em.fire('player.press_switch', [self]);
+    em.fire('play_scene.press_switch', [self]);
     
     // hero.place_bomb = true;
   }
 
   kd.ESC.down = function(){
 
-    em.fire('player.press_menu', [self]);
+    em.fire('play_scene.press_menu', [self]);
     
     // hero.place_bomb = true;
   }
@@ -348,7 +305,7 @@ PlayScene.prototype.gameLoop = function (){
 
       bomb.start();
       
-      if (checkBombPos(BM, hero.pos-1))
+      if (PlayScene.checkBombPos(BM, hero.pos-1))
       {
         state.bombs[hero.pos-1] = bomb;
         Connector && Connector.sendB(bomb)
@@ -508,29 +465,143 @@ PlayScene.prototype.drawHeroes = function (state){
 }
 
 
-var StartScene = function(c){
-  StartScene.superclass.constructor.apply(this, arguments);
-}
-
-extend(StartScene, Scene);
-
-StartScene.prototype.run = function(){
-
-}
-
-
 var MenuScene = function(c){
   MenuScene.superclass.constructor.apply(this, arguments);
 
   this.currentLevelPage = 0;
+
+  this.camera.updateCanvasHtml();
+
+  var canvas = document.getElementById("game-canvas"); 
+  this.render.setContext(canvas.getContext("2d"));
+
+  this.levels = ['Level 0', 'Level 1'];
+
 }
 
 extend(MenuScene, Scene);
 
 MenuScene.prototype.run = function(){
+  this.initControls();
+
+  var self = this;
+
+  this.timer = setInterval(function(){
+      self.frame.call(self);
+    },
+    this.gameFrameTime
+  );   
 
 }
 
+MenuScene.prototype.stop = function(){
+  clearInterval(this.timer);
+}
+
 MenuScene.prototype.frame = function(){
+  this.drawBackground();
+  this.drawLevels();
+}
+
+MenuScene.prototype.drawBackground = function(){
+  var img = this.render.resourceFactory('menu_screen_bm.png');
+  this.render.ctx.drawImage(img, 0, 0, 672, 480, 0, 0, 672, 480);
+
+}
+
+MenuScene.prototype.drawLevels = function(){
+  var ctx = this.render.ctx;
+
+  ctx.fillStyle = "#ffba00";
+  ctx.font = "30pt Arial";
+
+  var levelText = '';
+
+  for (var i = 0; i < this.levels.length; i++) {
+
+    levelText = this.levels[i];
+
+    if (this.game.getState().getCurrentLevel() == i){
+      levelText += ' ←';
+    }
+
+    ctx.fillText(levelText, 100, 100 + 50 * i);
+  };
+
+}
+
+MenuScene.prototype.initControls = function(){
+
+  this.game.input.reset();
+
+  var em = this.game.em;
+
+
+  kd.DOWN.down = function(){
+
+    em.fire('menu_scene.press_down', [self]);
+
+  }
   
+  kd.UP.down = function(){
+
+    em.fire('menu_scene.press_up', [self]);
+
+  }
+
+  kd.ESC.down = function(){
+
+    em.fire('menu_scene.press_menu', [self]);
+
+  }
+
+  kd.ENTER.down = function(){
+
+    em.fire('menu_scene.press_enter', [self]);
+
+  }  
+
+}
+
+MenuScene.press_up = function(self){
+
+  var currentLevel = BM.game.getState().getCurrentLevel();
+
+  if(currentLevel > 0){
+    currentLevel--;
+    BM.game.getState().setCurrentLevel(currentLevel);
+  }
+}
+
+MenuScene.press_down = function(self){
+  var currentLevel = BM.game.getState().getCurrentLevel();
+
+  if(currentLevel < 1){
+    currentLevel++;
+    BM.game.getState().setCurrentLevel(currentLevel);
+  }
+}
+
+
+var StartScene = function(c){
+  StartScene.superclass.constructor.apply(this, arguments);
+
+  this.camera.updateCanvasHtml();
+
+  var canvas = document.getElementById("game-canvas"); 
+  this.render.setContext(canvas.getContext("2d"));
+
+}
+
+extend(StartScene, Scene);
+
+StartScene.prototype.run = function(){
+  this.drawBackground();
+}
+
+
+StartScene.prototype.drawBackground = function(){
+  var img = this.render.resourceFactory('start_screen_bm.png');
+  this.render.ctx.drawImage(img, 0, 0, 672, 480, 0, 0, 672, 480);
+
 }

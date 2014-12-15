@@ -55,10 +55,21 @@ var BM;
 
     game.createScene(LOADING_SCENE);
 
+    //load resources
+    render.resourceFactory('start_screen_bm.png');
+    render.resourceFactory('menu_screen_bm.png');
+    render.resourceFactory('tmw_desert_spacing.png');
+    render.resourceFactory('vx_chara00.png');
+
     setTimeout(function(){
-      game.getState().setCurrentLevel(_.random(0,1));
-      game.loadLevel();
-      game.createScene(PLAY_SCENE);
+
+      game.createScene(START_SCENE);
+
+      setTimeout(function(){
+        game.makeGame(0);
+      }, 2000);
     }, 1000);
+
+
   }
 })();
