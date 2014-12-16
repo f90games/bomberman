@@ -475,7 +475,7 @@ var MenuScene = function(c){
   var canvas = document.getElementById("game-canvas"); 
   this.render.setContext(canvas.getContext("2d"));
 
-  this.levels = ['Level 0', 'Level 1'];
+  this.levels = ['Level 0', 'Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5'];
 
 }
 
@@ -576,7 +576,7 @@ MenuScene.press_up = function(self){
 MenuScene.press_down = function(self){
   var currentLevel = BM.game.getState().getCurrentLevel();
 
-  if(currentLevel < 1){
+  if(currentLevel < 5){
     currentLevel++;
     BM.game.getState().setCurrentLevel(currentLevel);
   }
