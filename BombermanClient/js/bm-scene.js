@@ -101,7 +101,7 @@ PlayScene.place_bomb = function(self){
   var state = self.game.getState();
   var hero = state.getCurrentHero();
 
-  var bomb_idx = new Date().getTime();
+  // var bomb_idx = new Date().getTime();
 
   var bomb = new Bomb({
     power: 2,
@@ -254,66 +254,75 @@ PlayScene.prototype.initControls = function(){
 
 PlayScene.prototype.gameLoop = function (){
   var state = this.game.getState();
-  var hero = state.getCurrentHero();
+  // var hero = state.getCurrentHero();
 
-  if (hero.hp > 0){
+  var hero;
 
-    if((hero.posTarget == hero.pos)){     
+  for (var i = 0; i < state.heros.length; i++) {
+    hero = state.heros[i]
+  
 
-      if(hero.step_up)
-      {
-        if (PlayScene.checkHeroPos(state.map, hero.pos - state.level.mapWidth))
+    if (hero.hp > 0){
+
+      if((hero.posTarget == hero.pos)){     
+
+        if(hero.step_up)
         {
-          hero.posTarget -= state.level.mapWidth;
+          if (PlayScene.checkHeroPos(state.map, hero.pos - state.level.mapWidth))
+          {
+            hero.posTarget -= state.level.mapWidth;
+          }
         }
-      }
-      else if (hero.step_down)
-      {
-        
-        if (PlayScene.checkHeroPos(state.map, hero.pos + state.level.mapWidth))
+        else if (hero.step_down)
         {
-          hero.posTarget += state.level.mapWidth;
+          
+          if (PlayScene.checkHeroPos(state.map, hero.pos + state.level.mapWidth))
+          {
+            hero.posTarget += state.level.mapWidth;
+          }
         }
-      }
-      else if (hero.step_left)
-      {
-        if (PlayScene.checkHeroPos(state.map, hero.pos - 1))
+        else if (hero.step_left)
         {
-          hero.posTarget--;
+          if (PlayScene.checkHeroPos(state.map, hero.pos - 1))
+          {
+            hero.posTarget--;
+          }
         }
-      }
-      else if (hero.step_right)
-      {
-        if (PlayScene.checkHeroPos(state.map, hero.pos + 1))
+        else if (hero.step_right)
         {
-          hero.posTarget++;
+          if (PlayScene.checkHeroPos(state.map, hero.pos + 1))
+          {
+            hero.posTarget++;
+          }
         }
-      }
 
-    }  
-    
-    if (hero.place_bomb) {
-      var bomb_idx = new Date().getTime();
-
-      var bomb = new Bomb({
-        power: 2,
-        pos: hero.pos,
-        timeLeft: 3000,
-        status: BOMB_START,
-        level: state.level
-      }, BM.map);
-
-      bomb.start();
+      }  
       
-      if (PlayScene.checkBombPos(BM, hero.pos-1))
-      {
-        state.bombs[hero.pos-1] = bomb;
-        Connector && Connector.sendB(bomb)
+      if (hero.place_bomb) {
+        var bomb_idx = new Date().getTime();
+
+        var bomb = new Bomb({
+          power: 2,
+          pos: hero.pos,
+          timeLeft: 3000,
+          status: BOMB_START,
+          level: state.level
+        }, BM.map);
+
+        bomb.start();
+        
+        if (PlayScene.checkBombPos(BM, hero.pos-1))
+        {
+          state.bombs[hero.pos-1] = bomb;
+          Connector && Connector.sendB(bomb)
+        }
+
       }
+
 
     }
 
-  }
+  };
   
   // hero.place_bomb = hero.step_left = hero.step_right = hero.step_up = hero.step_down = false;
 

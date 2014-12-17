@@ -6,6 +6,9 @@ var Game = function(c){
   this.interval = null;
 
   this.em = new EventManager();
+
+  this.em.addListener('hero.die', Hero.die);
+
 }
 
 Game.prototype.init = function(){
@@ -222,6 +225,9 @@ Game.prototype.makeGame = function(level){
   this.getState().setCurrentLevel(level);
   this.loadLevel();
   this.spawnHero();
+
+  this.spawnNPC(5);
+
   this.createScene(PLAY_SCENE);
 }
 
@@ -243,6 +249,38 @@ Game.prototype.spawnHero = function(){
   state.setCurrentHero(hero);
 
   state.heros.push(hero);
+
+}
+
+Game.prototype.spawnNPC = function(n){
+  var state = this.state;
+  var level = state.level;
+
+  var num = n || 5;
+
+  var hero, npcSpawn;
+
+  for (var i = 0; i < num; i++) {
+
+    do
+      npcSpawn = _.random(1, level.map.length);
+    while (level.map[npcSpawn]!==0); 
+    
+    hero = new NPC({
+      pos: npcSpawn,
+      posTarget: npcSpawn,
+      heroTileIndex: level.heroTileIndex,
+      sprite: 0,
+      skin: 0,
+      hp: 5,
+      level: level
+    });
+
+    state.heros.push(hero);
+
+  };
+
+
 
 }
 
@@ -340,10 +378,36 @@ GameState.prototype.resetState = function(){
   this.fx = [];
 }
 
+GameState.prototype.heroDie = function(hero){
+
+  if (this.getCurrentHero() === hero){
+    this.resetState();
+    BM.game.createScene(MENU_SCENE);
+  }
+
+  for (var i = 0; i < this.heros.length; i++) {
+
+    if (hero === this.heros[i]){
+      console.log('Hero die!');
+      
+      if(hero.isNPC())
+        clearInterval(hero.interval);
+
+      // delete this.heros[i];
+      BM.game.spawnNPC(1);
+    }
+  };
+
+  // debugger;
+}
+
 //***************************************************************************
 // HERO
 //
 var Hero = function(c){
+
+  this.flagNPC = false;
+
   this.path = c.path || [];
 
   this.pos = c.pos || 30;
@@ -378,6 +442,10 @@ var Hero = function(c){
   this.hp = 3;
 }
 
+Hero.die = function(hero){
+  var state = BM.game.getState();
+  state.heroDie(hero);
+}
 
 Hero.prototype.moveTo = function(){
 
@@ -439,6 +507,65 @@ Hero.prototype.turn = function(direction){
       this.down = true;
     break;            
   }
+}
+
+Hero.prototype.isNPC = function(){
+  return this.flagNPC;
+}
+
+var NPC = function(){
+  NPC.superclass.constructor.apply(this, arguments);
+  this.startAI();
+  this.flagNPC = true;
+
+} 
+
+extend(NPC, Hero);
+
+NPC.prototype.startAI = function(){
+  var self = this;
+
+  this.interval = setInterval(function(){
+    self.doAI();
+  }, 300);
+}
+
+NPC.prototype.doAI = function(){
+  var action = _.random(1,5);
+  var state = BM.game.getState();
+
+  if (this.hp > 0){
+    if (action < 5){
+      this.turn(action);
+
+      if (this.left) this.step_left = true;
+      if (this.up) this.step_up = true;
+      if (this.down) this.step_down = true;
+      if (this.right) this.step_right = true;
+    } else {
+      if(_.random(1,10) === 10){ //чтобы не часто взрывать
+
+        var bomb = new Bomb({
+          power: 2,
+          pos: this.pos,
+          timeLeft: 3000,
+          status: BOMB_START,
+          level: state.level
+        }, state.map);
+
+        bomb.start();
+        
+        if (PlayScene.checkBombPos(state, this.pos-1))
+        {
+          state.bombs[this.pos-1] = bomb;
+          // Connector && Connector.sendB(bomb)
+        }      
+
+      }
+    }    
+  }
+
+
 }
 
 //*********************************************************************************
@@ -532,8 +659,12 @@ Bomb.prototype.setFlame = function(pos, d) { //форк на осколки
 Bomb.prototype.damage = function(pos, d) {
 
   //TODO переделать!!!
-  var map = BM.game.state.map;
-  var hero = BM.game.state.currentHeroEntity;
+  var state = BM.game.getState();
+  var map = BM.game.getState().map;
+
+  // var hero = BM.game.state.currentHeroEntity;
+
+  var hero;
 
   if (_.contains(this.level.fixed_terrian_sprite, map[pos])) {
     //do nothing
@@ -546,15 +677,19 @@ Bomb.prototype.damage = function(pos, d) {
     this.setFlame(pos, d);
   }
 
-  if ((hero.pos - 1) == pos) {
-    hero.hp -= 1;
+  for (var i = 0; i < state.heros.length; i++) {
+    hero = state.heros[i]
 
-    if (hero.hp == 0){
+    if ((hero.pos - 1) == pos) {
+      hero.hp -= 1;
 
-      BM.game.em.fire('hero.die', [hero]);
-      
-    }
-  }; 
+      if (hero.hp == 0){
+        BM.game.em.fire('hero.die', [hero]);
+      }
+    }; 
+  };
+
+
 
   return true; 
 }
