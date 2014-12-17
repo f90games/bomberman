@@ -216,6 +216,8 @@ Game.prototype.loadLevel = function(levelId){
 }
 
 Game.prototype.makeGame = function(level){
+
+  console.log('Make new game!!!-------------------------');
   
   if (!level)
     var level = this.getState().getCurrentLevel() || 0;
@@ -272,7 +274,7 @@ Game.prototype.spawnNPC = function(n){
       heroTileIndex: level.heroTileIndex,
       sprite: 0,
       skin: 0,
-      hp: 5,
+      hp: 3,
       level: level
     });
 
@@ -373,9 +375,20 @@ GameState.prototype.getCurrentLevel = function(levelId){
 
 GameState.prototype.resetState = function(){
   this.currentHeroEntity = null;
-  this.heros = [];
-  this.bombs = [];
-  this.fx = [];
+  // this.heros = [];
+  for (var i = 0; i < this.heros.length; i++) {
+    delete this.heros[i]
+  };
+  // this.bombs = [];
+  for (var i = 0; i < this.bombs.length; i++) {
+    delete this.bombs[i]
+  };  
+
+
+  for (var i = 0; i < this.fx.length; i++) {
+    delete this.fx[i]
+  };  
+  // this.fx = [];
 }
 
 GameState.prototype.heroDie = function(hero){
@@ -388,13 +401,15 @@ GameState.prototype.heroDie = function(hero){
   for (var i = 0; i < this.heros.length; i++) {
 
     if (hero === this.heros[i]){
-      console.log('Hero die!');
+      console.log(hero.uid + ' is die!');
       
-      if(hero.isNPC())
+      if(hero.isNPC()){
         clearInterval(hero.interval);
+        delete this.heros[i];
 
-      // delete this.heros[i];
-      BM.game.spawnNPC(1);
+        BM.game.spawnNPC(1);        
+      }
+
     }
   };
 
@@ -405,6 +420,8 @@ GameState.prototype.heroDie = function(hero){
 // HERO
 //
 var Hero = function(c){
+
+  this.uid = 'h_' + new Date().getTime();
 
   this.flagNPC = false;
 
@@ -440,6 +457,8 @@ var Hero = function(c){
   this.isTopTop = false
 
   this.hp = 3;
+
+  console.log('User ' + this.uid + ' заспаунился в позиции ' + this.pos);
 }
 
 Hero.die = function(hero){
@@ -556,6 +575,8 @@ NPC.prototype.doAI = function(){
           status: BOMB_START,
           level: state.level
         }, state.map);
+
+        console.log('User ' + this.uid + ' поставил бомбу ' + bomb.uid + ' в позиции ' + this.pos);
         
         if (PlayScene.checkBombPos(state, this.pos-1))
         {
@@ -597,6 +618,8 @@ Flame.prototype.destroy = function(){
 // BOMB
 var Bomb = function(c){
 
+  this.uid = 'b_' + new Date().getTime();
+
   var config = c || {};
   this.level = c.level;
   this.pos = config.pos || 0;
@@ -619,6 +642,8 @@ Bomb.prototype.start = function (){
 Bomb.prototype.explode = function() {
   var self = this;
   this.status = BOMB_EXPLODE;
+
+  console.log('Бомба ' + this.uid + ' в позиции ' + this.pos + ' взорвалась.');
 
   BM.game.em.fire('bomb.explode', [self]);
 
