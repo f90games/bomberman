@@ -13,6 +13,8 @@ var Scene = function(c){
   if (!c)
     var c = {};
 
+  this.type = 0;
+
   this.elId = c.elId || 'game-canvas';
   this.embedToId = c.embedToId || 'canvas-wrapper';
 
@@ -56,6 +58,7 @@ Scene.prototype.stop = function(){
 
 var LoadingScene = function(c){
   LoadingScene.superclass.constructor.apply(this, arguments);
+  this.type = LOADING_SCENE;
 }
 
 extend(LoadingScene, Scene);
@@ -78,6 +81,7 @@ LoadingScene.prototype.stop = function(){
 
 var PlayScene = function(c){
   PlayScene.superclass.constructor.apply(this, arguments);
+  this.type = PLAY_SCENE;
   this.camera.updateCanvasHtml();
 
   var canvas = document.getElementById("game-canvas"); 
@@ -476,6 +480,7 @@ PlayScene.prototype.drawHeroes = function (state){
 
 var MenuScene = function(c){
   MenuScene.superclass.constructor.apply(this, arguments);
+  this.type = MENU_SCENE;
 
   this.currentLevelPage = 0;
 
@@ -594,6 +599,7 @@ MenuScene.press_down = function(self){
 
 var StartScene = function(c){
   StartScene.superclass.constructor.apply(this, arguments);
+  this.type = START_SCENE;
 
   this.camera.updateCanvasHtml();
 

@@ -534,6 +534,10 @@ NPC.prototype.doAI = function(){
   var action = _.random(1,5);
   var state = BM.game.getState();
 
+  if(BM.game.scene.type !== PLAY_SCENE){
+    return;
+  }
+
   if (this.hp > 0){
     if (action < 5){
       this.turn(action);
