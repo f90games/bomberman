@@ -115,11 +115,10 @@ PlayScene.place_bomb = function(self){
     level: state.level
   }, state.map);
 
-  bomb.start();
-  
   if (PlayScene.checkBombPos(state, hero.pos-1))
   {
     state.bombs[hero.pos-1] = bomb;
+    bomb.start();
     // Connector && Connector.sendB(bomb)
   }
 }
@@ -550,6 +549,27 @@ MenuScene.prototype.initControls = function(){
 
   var em = this.game.em;
 
+
+  // $(document).keydown(function(event){
+
+  //   console.log(event.keyCode);
+  //   event.preventDefault();
+
+  //   switch(event.keyCode){
+  //     case 27:
+  //       em.fire('menu_scene.press_menu', [self]);
+  //     break;
+  //     case 27:
+  //       em.fire('menu_scene.press_menu', [self]);
+  //     break;
+  //     case 27:
+  //       em.fire('menu_scene.press_menu', [self]);
+  //     break;
+  //     case 27:
+  //       em.fire('menu_scene.press_menu', [self]);
+  //     break;                  
+  //   }
+  // });
 
   kd.DOWN.down = function(){
 

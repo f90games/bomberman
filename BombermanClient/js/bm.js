@@ -28,11 +28,11 @@ var BM;
   BM.init = function(){
     var game = BM.game = new Game({});
     
-    var state = BM.state = new GameState({
+    var state = new GameState({
       currentLevel: 0
     });
 
-    var input = BM.input = new Input({});
+    var input = new Input({});
 
     var render = BM.graphEngine = new GraphEngine({
       elId: "game-canvas",

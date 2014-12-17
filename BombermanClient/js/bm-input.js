@@ -44,7 +44,7 @@ Input.prototype.init = function(){
 
 Input.prototype.reset = function(){
 
-  kd.LEFT.down = kd.UP.down = kd.DOWN.down = kd.RIGHT.down = kd.SPACE.down = kd.ESC.down = null;
+  kd.LEFT.down = kd.UP.down = kd.DOWN.down = kd.RIGHT.down = kd.SPACE.down = kd.ESC.down = function(){};
 
 }
 

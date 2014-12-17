@@ -556,12 +556,11 @@ NPC.prototype.doAI = function(){
           status: BOMB_START,
           level: state.level
         }, state.map);
-
-        bomb.start();
         
         if (PlayScene.checkBombPos(state, this.pos-1))
         {
           state.bombs[this.pos-1] = bomb;
+          bomb.start();
           // Connector && Connector.sendB(bomb)
         }      
 
