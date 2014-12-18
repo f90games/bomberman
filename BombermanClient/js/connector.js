@@ -1,14 +1,20 @@
 "use strict"
 
 
-var Connector = {}
+var Connector = {
+
+	lastSent: null
+
+}
+
 var Socket = null;
 
 Connector.sendB = function(b){
 	
 	if (Socket && Socket.readyState == 1) 
 	{
-		Socket.send(JSON.stringify({ Type: "B", Data: _.omit(b, ['map']) }));
+		var time = new Date().getTime();
+		Socket.send(JSON.stringify({ Type: "B", Data: _.omit(b, ['map']), time: time }));
 	}
 	
 }
@@ -16,7 +22,6 @@ Connector.sendB = function(b){
 Connector.sendReset = function(){
 	if (Socket && Socket.readyState == 1) 
 	{
-		console.log('send reset');
 		Socket.send(JSON.stringify({ Type: "RESET", Data: {level: BM.currentLevel} }));
 	}
 	
@@ -24,9 +29,20 @@ Connector.sendReset = function(){
 
 Connector.sendHeroState = function()
 {
+
 	if (Socket && Socket.readyState == 1)
 	{
-		Socket.send(JSON.stringify({ Type: "D", Data: _.omit(BM.hero, ['herotiles']) }));
+		var time = new Date().getTime();
+		
+		var data = { 
+			Type: "D", 
+			Data: _.omit(BM.hero, ['herotiles']),
+			time: time
+		}
+		
+		Connector.lastSent = data
+		
+		Socket.send(JSON.stringify(data));
 	}
 }
 

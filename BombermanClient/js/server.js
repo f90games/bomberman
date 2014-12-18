@@ -84,7 +84,7 @@ Server.on("request",
 						Connection.peer.sendUTF(JSON.stringify({ type: 'newHero', hero: hero }))
 						
 						//start game loop
-						Rooms[query.room].BM.Timer = setInterval(function()
+						/* Rooms[query.room].BM.Timer = setInterval(function()
 							{
 								if (Rooms[query.room])
 								{
@@ -93,7 +93,7 @@ Server.on("request",
 								}
 							},
 							Rooms[query.room].BM.GameFrameTime * frameMult
-						);
+						); */
 						
 					}
 				}
@@ -172,9 +172,9 @@ function HandleClientMessage(ID, Message)
 			
 		// Key down.
 		case "D":
-			console.log('key down', C.ID)
 			if (!C.peer) return;
 			BM.heros[C.heroIndex] = Message.Data
+			C.peer.sendUTF(JSON.stringify({ data: Message.Data }));
 		break;
 		
 		//bomb
@@ -194,13 +194,13 @@ function HandleClientMessage(ID, Message)
 				C.sendUTF(JSON.stringify({ type: 'newHero', hero: BM.heros[C.peer.heroIndex] }))
 				C.peer.sendUTF(JSON.stringify({ type: 'newHero', hero: BM.heros[C.heroIndex] }))
 				
-				setInterval(function()
-					{
-						Game.RunGameFrame(BM);
-						SendGameState();
-					},
-					BM.GameFrameTime * frameMult
-				);
+				// setInterval(function()
+					// {
+						// Game.RunGameFrame(BM);
+						// SendGameState();
+					// },
+					// BM.GameFrameTime * frameMult
+				// );
 			}
 			
 		break;

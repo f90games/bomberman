@@ -417,7 +417,7 @@ GameState.prototype.heroDie = function(hero){
         
         if(hero.isNPC()){
           
-          this.heros.splice(0, 1);
+          this.heros.splice(i, 1);
           // delete this.heros[i];
           console.log(hero);
 
