@@ -375,43 +375,60 @@ GameState.prototype.getCurrentLevel = function(levelId){
 
 GameState.prototype.resetState = function(){
   this.currentHeroEntity = null;
-  // this.heros = [];
+
+  var hero;
   for (var i = 0; i < this.heros.length; i++) {
-    delete this.heros[i]
+    if(this.heros[i].isNPC()){
+      // hero = this.heros.splice(0, 1);
+      this.heros[i].stopAI();
+      // delete this.heros[i];
+    }
   };
-  // this.bombs = [];
+  this.heros = [];
+
+
   for (var i = 0; i < this.bombs.length; i++) {
+
     delete this.bombs[i]
   };  
-
+  this.bombs = [];
 
   for (var i = 0; i < this.fx.length; i++) {
+
     delete this.fx[i]
   };  
-  // this.fx = [];
+  this.fx = [];
 }
 
 GameState.prototype.heroDie = function(hero){
 
-  if (this.getCurrentHero() === hero){
+  if (!hero.isNPC()){
     this.resetState();
     BM.game.createScene(MENU_SCENE);
+  } else {
+
+    // if ()
+    hero.stopAI();
+
+    for (var i = 0; i < this.heros.length; i++) {
+
+      if (hero === this.heros[i]){
+        console.log(hero.uid + ' is die!');
+        
+        if(hero.isNPC()){
+          
+          this.heros.splice(0, 1);
+          // delete this.heros[i];
+          console.log(hero);
+
+          BM.game.spawnNPC(1);        
+        }
+
+      }
+    };
   }
 
-  for (var i = 0; i < this.heros.length; i++) {
 
-    if (hero === this.heros[i]){
-      console.log(hero.uid + ' is die!');
-      
-      if(hero.isNPC()){
-        clearInterval(hero.interval);
-        delete this.heros[i];
-
-        BM.game.spawnNPC(1);        
-      }
-
-    }
-  };
 
   // debugger;
 }
@@ -547,6 +564,12 @@ NPC.prototype.startAI = function(){
   this.interval = setInterval(function(){
     self.doAI();
   }, 300);
+}
+
+NPC.prototype.stopAI = function(){
+  // var self = this;
+
+  clearInterval(this.interval);
 }
 
 NPC.prototype.doAI = function(){

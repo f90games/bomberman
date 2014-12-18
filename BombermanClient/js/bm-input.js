@@ -8,8 +8,9 @@ var Input = function(c){
   em.addListener('menu_scene.press_down', MenuScene.press_down);
   em.addListener('menu_scene.press_up', MenuScene.press_up);
   em.addListener('menu_scene.press_menu', function(){
-    if(BM.game.getState().getCurrentHero().hp > 0)
-      BM.game.createScene(PLAY_SCENE);
+    if (BM.game.getState().getCurrentHero())
+      if(BM.game.getState().getCurrentHero().hp > 0)
+        BM.game.createScene(PLAY_SCENE);
   });
 
   em.addListener('menu_scene.press_enter', function(){
