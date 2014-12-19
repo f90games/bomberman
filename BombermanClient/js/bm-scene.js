@@ -471,10 +471,17 @@ PlayScene.prototype.drawHeroes = function (state){
       
       this.render.ctx.stroke();
 
-      if (!hero.isNPC())
-        this.render.ctx.drawImage(spritesImage, hx + hero.skin * 96, hy, 32, 32, column * 32, row * 32, 32, 32);
-      else 
+      if (!hero.isNPC()){
+        if(hero.blink){
+          if( hero.step == 0){
+            this.render.ctx.drawImage(spritesImage, hx + hero.skin * 96, hy, 32, 32, column * 32, row * 32, 32, 32);
+          }
+        } else {
+          this.render.ctx.drawImage(spritesImage, hx + hero.skin * 96, hy, 32, 32, column * 32, row * 32, 32, 32);
+        }
+      } else {
         this.render.ctx.drawImage(npcImage, hx + hero.skin * 96, hy, 32, 32, column * 32, row * 32, 32, 32);
+      }
     }
   }
 

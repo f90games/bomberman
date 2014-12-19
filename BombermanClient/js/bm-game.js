@@ -535,14 +535,20 @@ Hero.prototype.moveTo = function(){
       var hero = heros[i];
       if (hero.pos == this.pos){
         if (this.isNPC() && (!hero.isNPC())){
-          hero.hp--;
+          
+          if(!hero.blink)
+            hero.hpDec(1);
+
           if(hero.hp == 0){
             BM.game.createScene(MENU_SCENE);
           }
         }
 
         if (!this.isNPC() && (hero.isNPC())){
-          this.hp--;
+          
+          if(!this.blink)
+            this.hpDec(1);
+          
           if(this.hp == 0){
             BM.game.createScene(MENU_SCENE);
           }          
@@ -581,6 +587,16 @@ Hero.prototype.turn = function(direction){
 
 Hero.prototype.isNPC = function(){
   return this.flagNPC;
+}
+
+Hero.prototype.hpDec = function(){
+  this.hp--;
+  this.blink = true;
+
+  var self = this;
+  setTimeout(function(){
+    self.blink = false;
+  }, 3000);
 }
 
 var NPC = function(c){
@@ -772,7 +788,9 @@ Bomb.prototype.damage = function(pos, d) {
     hero = state.heros[i]
 
     if ((hero.pos - 1) == pos) {
-      hero.hp -= 1;
+      // hero.hp -= 1;
+
+      hero.hpDec(1);
 
       if (hero.hp == 0){
         BM.game.em.fire('hero.die', [hero]);
