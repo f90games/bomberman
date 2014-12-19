@@ -473,7 +473,7 @@ PlayScene.prototype.drawHeroes = function (state){
 
       if (!hero.isNPC()){
         if(hero.blink){
-          if( hero.step == 0){
+          if( hero.blinkStep == 0){
             this.render.ctx.drawImage(spritesImage, hx + hero.skin * 96, hy, 32, 32, column * 32, row * 32, 32, 32);
           }
         } else {

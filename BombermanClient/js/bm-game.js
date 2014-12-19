@@ -459,6 +459,7 @@ var Hero = function(c){
   this.heroTileIndex = c.heroTileIndex || 1;
 
   this.step = c.step || 0;
+  this.blinkStep = c.blinkStep || 0;
 
   this.moveTick = c.moveTick || 0;
 
@@ -522,8 +523,12 @@ Hero.prototype.moveTo = function(){
   if (this.step_up || this.step_down || this.step_left || this.step_right) {
     this.step++;
     this.step %= 3; 
+
     //playSound('pl_step4');
   }
+
+  this.blinkStep++;
+  this.blinkStep %= 3;
 
   if ((this.point.x == this.pointTarget.x) && (this.point.y == this.pointTarget.y)){
     this.pos = this.posTarget;
