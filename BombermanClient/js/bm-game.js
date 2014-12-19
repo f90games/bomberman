@@ -228,7 +228,7 @@ Game.prototype.makeGame = function(level){
   this.loadLevel();
   this.spawnHero();
 
-  this.spawnNPC(5);
+  this.spawnNPC(10);
 
   this.createScene(PLAY_SCENE);
 }
@@ -275,6 +275,7 @@ Game.prototype.spawnNPC = function(n){
       sprite: 0,
       skin: 0,
       hp: 3,
+      type: _.random(1, 3),
       level: level
     });
 
@@ -436,11 +437,20 @@ GameState.prototype.heroDie = function(hero){
 //***************************************************************************
 // HERO
 //
+
+window.HUMAN_CHARACTER_TYPE = 0;
+window.GHOST_CHARACTER_TYPE = 1;
+window.SCELET_CHARACTER_TYPE = 2;
+window.MONSTR_CHARACTER_TYPE = 3;
+// window.HUMAN_CHARACTER_TYPE = 4;
+
 var Hero = function(c){
 
   this.uid = 'h_' + new Date().getTime();
 
   this.flagNPC = false;
+
+  this.type = HUMAN_CHARACTER_TYPE;
 
   this.path = c.path || [];
 
@@ -522,7 +532,6 @@ Hero.prototype.moveTo = function(){
 
 }
 
-
 Hero.prototype.turn = function(direction){
   this.up = this.down = this.left = this.right = false;
 
@@ -549,8 +558,14 @@ Hero.prototype.isNPC = function(){
   return this.flagNPC;
 }
 
-var NPC = function(){
+var NPC = function(c){
+
   NPC.superclass.constructor.apply(this, arguments);
+
+  this.type = c.type || 1;
+
+  this.skin = this.type - 1;
+
   this.startAI();
   this.flagNPC = true;
 

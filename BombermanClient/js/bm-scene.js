@@ -411,6 +411,7 @@ PlayScene.prototype.drawMap  = function(state) {
 PlayScene.prototype.drawHeroes = function (state){
 
   var spritesImage = this.render.resourceFactory('vx_chara00.png');
+  var npcImage = this.render.resourceFactory('npcs_sprites.png');
 
   if (!state)
     var state = this.game.getState();
@@ -470,7 +471,10 @@ PlayScene.prototype.drawHeroes = function (state){
       
       this.render.ctx.stroke();
 
-      this.render.ctx.drawImage(spritesImage, hx + hero.skin * 96, hy, 32, 32, column * 32, row * 32, 32, 32);
+      if (!hero.isNPC())
+        this.render.ctx.drawImage(spritesImage, hx + hero.skin * 96, hy, 32, 32, column * 32, row * 32, 32, 32);
+      else 
+        this.render.ctx.drawImage(npcImage, hx + hero.skin * 96, hy, 32, 32, column * 32, row * 32, 32, 32);
     }
   }
 
