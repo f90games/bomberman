@@ -266,7 +266,7 @@ Game.prototype.spawnNPC = function(n){
 
     do
       npcSpawn = _.random(1, level.map.length);
-    while (level.map[npcSpawn]!==0); 
+    while (level.map[npcSpawn-1]!==0); 
     
     hero = new NPC({
       pos: npcSpawn,
