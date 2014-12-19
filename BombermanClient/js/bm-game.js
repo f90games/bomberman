@@ -536,10 +536,16 @@ Hero.prototype.moveTo = function(){
       if (hero.pos == this.pos){
         if (this.isNPC() && (!hero.isNPC())){
           hero.hp--;
+          if(hero.hp == 0){
+            BM.game.createScene(MENU_SCENE);
+          }
         }
 
         if (!this.isNPC() && (hero.isNPC())){
           this.hp--;
+          if(this.hp == 0){
+            BM.game.createScene(MENU_SCENE);
+          }          
         }
 
       }
