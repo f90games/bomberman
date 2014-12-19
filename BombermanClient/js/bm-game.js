@@ -528,6 +528,25 @@ Hero.prototype.moveTo = function(){
   if ((this.point.x == this.pointTarget.x) && (this.point.y == this.pointTarget.y)){
     this.pos = this.posTarget;
     this.step_left = this.step_right = this.step_up = this.step_down = false;
+
+    var heros = BM.game.state.heros;
+
+    for (var i = 0; i < heros.length; i++) {
+      var hero = heros[i];
+      if (hero.pos == this.pos){
+        if (this.isNPC() && (!hero.isNPC())){
+          hero.hp--;
+        }
+
+        if (!this.isNPC() && (hero.isNPC())){
+          this.hp--;
+        }
+
+      }
+
+    };
+
+
   }
 
 }
