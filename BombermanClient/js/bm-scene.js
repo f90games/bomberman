@@ -340,6 +340,7 @@ PlayScene.prototype.frame = function(){
 
   this.drawMap(state);
   this.drawHeroes(state);
+  this.drawScores(state);
 }
 
 PlayScene.prototype.drawMap  = function(state) {
@@ -413,6 +414,8 @@ PlayScene.prototype.drawHeroes = function (state){
   var spritesImage = this.render.resourceFactory('vx_chara00.png');
   var npcImage = this.render.resourceFactory('npcs_sprites.png');
 
+  var photoImage = this.render.resourceFactory(state.player_photo, true); 
+
   if (!state)
     var state = this.game.getState();
 
@@ -471,6 +474,16 @@ PlayScene.prototype.drawHeroes = function (state){
       
       this.render.ctx.stroke();
 
+
+      if(hero === state.getCurrentHero()){
+        this.render.ctx.fillStyle = "#0f0";
+        this.render.ctx.font = "14px Arial";
+
+        this.render.ctx.fillText(state.player_name, column * 32 - 10, row * 32 - 20);
+
+        this.render.ctx.drawImage(photoImage, 0, 0, 50, 50, column * 32 - 45, row * 32 - 32, 25, 25);         
+      }
+
       if (!hero.isNPC()){
         if(hero.blink){
           if( hero.blinkStep == 0){
@@ -486,6 +499,25 @@ PlayScene.prototype.drawHeroes = function (state){
   }
 
 }
+
+
+PlayScene.prototype.drawScores = function (state){
+
+  var ctx = this.render.ctx;
+
+  if (!state)
+    var state = this.game.getState();
+
+  // var photoImage = this.render.resourceFactory(state.player_photo, true);
+
+  // ctx.drawImage(photoImage, 0, 0, 50, 50, 0, 0, 25, 25);
+
+  // ctx.fillStyle = "#000";
+  // ctx.font = "14px Arial";
+
+  // ctx.fillText(state.player_name, 50, 80);
+}
+
 
 
 var MenuScene = function(c){

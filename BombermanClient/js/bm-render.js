@@ -21,14 +21,14 @@ GraphEngine.prototype.clear = function() {
   this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height); 
 }
 
-GraphEngine.prototype.resourceFactory = function(resource, isTile){
+GraphEngine.prototype.resourceFactory = function(resource, isRemote){
 
-  if(isTile){
+  if(isRemote){
     if(this.tiles[resource])
       return this.tiles[resource]
     else {
       var image  = new Image();
-      image.src = "img/sprites/" + resource;
+      image.src = resource;
       return this.tiles[resource] = image;
     }
   } else {

@@ -91,7 +91,7 @@ Game.prototype.loadLevel = function(levelId){
     {
       "level" : 0,
       "maptiles" : "tmw_desert_spacing.png",
-      "screenWidth": 672,
+      "screenWidth": 600,
       "screenHeight": 480,
       
       "mapTileSize": 32,
@@ -111,8 +111,8 @@ Game.prototype.loadLevel = function(levelId){
       "level" : 1,
       "maptiles" : "tmw_desert_spacing.png",
 
-      "screenWidth": 800,
-      "screenHeight": 500,
+      "screenWidth": 600,
+      "screenHeight": 480,
       
       "mapTileSize": 32,
       "mapWidth": 45,
@@ -131,8 +131,8 @@ Game.prototype.loadLevel = function(levelId){
       "level" : 2,
       "maptiles" : "tmw_desert_spacing.png",
 
-      "screenWidth": 800,
-      "screenHeight": 500,
+      "screenWidth": 600,
+      "screenHeight": 480,
       
       "mapTileSize": 32,
       "mapWidth": 45,
@@ -150,8 +150,8 @@ Game.prototype.loadLevel = function(levelId){
       "level" : 3,
       "maptiles" : "tmw_desert_spacing.png",
 
-      "screenWidth": 800,
-      "screenHeight": 500,
+      "screenWidth": 600,
+      "screenHeight": 480,
       
       "mapTileSize": 32,
       "mapWidth": 45,
@@ -170,8 +170,8 @@ Game.prototype.loadLevel = function(levelId){
       "level" : 4,
       "maptiles" : "tmw_desert_spacing.png",
 
-      "screenWidth": 800,
-      "screenHeight": 500,
+      "screenWidth": 600,
+      "screenHeight": 480,
       
       "mapTileSize": 32,
       "mapWidth": 45,
@@ -190,8 +190,8 @@ Game.prototype.loadLevel = function(levelId){
       "level" : 5,
       "maptiles" : "tmw_desert_spacing.png",
 
-      "screenWidth": 800,
-      "screenHeight": 500,
+      "screenWidth": 600,
+      "screenHeight": 480,
       
       "mapTileSize": 32,
       "mapWidth": 45,
@@ -283,8 +283,6 @@ Game.prototype.spawnNPC = function(n){
 
   };
 
-
-
 }
 
 Game.prototype.setGameLoop = function(gameLoop){
@@ -335,6 +333,7 @@ Game.prototype.getSound = function(){
 }
 
 
+
 //***************************************************************************
 // 
 // 
@@ -354,6 +353,10 @@ var GameState = function(c){
   this.heros = [];
   this.bombs = [];
   this.fx = [];
+
+  this.player_name = '';
+  this.player_photo = '';
+
 }
 
 
@@ -672,9 +675,17 @@ NPC.prototype.doAI = function(){
       }
     }    
   }
-
-
 }
+
+// NPC.prototype.drop = function(){
+
+// }
+
+// Item = function(){
+    
+// }
+
+
 
 //*********************************************************************************
 // FLAME
