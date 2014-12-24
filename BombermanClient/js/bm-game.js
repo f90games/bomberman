@@ -356,6 +356,7 @@ var GameState = function(c){
 
   this.player_name = '';
   this.player_photo = '';
+  this.player_uid = '';
 
 }
 
