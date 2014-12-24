@@ -47,6 +47,15 @@ function doIt(){
         BM.game.getState().player_photo = data.response[0].photo_50;
         BM.game.getState().player_uid = data.response[0].uid;
     });
+
+    VK.api("friends.get", {fields: "photo_50, first_name"}, function(data) { 
+        for (var i = 0; i < data.response.length; i++) {
+            console.log(data.response[i]);
+            // VK.api('users.isAppUser', {user_id: data.response[i].uid}, function(d){
+            //     console.log(d);
+            // })
+        };
+    });
    
 }
 

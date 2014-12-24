@@ -248,6 +248,8 @@ Game.prototype.spawnHero = function(){
     level: level
   });
 
+  hero.uid = state.player_uid
+
   state.setCurrentHero(hero);
 
   state.heros.push(hero);
