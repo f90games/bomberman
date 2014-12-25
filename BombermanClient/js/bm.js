@@ -1,28 +1,5 @@
 "use strict"
 
-window.BOMB_START = 1;
-window.BOMB_EXPLODE = 2;
-window.FX_CATCH_FIRE = 3;
-
-window.PLAYER_LEFT = 1;
-window.PLAYER_UP = 2;
-window.PLAYER_DOWN = 3;
-window.PLAYER_RIGHT = 4;
-
-window.GAMEMODE_SINGLE = 1;
-window.GAMEMODE_MULTI = 2;
-
-window.PLAYER_SPEED = 4; //количество фреймов для движения
-window.PLAYER_STEPS = 4; //количество шагов
-
-function extend(Child, Parent) {
-  var F = function() { }
-  F.prototype = Parent.prototype
-  Child.prototype = new F()
-  Child.prototype.constructor = Child
-  Child.superclass = Parent.prototype
-}
-
 var BM;
 
 (function(){

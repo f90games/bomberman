@@ -1,13 +1,30 @@
 "use strict"
 
+if (typeof require !== "undefined") 
+{
+	var _ =  require('underscore')
+}
+
+
+function extend(Child, Parent) {
+  var F = function() { }
+  F.prototype = Parent.prototype
+  Child.prototype = new F()
+  Child.prototype.constructor = Child
+  Child.superclass = Parent.prototype
+}
+
 //***********************************************************************************
 // Game - он же State Manager
 var Game = function(c){
   this.interval = null;
 
-  this.em = new EventManager();
+  if (typeof exports === "undefined") 
+  {
+	this.em = new EventManager();
 
-  this.em.addListener('hero.die', Hero.die);
+	this.em.addListener('hero.die', Hero.die);
+  }
 
 }
 
@@ -17,13 +34,21 @@ Game.prototype.init = function(){
 
 Game.prototype.addNewHero = function(data){
 	
-	console.log('adding new hero', data)
+	BM.game.state.mode = 2
+	BM.game.makeGame()
+	
+	var state = this.state;
+	var level = state.level;
+
+	var hero = new Hero(_.extend(data, {level: level}));
+	
+	this.state.heros.push(hero)
 	
 }
 
 Game.prototype.bindConnector = function(){
 	
-	BM.connector.on('newHero', this.addNewHero)
+	BM.connector.on('newHero', _.bind(this.addNewHero, this))
 	
 }
 
@@ -245,6 +270,19 @@ Game.prototype.makeGame = function(level){
   this.createScene(PLAY_SCENE);
 }
 
+Game.prototype.makeServerGame = function(level){
+  
+  if (!level)
+    var level = this.getState().getCurrentLevel() || 0;
+
+  this.getState().resetState();
+
+  this.getState().setCurrentLevel(level);
+  this.loadLevel();
+  this.spawnHero();
+
+}
+
 
 Game.prototype.spawnHero = function(){
   var state = this.state;
@@ -462,10 +500,24 @@ GameState.prototype.heroDie = function(hero){
 // HERO
 //
 
-this.HUMAN_CHARACTER_TYPE = 0;
-this.GHOST_CHARACTER_TYPE = 1;
-this.SCELET_CHARACTER_TYPE = 2;
-this.MONSTR_CHARACTER_TYPE = 3;
+var HUMAN_CHARACTER_TYPE = 0;
+var GHOST_CHARACTER_TYPE = 1;
+var SCELET_CHARACTER_TYPE = 2;
+var MONSTR_CHARACTER_TYPE = 3;
+var BOMB_START = 1;
+var BOMB_EXPLODE = 2;
+var FX_CATCH_FIRE = 3;
+
+var PLAYER_LEFT = 1;
+var PLAYER_UP = 2;
+var PLAYER_DOWN = 3;
+var PLAYER_RIGHT = 4;
+
+var GAMEMODE_SINGLE = 1;
+var GAMEMODE_MULTI = 2;
+
+var PLAYER_SPEED = 4; //количество фреймов для движения
+var PLAYER_STEPS = 4; //количество шагов
 // window.HUMAN_CHARACTER_TYPE = 4;
 
 var Hero = function(c){
@@ -745,7 +797,7 @@ var Bomb = function(c){
 
 Bomb.prototype.start = function (){
 
-  BM.game.em.fire('bomb.place', [self]);
+  BM.game.em && BM.game.em.fire('bomb.place', [self]);
 
   var self = this;
   setTimeout(function(){
@@ -757,7 +809,7 @@ Bomb.prototype.explode = function() {
   var self = this;
   this.status = BOMB_EXPLODE;
 
-  BM.game.em.fire('bomb.explode', [self]);
+  BM.game.em && BM.game.em.fire('bomb.explode', [self]);
 
   this.damage(this.pos)
 
@@ -832,7 +884,7 @@ Bomb.prototype.damage = function(pos, d) {
       }
 
       if (hero.hp == 0){
-        BM.game.em.fire('hero.die', [hero]);
+        BM.game.em && BM.game.em.fire('hero.die', [hero]);
       }
     }; 
   };
@@ -851,4 +903,6 @@ if (typeof exports !== "undefined") //for node
 {
   exports.Bomb = Bomb;
   exports.Hero = Hero;
+  exports.Game = Game;
+  exports.GameState = GameState;
 }

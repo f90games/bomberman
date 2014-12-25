@@ -77,7 +77,5 @@ class BM.Connector extends BM.Observer
 	onMessage: (params)->
 		
 		message = JSON.parse params.data
-		console.log message
 		@trigger message.type, message.data
-			
 		
