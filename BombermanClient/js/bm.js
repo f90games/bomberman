@@ -9,6 +9,9 @@ window.PLAYER_UP = 2;
 window.PLAYER_DOWN = 3;
 window.PLAYER_RIGHT = 4;
 
+window.GAMEMODE_SINGLE = 1;
+window.GAMEMODE_MULTI = 2;
+
 window.PLAYER_SPEED = 4; //количество фреймов для движения
 window.PLAYER_STEPS = 4; //количество шагов
 
