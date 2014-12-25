@@ -397,6 +397,8 @@ GameState.prototype.resetState = function(){
   };
   this.heros = [];
 
+  this.player_lastscore = 0;
+
 
   for (var i = 0; i < this.bombs.length; i++) {
 

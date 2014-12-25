@@ -33,14 +33,14 @@ $(function(){
       BM.game.getState().player_uid = data.response[0].uid;
   });
 
-  VK.api("friends.get", {fields: "photo_50, first_name"}, function(data) { 
-      for (var i = 0; i < data.response.length; i++) {
-          console.log(data.response[i]);
-          // VK.api('users.isAppUser', {user_id: data.response[i].uid}, function(d){
-          //     console.log(d);
-          // })
-      };
-  });
+  // VK.api("friends.get", {fields: "photo_50, first_name"}, function(data) { 
+  //     for (var i = 0; i < data.response.length; i++) {
+  //         console.log(data.response[i]);
+  //         // VK.api('users.isAppUser', {user_id: data.response[i].uid}, function(d){
+  //         //     console.log(d);
+  //         // })
+  //     };
+  // });
 
 	$('.select-level').click(function(){
 		BM = resetGame(BM, $(this).data('level') - 1);

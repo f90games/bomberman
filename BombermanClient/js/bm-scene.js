@@ -192,7 +192,6 @@ PlayScene.prototype.run = function(){
 
   var state = this.game.getState(); 
 
-  state.player_lastscore = 0;
 
   this.drawMap(state); //первый кадр
   this.initControls();
@@ -569,6 +568,7 @@ MenuScene.prototype.stop = function(){
 MenuScene.prototype.frame = function(){
   this.drawBackground();
   this.drawLevels();
+  this.drawScores();
 }
 
 MenuScene.prototype.drawBackground = function(){
@@ -595,6 +595,24 @@ MenuScene.prototype.drawLevels = function(){
 
     ctx.fillText(levelText, 100, 100 + 50 * i);
   };
+
+}
+
+MenuScene.prototype.drawScores = function(){
+  var ctx = this.render.ctx;
+  var state = BM.game.getState();
+
+  ctx.fillStyle = "#ffba00";
+  ctx.font = "10pt Arial";
+
+  var levelText = '';
+
+  if (state.player_lastscore > state.player_highscore){
+    state.player_highscore = state.player_lastscore;
+  }
+
+  ctx.fillText('Current score: ' + state.player_lastscore, 450, 100);
+  ctx.fillText('Best score: ' + state.player_highscore, 450, 200);
 
 }
 
