@@ -18,7 +18,7 @@ var Scene = function(c){
   this.elId = c.elId || 'game-canvas';
   this.embedToId = c.embedToId || 'canvas-wrapper';
 
-  this.screenWidth = c.screenWidth || 672;
+  this.screenWidth = c.screenWidth || 600;
   this.screenHeight = c.screenHeight || 480;
 
   this.mapTileSize = c.mapTileSize || 32;
@@ -80,9 +80,18 @@ LoadingScene.prototype.stop = function(){
 ///////////////////////////////////////////////////////////////////////////
 
 var PlayScene = function(c){
+  
+  var state = BM.game.getState();
+
   PlayScene.superclass.constructor.apply(this, arguments);
   this.type = PLAY_SCENE;
   this.camera.updateCanvasHtml();
+
+  $('#hud').show();
+
+  $('#hud-picture').attr('src', state.player_photo);
+  $('#hud-name').html(state.player_name);
+  $('#hud-score').html(state.player_lastscore);
 
   var canvas = document.getElementById("game-canvas"); 
   this.render.setContext(canvas.getContext("2d")); 
@@ -110,6 +119,7 @@ PlayScene.place_bomb = function(self){
   var bomb = new Bomb({
     power: 2,
     pos: hero.pos,
+    hero: hero,
     timeLeft: 3000,
     status: BOMB_START,
     level: state.level
@@ -181,6 +191,8 @@ PlayScene.prototype.run = function(){
   var game = this.game;
 
   var state = this.game.getState(); 
+
+  state.player_lastscore = 0;
 
   this.drawMap(state); //первый кадр
   this.initControls();
@@ -414,8 +426,6 @@ PlayScene.prototype.drawHeroes = function (state){
   var spritesImage = this.render.resourceFactory('vx_chara00.png');
   var npcImage = this.render.resourceFactory('npcs_sprites.png');
 
-  var photoImage = this.render.resourceFactory(state.player_photo, true); 
-
   if (!state)
     var state = this.game.getState();
 
@@ -474,14 +484,14 @@ PlayScene.prototype.drawHeroes = function (state){
       
       this.render.ctx.stroke();
 
-
       if(hero === state.getCurrentHero()){
         this.render.ctx.fillStyle = "#0f0";
         this.render.ctx.font = "14px Arial";
 
-        this.render.ctx.fillText(state.player_name, column * 32 - 10, row * 32 - 20);
+        this.render.ctx.fillText(hero.player_name, column * 32 - 10, row * 32 - 20);
 
-        this.render.ctx.drawImage(photoImage, 0, 0, 50, 50, column * 32 - 45, row * 32 - 32, 25, 25);         
+        // var photoImage = this.render.resourceFactory(hero.player_photo, true); 
+        // this.render.ctx.drawImage(photoImage, 0, 0, 50, 50, column * 32 - 45, row * 32 - 32, 25, 25);         
       }
 
       if (!hero.isNPC()){
@@ -507,6 +517,8 @@ PlayScene.prototype.drawScores = function (state){
 
   if (!state)
     var state = this.game.getState();
+
+  $('#hud-score').html(state.player_lastscore);
 
   // var photoImage = this.render.resourceFactory(state.player_photo, true);
 
@@ -561,7 +573,7 @@ MenuScene.prototype.frame = function(){
 
 MenuScene.prototype.drawBackground = function(){
   var img = this.render.resourceFactory('menu_screen_bm.png');
-  this.render.ctx.drawImage(img, 0, 0, 672, 480, 0, 0, 672, 480);
+  this.render.ctx.drawImage(img, 0, 0, 600, 480, 0, 0, 600, 480);
 
 }
 
@@ -680,6 +692,6 @@ StartScene.prototype.run = function(){
 
 StartScene.prototype.drawBackground = function(){
   var img = this.render.resourceFactory('start_screen_bm.png');
-  this.render.ctx.drawImage(img, 0, 0, 672, 480, 0, 0, 672, 480);
+  this.render.ctx.drawImage(img, 0, 0, 600, 480, 0, 0, 600, 480);
 
 }

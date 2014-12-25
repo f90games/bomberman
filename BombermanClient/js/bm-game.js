@@ -248,7 +248,9 @@ Game.prototype.spawnHero = function(){
     level: level
   });
 
-  hero.uid = state.player_uid
+  hero.uid = state.player_uid;
+  hero.player_name = state.player_name;
+  hero.player_photo = state.player_photo;
 
   state.setCurrentHero(hero);
 
@@ -359,6 +361,8 @@ var GameState = function(c){
   this.player_name = '';
   this.player_photo = '';
   this.player_uid = '';
+  this.player_highscore = 0;
+  this.player_lastscore = 0;
 
 }
 
@@ -661,6 +665,7 @@ NPC.prototype.doAI = function(){
         var bomb = new Bomb({
           power: 2,
           pos: this.pos,
+          hero: this,
           timeLeft: 3000,
           status: BOMB_START,
           level: state.level
@@ -719,6 +724,8 @@ var Bomb = function(c){
   this.uid = 'b_' + new Date().getTime();
 
   var config = c || {};
+
+  this.hero = c.hero || BM.game.getState().getCurrentHero(); //типа себе
   this.level = c.level;
   this.pos = config.pos || 0;
   this.status = config.status || 0; //0: destroyed, 1: normal, 2: explode, 3: flame
@@ -798,6 +805,11 @@ Bomb.prototype.damage = function(pos, d) {
   } else if (_.contains(this.level.destroy_terrian_sprite, map[pos])) {
     // debugger;
     map[pos] = 0;
+
+    if(this.hero === state.getCurrentHero()){
+      state.player_lastscore += 5;
+    }
+
     this.setFlame(pos, d);
   } else if (map[pos] == 0) {
     this.setFlame(pos, d);
@@ -810,6 +822,10 @@ Bomb.prototype.damage = function(pos, d) {
       // hero.hp -= 1;
 
       hero.hpDec(1);
+
+      if(this.hero === state.getCurrentHero()){
+        state.player_lastscore += 10;
+      }
 
       if (hero.hp == 0){
         BM.game.em.fire('hero.die', [hero]);

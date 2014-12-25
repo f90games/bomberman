@@ -110,7 +110,7 @@ Camera.prototype.updateCanvasHtml = function(){
     });
   
   $('#canvas-wrapper').html(
-    '<canvas id="game-canvas" width="' + this.mapWidth * this.mapTileSize + 'px" height="' + this.mapHeight * this.mapTileSize + 'px" style="position: relative; transition: left 1s, top 1s;"></canvas>'
+    '<canvas id="game-canvas" width="' + this.mapWidth * this.mapTileSize + 'px" height="' + this.mapHeight * this.mapTileSize + 'px" style="position: relative; transition: left 1s, top 1s;"></canvas><div id="hud"><div id="hud-name"></div><img id="hud-picture" src="" alt=""><div id="hud-score"></div></div>'
   );
   $('#canvas-game').attr('width', this.mapTileSize * this.mapWidth);
   $('#canvas-game').attr('height', this.mapTileSize * this.mapHeight);
