@@ -26,9 +26,16 @@ var Scene = function(c){
   this.mapWidth = c.mapWidth || 21;
   this.mapHeight = c.mapWidth || 15;
 
+  if (_.isUndefined(c.staticScene)){
+    c.staticScene = true;
+  }
+
+  this.staticScene = c.staticScene;
+
   this.gameFrameTime = c.gameFrameTime || 50;
 
   this.camera = new Camera({
+    staticScene: this.staticScene,
     elId: this.elId,
     embedToId: this.embedToId,
 
@@ -80,10 +87,9 @@ LoadingScene.prototype.stop = function(){
 ///////////////////////////////////////////////////////////////////////////
 
 var PlayScene = function(c){
-  
-  var state = BM.game.getState();
-
   PlayScene.superclass.constructor.apply(this, arguments);
+
+  var state = BM.game.getState();
   this.type = PLAY_SCENE;
   this.camera.updateCanvasHtml();
 

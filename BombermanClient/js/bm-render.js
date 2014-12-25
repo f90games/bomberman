@@ -88,13 +88,15 @@ var Camera = function(c){
   this.elId = c.elId || 'game-canvas';
   this.embedToId = c.embedToId || 'canvas-wrapper';
 
-  this.screenWidth = c.screenWidth || 672;
+  this.screenWidth = c.screenWidth || 600;
   this.screenHeight = c.screenHeight || 480;
 
   this.mapTileSize = c.mapTileSize || 32;
 
   this.mapWidth = c.mapWidth || 21;
   this.mapHeight = c.mapWidth || 15;
+
+  this.staticScene = c.staticScene;
 
   this.screenOffset = {x: 0, y: 0};
 }
@@ -108,10 +110,18 @@ Camera.prototype.updateCanvasHtml = function(){
     'width': this.screenWidth + 'px',
     'height': this.screenHeight + 'px'
     });
+
+  if(this.staticScene){
+    $('#canvas-wrapper').html(
+      '<canvas id="game-canvas" width="' + this.screenWidth + 'px" height="' + this.screenHeight + 'px" style="position: relative; transition: left 1s, top 1s;"></canvas><div id="hud"><div id="hud-name"></div><img id="hud-picture" src="" alt=""><div id="hud-score"></div></div>'
+    );
+  } else {
+    $('#canvas-wrapper').html(
+      '<canvas id="game-canvas" width="' + this.mapWidth * this.mapTileSize + 'px" height="' + this.mapHeight * this.mapTileSize + 'px" style="position: relative; transition: left 1s, top 1s;"></canvas><div id="hud"><div id="hud-name"></div><img id="hud-picture" src="" alt=""><div id="hud-score"></div></div>'
+    );
+  }
   
-  $('#canvas-wrapper').html(
-    '<canvas id="game-canvas" width="' + this.mapWidth * this.mapTileSize + 'px" height="' + this.mapHeight * this.mapTileSize + 'px" style="position: relative; transition: left 1s, top 1s;"></canvas><div id="hud"><div id="hud-name"></div><img id="hud-picture" src="" alt=""><div id="hud-score"></div></div>'
-  );
+
   $('#canvas-game').attr('width', this.mapTileSize * this.mapWidth);
   $('#canvas-game').attr('height', this.mapTileSize * this.mapHeight);
   
