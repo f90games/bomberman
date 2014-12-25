@@ -15,6 +15,18 @@ Game.prototype.init = function(){
 
 };
 
+Game.prototype.addNewHero = function(data){
+	
+	console.log('adding new hero', data)
+	
+}
+
+Game.prototype.bindConnector = function(){
+	
+	BM.connector.on('newHero', this.addNewHero)
+	
+}
+
 Game.prototype.createScene = function(s){
 
   if (this.scene)
@@ -216,8 +228,6 @@ Game.prototype.loadLevel = function(levelId){
 }
 
 Game.prototype.makeGame = function(level){
-
-  console.log('Make new game!!!-------------------------');
   
   if (!level)
     var level = this.getState().getCurrentLevel() || 0;
@@ -426,13 +436,11 @@ GameState.prototype.heroDie = function(hero){
     for (var i = 0; i < this.heros.length; i++) {
 
       if (hero === this.heros[i]){
-        console.log(hero.uid + ' is die!');
         
         if(hero.isNPC()){
           
           this.heros.splice(i, 1);
           // delete this.heros[i];
-          console.log(hero);
 
           BM.game.spawnNPC(1);        
         }
@@ -498,7 +506,6 @@ var Hero = function(c){
 
   this.hp = 3;
 
-  console.log('User ' + this.uid + ' заспаунился в позиции ' + this.pos);
 }
 
 Hero.die = function(hero){
@@ -529,8 +536,6 @@ Hero.prototype.moveTo = function(){
     x: this.point.x + delta_x * speed_x,
     y: this.point.y + delta_y * speed_y
   } 
-
-  // console.log(this.point);
 
   if (this.step_up || this.step_down || this.step_left || this.step_right) {
     this.step++;
@@ -672,8 +677,6 @@ NPC.prototype.doAI = function(){
           status: BOMB_START,
           level: state.level
         }, state.map);
-
-        console.log('User ' + this.uid + ' поставил бомбу ' + bomb.uid + ' в позиции ' + this.pos);
         
         if (PlayScene.checkBombPos(state, this.pos-1))
         {
@@ -750,8 +753,6 @@ Bomb.prototype.explode = function() {
   var self = this;
   this.status = BOMB_EXPLODE;
 
-  console.log('Бомба ' + this.uid + ' в позиции ' + this.pos + ' взорвалась.');
-
   BM.game.em.fire('bomb.explode', [self]);
 
   this.damage(this.pos)
@@ -769,9 +770,6 @@ Bomb.prototype.explode = function() {
       i++;
     } while ((i <= this.power) && goExplode);
   };
-
-  // debugger;
-  // console.log(BM.fx);
 
   setTimeout(function(){
     self.destroy();

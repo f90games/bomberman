@@ -39,15 +39,17 @@ var BM;
       embedToId: "canvas-wrapper"
     });
 
-    var sound = BM.soundEngine = new SoundEngine({
+    // var sound = BM.soundEngine = new SoundEngine({
 
-    });  
+    // });  
 
-    var connector = BM.connector = new Connector({});
-
+    var connector = BM.connector = new BM.Connector({});
+	
+	connector.on('connected', _.bind(game.bindConnector, game))
+	
     game.setState(state); //именно state будет обнуляться
     game.setRender(render);
-    game.setSound(sound);
+    // game.setSound(sound);
     game.setInput(input);
     game.setConnector(connector);
 

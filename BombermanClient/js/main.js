@@ -27,7 +27,6 @@ $(function(){
 	});
 
   VK.api("users.get", {fields: "photo_50, first_name"}, function(data) { 
-      console.log(data);
       BM.game.getState().player_name = data.response[0].first_name;
       BM.game.getState().player_photo = data.response[0].photo_50;
       BM.game.getState().player_uid = data.response[0].uid;
