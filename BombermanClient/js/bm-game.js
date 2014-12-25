@@ -40,6 +40,7 @@ Game.prototype.createScene = function(s){
       var level = state.level;      
 
       this.scene = new PlayScene({
+        staticScene: false,
         screenWidth: level.screenWidth,
         screenHeight: level.screenHeight,
         mapTileSize: level.mapTileSize,
