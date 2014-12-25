@@ -239,7 +239,8 @@ Game.prototype.makeGame = function(level){
   this.loadLevel();
   this.spawnHero();
 
-  this.spawnNPC(10);
+  if(this.getState().mode == GAMEMODE_SINGLE)
+    this.spawnNPC(10);
 
   this.createScene(PLAY_SCENE);
 }
@@ -368,6 +369,8 @@ var GameState = function(c){
   this.heros = [];
   this.bombs = [];
   this.fx = [];
+
+  this.mode = GAMEMODE_SINGLE;
 
   this.player_name = '';
   this.player_photo = '';
