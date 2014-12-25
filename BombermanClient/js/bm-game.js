@@ -410,8 +410,8 @@ var GameState = function(c){
 
   this.mode = GAMEMODE_SINGLE;
 
-  this.player_name = '';
-  this.player_photo = '';
+  this.player_name = 'Player 1';
+  this.player_photo = './img/static/no-profile-image.jpg';
   this.player_uid = '';
   this.player_highscore = 0;
   this.player_lastscore = 0;
