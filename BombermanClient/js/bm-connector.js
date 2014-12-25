@@ -102,6 +102,7 @@
     Connector.prototype.onMessage = function(params) {
       var message;
       message = JSON.parse(params.data);
+      console.log(message);
       return this.trigger(message.type, message.data);
     };
 

@@ -458,10 +458,10 @@ GameState.prototype.heroDie = function(hero){
 // HERO
 //
 
-window.HUMAN_CHARACTER_TYPE = 0;
-window.GHOST_CHARACTER_TYPE = 1;
-window.SCELET_CHARACTER_TYPE = 2;
-window.MONSTR_CHARACTER_TYPE = 3;
+this.HUMAN_CHARACTER_TYPE = 0;
+this.GHOST_CHARACTER_TYPE = 1;
+this.SCELET_CHARACTER_TYPE = 2;
+this.MONSTR_CHARACTER_TYPE = 3;
 // window.HUMAN_CHARACTER_TYPE = 4;
 
 var Hero = function(c){
@@ -846,4 +846,5 @@ Bomb.prototype.destroy = function(){
 if (typeof exports !== "undefined") //for node
 {
   exports.Bomb = Bomb;
+  exports.Hero = Hero;
 }
