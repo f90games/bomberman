@@ -47,10 +47,8 @@ var BM;
 
       game.createScene(START_SCENE);
 
-      setTimeout(function(){
-        game.makeGame(0);
-      }, 2000);
-    }, 1000);
+
+    }, 2000);
 
 
   }

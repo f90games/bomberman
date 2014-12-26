@@ -2,6 +2,11 @@
 
 $(function(){
 
+	// if (window.parent)
+	// 	window.parent.getElementsByName("fXD9aa7e")[0].contentWindow.document.body.focus();
+
+	window.document.body.focus();
+
 	BM.init();
 	
 	$(document).on("keydown",

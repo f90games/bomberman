@@ -14,6 +14,14 @@ function extend(Child, Parent) {
   Child.superclass = Parent.prototype
 }
 
+var Timer = function(){
+
+}
+
+Timer.prototype = {
+  
+}
+
 //***********************************************************************************
 // Game - он же State Manager
 var Game = function(c){

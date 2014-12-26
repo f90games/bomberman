@@ -711,6 +711,12 @@ extend(StartScene, Scene);
 
 StartScene.prototype.run = function(){
   this.drawBackground();
+  var game = BM.game;
+
+  $("#game-canvas").click(function(e){
+    game.createScene(MENU_SCENE);
+
+  });
 }
 
 
