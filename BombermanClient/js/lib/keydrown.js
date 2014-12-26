@@ -375,6 +375,12 @@ var kd = (function (keysDown) {
     if (isNew && kd[keyName]) {
       kd[keyName].press();
     }
+	
+	evt.stopPropagation()
+	evt.preventDefault()
+	
+	return false
+	
   });
 
   util.documentOn('keyup', function (evt) {
@@ -384,6 +390,12 @@ var kd = (function (keysDown) {
     if (keyName) {
       kd[keyName].up();
     }
+	
+	evt.stopPropagation()
+	evt.preventDefault()
+	
+	return false
+	
   });
 
   // Stop firing the "down" handlers if the user loses focus of the browser
