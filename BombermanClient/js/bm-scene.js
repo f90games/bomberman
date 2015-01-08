@@ -198,22 +198,29 @@ PlayScene.prototype.run = function(){
 
   var state = this.game.getState(); 
 
+  var timer = BM.game.timer;
+
 
   this.drawMap(state); //первый кадр
   this.initControls();
   // this.spawnHero();
 
-  this.timer = setInterval(function(){
-      self.frame.call(self);
-    },
-    this.gameFrameTime
-  );  
+  this.loopTask = timer.run(self.frame, self, 50);
+
+  // this.timer = setInterval(function(){
+  //     self.frame.call(self);
+  //   },
+  //   this.gameFrameTime
+  // );  
 
 }
 
 PlayScene.prototype.stop = function(){
-  clearInterval(this.timer);
+  // clearInterval(this.timer);
+  var timer = BM.game.timer;
+
   PlayScene.superclass.stop.apply(this, arguments);
+  this.loopTask.halt();
 }
 
 PlayScene.prototype.initControls = function(){
@@ -712,6 +719,10 @@ extend(StartScene, Scene);
 StartScene.prototype.run = function(){
   this.drawBackground();
   var game = BM.game;
+
+  kd.ENTER.down = function(){
+    game.createScene(MENU_SCENE);
+  }
 
   $("#game-canvas").click(function(e){
     game.createScene(MENU_SCENE);

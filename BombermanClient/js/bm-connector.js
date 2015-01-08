@@ -19,7 +19,7 @@
     };
 
     Observer.prototype.off = function(type, fn) {
-      return this.visitSubscribers('unsubscribe', fn, type);
+      return this.__visitSubscribers('unsubscribe', fn, type);
     };
 
     Observer.prototype.trigger = function(type, publication) {
