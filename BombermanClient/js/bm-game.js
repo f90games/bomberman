@@ -18,6 +18,7 @@ var TimerTask = function(method, scope, config){
   this.taskId = "t" + new Date().getTime() + "" + _.random(1, 999);
   this.frames = this._frame =  config.frames || 1;
   this.once = (!!config.once);
+  this._halted = false;
   this.method = method;
   this.scope = scope;
 }
@@ -36,12 +37,12 @@ TimerTask.prototype = {
   },
 
   halt: function(){
-    this.once = true;
-    this._frame = 0;
+    this._halted = true; //контрольный 
+    this._frame = -1; 
   },
 
   isDone: function(){
-    return (this._frame <= 0);
+    return ((this._frame <= 0) || this._halted);
   }
 } 
 
@@ -133,7 +134,11 @@ var Game = function(c){
   }
 
   var timer = this.timer = new Timer({});
-  timer.start();
+  // timer.start();
+
+
+  var ui_timer = this.ui_timer = new Timer({});
+  ui_timer.start();
 
 }
 
@@ -859,15 +864,6 @@ NPC.prototype.doAI = function(){
     }    
   }
 }
-
-// NPC.prototype.drop = function(){
-
-// }
-
-// Item = function(){
-    
-// }
-
 
 
 //*********************************************************************************

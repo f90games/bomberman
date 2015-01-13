@@ -117,7 +117,7 @@ Camera.prototype.updateCanvasHtml = function(){
     );
   } else {
     $('#canvas-wrapper').html(
-      '<canvas id="game-canvas" width="' + this.mapWidth * this.mapTileSize + 'px" height="' + this.mapHeight * this.mapTileSize + 'px" style="position: relative; transition: left 1s, top 1s;"></canvas><div id="hud"><div id="hud-name"></div><img id="hud-picture" src="" alt=""><div id="hud-score"></div></div>'
+      '<canvas id="game-canvas" width="' + this.mapWidth * this.mapTileSize + 'px" height="' + this.mapHeight * this.mapTileSize + 'px" style="position: relative; transition: left 1s, top 1s;"></canvas><div id="hud"><div id="hud-name"></div><img id="hud-picture" src="" alt=""><div id="hud-score"></div></div><div id="controls"><div id="pause-button"></div><div id="sound-button"></div><div id="music-button"></div><div id="menu-button"></div></div>'
     );
   }
   

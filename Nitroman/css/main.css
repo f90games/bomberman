@@ -1,0 +1,86 @@
+.preload {
+  display: none;
+}
+
+.online {
+  /*display: none;*/
+  color: green;
+  font-weight: bold;
+}
+
+.blink {
+    animation-duration: 1s;
+    animation-name: blink;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes blink {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+body {
+	font-family: Verdana;
+	font-size: 12px;
+}
+
+#canvasLoader {
+  position: relative;
+}
+
+#canvasLoader canvas{
+  margin: 200px auto;
+  display: block;
+}
+
+#canvas-wrapper {
+  position: relative;
+}
+
+#hud {
+  display: none;
+  position: absolute;
+  height: 100px;
+  width: 100px;
+  padding-top: 20px;
+  border-radius: 50px;
+  top: -18px;
+  right: -18px;
+  text-align: center;
+/*  filter:alpha(opacity=90);
+  opacity:.9;
+*/  background: rgba(255,255,255,0.6);
+
+}
+
+#hud-picture {
+  width: 25px;
+  height: 25px;
+}
+
+#hud-name {
+  color: #000;
+}
+
+#hud-score {
+  color: green;
+}
+
+#controls {
+  display: none;
+  position: absolute;
+  height: 32px;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+/*  filter:alpha(opacity=90);
+  opacity:.9;
+*/  background: rgba(255,255,255,0.6);
+}

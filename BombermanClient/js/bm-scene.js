@@ -94,6 +94,8 @@ var PlayScene = function(c){
   this.camera.updateCanvasHtml();
 
   $('#hud').show();
+  $('#controls').show();
+
 
   $('#hud-picture').attr('src', state.player_photo);
   $('#hud-name').html(state.player_name);
@@ -205,6 +207,8 @@ PlayScene.prototype.run = function(){
   this.initControls();
   // this.spawnHero();
 
+  timer.start();
+
   this.loopTask = timer.run(self.frame, self, 50);
 
   // this.timer = setInterval(function(){
@@ -221,6 +225,16 @@ PlayScene.prototype.stop = function(){
 
   PlayScene.superclass.stop.apply(this, arguments);
   this.loopTask.halt();
+
+  timer.stop();
+}
+
+PlayScene.prototype.pause = function(){
+  // clearInterval(this.timer);
+  var timer = BM.game.timer;
+
+  timer.stop();
+
 }
 
 PlayScene.prototype.initControls = function(){
