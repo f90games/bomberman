@@ -50,8 +50,6 @@ App.PlayState.prototype = {
         var map = this.levelMap = this.add.tilemap('level');
         map.addTilesetImage('nitroman', 'nitromanTile');
 
-        map.setCollisionBetween(31, 35);
-
         this.backgroundLayer = map.createLayer('background');
 
         this.terrianLayer = map.createLayer('terrian');
@@ -60,11 +58,14 @@ App.PlayState.prototype = {
         this.physics.enable(this.hero);
 
         this.hero.body.collideWorldBounds = true;
+        this.hero.debug = true;
+
+        map.setCollisionBetween(31, 35, true, this.terrianLayer);
 
         this.decorationLayer = map.createLayer('decoration');
 
         //  Un-comment this on to see the collision tiles
-        // layer.debug = true;
+        this.terrianLayer.debug = true;
 
         this.decorationLayer.resizeWorld();        
 
@@ -84,25 +85,28 @@ App.PlayState.prototype = {
 
         var hero = this.hero;
 
-        this.physics.arcade.collide(hero, this.terrianLayer);
+        var collide = this.physics.arcade.collide(hero, this.terrianLayer);
+        hero.body.velocity.set(0);
+
+        // debugger;
 
         //  For example this checks if the up or down keys are pressed and moves the camera accordingly.
         if (cursors.up.isDown)
         {
-            hero.body.y -= 5;
+            hero.body.velocity.y -= 200;
         }
         else if (cursors.down.isDown)
         {
-            hero.body.y += 5;
+            hero.body.velocity.y += 200;
         }
 
         if (cursors.left.isDown)
         {
-            hero.body.x -= 5;
+            hero.body.velocity.x -= 200;
         }
         else if (cursors.right.isDown)
         {
-            hero.body.x += 5;
+            hero.body.velocity.x += 200;
         }
 
 
