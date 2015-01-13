@@ -33,9 +33,16 @@ App.PlayState = function (game) {
 
 App.PlayState.prototype = {
 
+    spawnHero: function(){
+        return this.add.sprite(0, 0, 'hero');
+    },
+
     create: function () {
 
+        this.physics.startSystem(Phaser.Physics.ARCADE);
+
         this.stage.backgroundColor = '#787878';
+        this.camera.roundPx = true;
 
         // this.music = this.add.audio('titleMusic');
         // this.music.play();
@@ -43,9 +50,16 @@ App.PlayState.prototype = {
         var map = this.levelMap = this.add.tilemap('level');
         map.addTilesetImage('nitroman', 'nitromanTile');
 
+        map.setCollisionBetween(31, 35);
+
         this.backgroundLayer = map.createLayer('background');
 
         this.terrianLayer = map.createLayer('terrian');
+
+        this.hero = this.spawnHero();
+        this.physics.enable(this.hero);
+
+        this.hero.body.collideWorldBounds = true;
 
         this.decorationLayer = map.createLayer('decoration');
 
@@ -54,13 +68,43 @@ App.PlayState.prototype = {
 
         this.decorationLayer.resizeWorld();        
 
-        var cursors = this.input.keyboard.createCursorKeys();
+        var cursors = this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.physics.enable(this.hero);
+
+        this.camera.follow(this.hero);
 
         //  Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
 
     },
 
     update: function () {
+
+        var cursors = this.cursors;
+
+        var hero = this.hero;
+
+        this.physics.arcade.collide(hero, this.terrianLayer);
+
+        //  For example this checks if the up or down keys are pressed and moves the camera accordingly.
+        if (cursors.up.isDown)
+        {
+            hero.body.y -= 5;
+        }
+        else if (cursors.down.isDown)
+        {
+            hero.body.y += 5;
+        }
+
+        if (cursors.left.isDown)
+        {
+            hero.body.x -= 5;
+        }
+        else if (cursors.right.isDown)
+        {
+            hero.body.x += 5;
+        }
+
 
         //  Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
 

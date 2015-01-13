@@ -32,6 +32,7 @@ App.PreloaderState.prototype = {
 		this.load.tilemap('level', 'assets/nitroman.json', null, Phaser.Tilemap.TILED_JSON);
 
 		this.load.image('nitromanTile', 'sprites/nitroman.png');
+		this.load.image('hero', 'sprites/hero.png');
 		// this.load.bitmapFont('caslon', 'fonts/caslon.png', 'fonts/caslon.xml');
 		//	+ lots of other required assets here
 
