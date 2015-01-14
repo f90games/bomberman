@@ -33,8 +33,18 @@ App.PlayState = function (game) {
 
 App.PlayState.prototype = {
 
-    spawnHero: function(){
-        return this.add.sprite(0, 0, 'hero');
+    spawnHero: function(x, y){
+        var x = x || 100;
+        var y = y || 100;
+        
+        var hero = this.add.sprite(x, y, 'hero');
+
+
+        return hero;
+    },
+
+    damageHero: function(){
+        alert('Hero is DIE!');
     },
 
     create: function () {
@@ -53,25 +63,50 @@ App.PlayState.prototype = {
         this.backgroundLayer = map.createLayer('background');
         this.terrianLayer = map.createLayer('terrian');
         // this.terrianLayer.debug = true;
-        this.terrianLayer.resizeWorld();  
+        this.terrianLayer.resizeWorld();
+
         map.setCollisionBetween(31, 35, true, this.terrianLayer);
         this.physics.p2.convertTilemap(map, this.terrianLayer);
-        this.physics.p2.setBoundsToWorld(true, true, true, true, false);
 
-
+        // var bonusesCG = this.physics.p2.createCollisionGroup();
+        // var playersCG = this.physics.p2.createCollisionGroup();
+        // var wallsCG =  this.physics.p2.createCollisionGroup();
+        var monstersCG = this.physics.p2.createCollisionGroup();
 
         var hero = this.hero = this.spawnHero();
-        this.physics.p2.enable(this.hero);
+
+        var enemy = this.enemy = this.spawnHero(300, 300);
+
+
+        this.physics.p2.enable(hero, false, false);
 
         hero.body.setCircle(44.5);
+        hero.scale.setTo(0.8, 0.8);
         hero.body.fixedRotation = true;
         hero.anchor.setTo(0.5,0.77);
-        hero.scale.setTo(0.9, 0.9);
+
+        // hero.body.setCollisionGroup(playersCG);
+        // hero.body.collides(monstersCG, this.damageHero, this);
+        // hero.body.collides(wallsCG);
+
+
+        this.physics.p2.enable(enemy, false, false);
+
+        enemy.body.setCircle(44.5);
+        enemy.body.fixedRotation = true;
+        enemy.anchor.setTo(0.5,0.77);
+        enemy.scale.setTo(0.8, 0.8);
+
+        // enemy.body.setCollisionGroup(monstersCG);
+        // enemy.body.collides(hero, this.damageHero, this);
 
         // this.hero.debug = true;  
 
         this.decorationLayer = map.createLayer('decoration');
+        
         var cursors = this.cursors = this.input.keyboard.createCursorKeys();
+
+        this.physics.p2.setBoundsToWorld(true, true, true, true, false);
 
         this.camera.follow(this.hero);
 
