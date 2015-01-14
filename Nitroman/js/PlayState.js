@@ -47,6 +47,10 @@ App.PlayState.prototype = {
         alert('Hero is DIE!');
     },
 
+    placeBomb: function(){
+        this.hero
+    },
+
     create: function () {
 
         this.physics.startSystem(Phaser.Physics.P2JS);
@@ -57,6 +61,8 @@ App.PlayState.prototype = {
         // this.music = this.add.audio('titleMusic');
         // this.music.play();
 
+        // this.physics.p2.setBoundsToWorld(true, true, true, true, false);
+
         var map = this.levelMap = this.add.tilemap('level');
         map.addTilesetImage('nitroman', 'nitromanTile');
 
@@ -66,17 +72,22 @@ App.PlayState.prototype = {
         this.terrianLayer.resizeWorld();
 
         map.setCollisionBetween(31, 35, true, this.terrianLayer);
-        this.physics.p2.convertTilemap(map, this.terrianLayer);
+        // this.physics.p2.convertTilemap(map, this.terrianLayer);
 
-        // var bonusesCG = this.physics.p2.createCollisionGroup();
-        // var playersCG = this.physics.p2.createCollisionGroup();
-        // var wallsCG =  this.physics.p2.createCollisionGroup();
+        var bonusesCG = this.physics.p2.createCollisionGroup();
+        var playersCG = this.physics.p2.createCollisionGroup();
+        var wallsCG =  this.physics.p2.createCollisionGroup();
         var monstersCG = this.physics.p2.createCollisionGroup();
+
+        this.physics.p2.updateBoundsCollisionGroup();
 
         var hero = this.hero = this.spawnHero();
 
-        var enemy = this.enemy = this.spawnHero(300, 300);
+        // var enemy = this.enemy = this.spawnHero(300, 300);
 
+        var enemies = this.add.group();
+        enemies.enableBody = true;
+        enemies.physicsBodyType = Phaser.Physics.P2JS; 
 
         this.physics.p2.enable(hero, false, false);
 
@@ -85,30 +96,41 @@ App.PlayState.prototype = {
         hero.body.fixedRotation = true;
         hero.anchor.setTo(0.5,0.77);
 
-        // hero.body.setCollisionGroup(playersCG);
-        // hero.body.collides(monstersCG, this.damageHero, this);
-        // hero.body.collides(wallsCG);
+        hero.body.setCollisionGroup(playersCG);
+        hero.body.collides(wallsCG); 
+        hero.body.collides(monstersCG, this.damageHero, this);
 
+        for (var i = 0; i < 5; i++)
+        {
+            var enemy = enemies.create(this.world.randomX, this.world.randomY, 'hero');
+            enemy.body.setRectangle(40, 40);
+            enemy.anchor.setTo(0.5,0.77);
+            enemy.body.fixedRotation = true;
 
-        this.physics.p2.enable(enemy, false, false);
+            //  Tell the panda to use the pandaCollisionGroup 
+            enemy.body.setCollisionGroup(monstersCG);
 
-        enemy.body.setCircle(44.5);
-        enemy.body.fixedRotation = true;
-        enemy.anchor.setTo(0.5,0.77);
-        enemy.scale.setTo(0.8, 0.8);
+            //  Pandas will collide against themselves and the player
+            //  If you don't set this they'll not collide with anything.
+            //  The first parameter is either an array or a single collision group.
+            enemy.body.collides([monstersCG, playersCG, wallsCG]);
+        }
 
-        // enemy.body.setCollisionGroup(monstersCG);
-        // enemy.body.collides(hero, this.damageHero, this);
-
-        // this.hero.debug = true;  
+        var tileObjects = this.physics.p2.convertTilemap(map, this.terrianLayer);
+        for (var i = 0; i < tileObjects.length; i++) {
+            var tileBody = tileObjects[i];
+            tileBody.setCollisionGroup(wallsCG);
+            tileBody.collides([playersCG, monstersCG]);
+        }
 
         this.decorationLayer = map.createLayer('decoration');
         
         var cursors = this.cursors = this.input.keyboard.createCursorKeys();
 
-        this.physics.p2.setBoundsToWorld(true, true, true, true, false);
+        var fireButton = this.fireButton = this.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        fireButton.onDown.add(this.placeBomb, this);
 
-        this.camera.follow(this.hero);
+        this.camera.follow(this.hero, Phaser.Camera.FOLLOW_PLATFORMER);
 
         //  Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
 
@@ -117,6 +139,8 @@ App.PlayState.prototype = {
     update: function () {
 
         var cursors = this.cursors;
+
+        var fireButton = this.fireButton;
 
         var hero = this.hero;
 
@@ -142,10 +166,15 @@ App.PlayState.prototype = {
         else if (cursors.right.isDown)
         {
             hero.body.velocity.x += 400;
-
         } 
+        
+        if (fireButton.isDown) {
+            console.log('Fire!');
+        }
 
-        // this.physics.arcade.collide(hero, this.terrianLayer);
+        // this.physics.p2.collide(hero, this.enemy, function(){
+        //     alert("Хыдыщь!");
+        // });
 
         //  Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
 
