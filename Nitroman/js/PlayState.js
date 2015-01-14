@@ -39,7 +39,7 @@ App.PlayState.prototype = {
 
     create: function () {
 
-        this.physics.startSystem(Phaser.Physics.ARCADE);
+        this.physics.startSystem(Phaser.Physics.P2JS);
 
         this.stage.backgroundColor = '#787878';
         this.camera.roundPx = true;
@@ -51,27 +51,27 @@ App.PlayState.prototype = {
         map.addTilesetImage('nitroman', 'nitromanTile');
 
         this.backgroundLayer = map.createLayer('background');
-
         this.terrianLayer = map.createLayer('terrian');
-
-        this.hero = this.spawnHero();
-        this.physics.enable(this.hero);
-
-        this.hero.body.collideWorldBounds = true;
-        this.hero.debug = true;
-
+        // this.terrianLayer.debug = true;
+        this.terrianLayer.resizeWorld();  
         map.setCollisionBetween(31, 35, true, this.terrianLayer);
+        this.physics.p2.convertTilemap(map, this.terrianLayer);
+        this.physics.p2.setBoundsToWorld(true, true, true, true, false);
+
+
+
+        var hero = this.hero = this.spawnHero();
+        this.physics.p2.enable(this.hero);
+
+        hero.body.setCircle(44.5);
+        hero.body.fixedRotation = true;
+        hero.anchor.setTo(0.5,0.77);
+        hero.scale.setTo(0.9, 0.9);
+
+        // this.hero.debug = true;  
 
         this.decorationLayer = map.createLayer('decoration');
-
-        //  Un-comment this on to see the collision tiles
-        this.terrianLayer.debug = true;
-
-        this.decorationLayer.resizeWorld();        
-
         var cursors = this.cursors = this.input.keyboard.createCursorKeys();
-
-        this.physics.enable(this.hero);
 
         this.camera.follow(this.hero);
 
@@ -85,30 +85,32 @@ App.PlayState.prototype = {
 
         var hero = this.hero;
 
-        var collide = this.physics.arcade.collide(hero, this.terrianLayer);
-        hero.body.velocity.set(0);
+        
+        hero.body.setZeroVelocity();
 
         // debugger;
 
         //  For example this checks if the up or down keys are pressed and moves the camera accordingly.
         if (cursors.up.isDown)
         {
-            hero.body.velocity.y -= 200;
+            hero.body.velocity.y -= 400;
         }
         else if (cursors.down.isDown)
         {
-            hero.body.velocity.y += 200;
+            hero.body.velocity.y += 400;
         }
 
         if (cursors.left.isDown)
         {
-            hero.body.velocity.x -= 200;
+            hero.body.velocity.x -= 400;
         }
         else if (cursors.right.isDown)
         {
-            hero.body.velocity.x += 200;
-        }
+            hero.body.velocity.x += 400;
 
+        } 
+
+        // this.physics.arcade.collide(hero, this.terrianLayer);
 
         //  Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
 
